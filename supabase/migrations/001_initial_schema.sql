@@ -4,6 +4,7 @@ CREATE TABLE bydeler (
   slug text UNIQUE NOT NULL,
   name text NOT NULL,
   color text NOT NULL,
+  emoji text NOT NULL DEFAULT '',
   created_at timestamptz DEFAULT now()
 );
 
@@ -18,6 +19,7 @@ CREATE TABLE posts (
   is_newsletter boolean DEFAULT true,
   is_published boolean DEFAULT false,
   published_at timestamptz,
+  author_id uuid REFERENCES auth.users(id),
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
 );
@@ -31,6 +33,7 @@ CREATE TABLE subscribers (
   is_active boolean DEFAULT true,
   confirmed boolean DEFAULT false,
   confirm_token text UNIQUE DEFAULT encode(gen_random_bytes(32), 'hex'),
+  unsubscribe_token text UNIQUE DEFAULT encode(gen_random_bytes(32), 'hex'),
   created_at timestamptz DEFAULT now()
 );
 
@@ -86,25 +89,26 @@ CREATE POLICY "bydeler_all_auth" ON bydeler FOR ALL USING (auth.role() = 'authen
 CREATE POLICY "posts_select_published" ON posts FOR SELECT USING (is_published = true);
 CREATE POLICY "posts_all_auth" ON posts FOR ALL USING (auth.role() = 'authenticated');
 
--- Subscribers: only authenticated
+-- Subscribers
 CREATE POLICY "subscribers_all_auth" ON subscribers FOR ALL USING (auth.role() = 'authenticated');
--- Allow anonymous insert for subscription signup
 CREATE POLICY "subscribers_insert_anon" ON subscribers FOR INSERT WITH CHECK (true);
+CREATE POLICY "subscribers_update_anon" ON subscribers FOR UPDATE USING (true) WITH CHECK (true);
 
--- Subscriber_bydeler: allow anonymous insert, authenticated full access
+-- Subscriber_bydeler
 CREATE POLICY "subscriber_bydeler_insert_anon" ON subscriber_bydeler FOR INSERT WITH CHECK (true);
+CREATE POLICY "subscriber_bydeler_select_anon" ON subscriber_bydeler FOR SELECT USING (true);
 CREATE POLICY "subscriber_bydeler_all_auth" ON subscriber_bydeler FOR ALL USING (auth.role() = 'authenticated');
 
--- Newsletter sends: only authenticated
+-- Newsletter sends
 CREATE POLICY "newsletter_sends_all_auth" ON newsletter_sends FOR ALL USING (auth.role() = 'authenticated');
 
 -- Seed bydeler
-INSERT INTO bydeler (slug, name, color) VALUES
-  ('midtbyen', 'Midtbyen', '#E8634A'),
-  ('lade', 'Lade & Strindheim', '#5B8C5A'),
-  ('byasen', 'Byåsen', '#4A7FB5'),
-  ('tiller', 'Tiller & Heimdal', '#D4A843'),
-  ('moholt', 'Moholt & Dragvoll', '#8B6DB0'),
-  ('saupstad', 'Saupstad & Kolstad', '#C75C8A'),
-  ('ranheim', 'Ranheim & Charlottenlund', '#45A5A5'),
-  ('jakobsli', 'Jakobsli & Vikåsen', '#D17B47');
+INSERT INTO bydeler (slug, name, color, emoji) VALUES
+  ('midtbyen', 'Midtbyen', '#D4593A', '🏛'),
+  ('lade', 'Lade & Strindheim', '#4A7A4A', '🌳'),
+  ('byasen', 'Byåsen', '#3D6E99', '⛷'),
+  ('tiller', 'Tiller & Heimdal', '#C4942E', '🏘'),
+  ('moholt', 'Moholt & Dragvoll', '#7B5EA7', '🎓'),
+  ('saupstad', 'Saupstad & Kolstad', '#B54D73', '🏡'),
+  ('ranheim', 'Ranheim & Charlottenlund', '#2E8E8E', '🌊'),
+  ('jakobsli', 'Jakobsli & Vikåsen', '#C06A2F', '🌄');

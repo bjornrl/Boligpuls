@@ -1,107 +1,74 @@
-import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+import StatsCards from '@/components/StatsCards'
+import BydelPill from '@/components/BydelPill'
 
 export const metadata = { title: 'Admin — Boligpuls Trondheim' }
 
 export default async function AdminPage() {
   const supabase = createServerSupabaseClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) redirect('/admin/login')
 
   const [
-    { count: postCount },
-    { count: subscriberCount },
-    { count: sendCount },
+    { count: publishedCount },
+    { count: draftCount },
+    { count: confirmedCount },
+    { count: unconfirmedCount },
   ] = await Promise.all([
-    supabase.from('posts').select('*', { count: 'exact', head: true }),
-    supabase.from('subscribers').select('*', { count: 'exact', head: true }).eq('confirmed', true),
-    supabase.from('newsletter_sends').select('*', { count: 'exact', head: true }).eq('status', 'sent'),
+    supabase.from('posts').select('*', { count: 'exact', head: true }).eq('is_published', true),
+    supabase.from('posts').select('*', { count: 'exact', head: true }).eq('is_published', false),
+    supabase.from('subscribers').select('*', { count: 'exact', head: true }).eq('confirmed', true).eq('is_active', true),
+    supabase.from('subscribers').select('*', { count: 'exact', head: true }).eq('confirmed', false),
   ])
 
-  const { data: recentPosts } = await supabase
-    .from('posts')
-    .select('*, bydeler(name, color)')
-    .order('created_at', { ascending: false })
-    .limit(5)
+  // Get subscriber counts per bydel
+  const { data: bydeler } = await supabase.from('bydeler').select('*').order('name')
+  const { data: subscriberBydeler } = await supabase
+    .from('subscriber_bydeler')
+    .select('bydel_id, subscribers!inner(confirmed)')
+    .eq('subscribers.confirmed', true)
+
+  const bydelCounts = new Map<string, number>()
+  subscriberBydeler?.forEach((sb: { bydel_id: string }) => {
+    bydelCounts.set(sb.bydel_id, (bydelCounts.get(sb.bydel_id) || 0) + 1)
+  })
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <Link
-          href="/admin/posts/new"
-          className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-600"
-        >
-          Ny artikkel
-        </Link>
-      </div>
+    <div>
+      <h1
+        className="text-3xl font-bold mb-8"
+        style={{ color: '#1C1917', fontFamily: 'var(--font-playfair)' }}
+      >
+        Dashboard
+      </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <p className="text-sm text-gray-500">Artikler</p>
-          <p className="text-3xl font-bold text-gray-900">{postCount || 0}</p>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <p className="text-sm text-gray-500">Bekreftede abonnenter</p>
-          <p className="text-3xl font-bold text-gray-900">{subscriberCount || 0}</p>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <p className="text-sm text-gray-500">E-poster sendt</p>
-          <p className="text-3xl font-bold text-gray-900">{sendCount || 0}</p>
-        </div>
-      </div>
+      <StatsCards
+        stats={[
+          { label: 'Publiserte', value: publishedCount || 0, color: '#166534' },
+          { label: 'Utkast', value: draftCount || 0, color: '#C4942E' },
+          { label: 'Bekreftede abonnenter', value: confirmedCount || 0 },
+          { label: 'Ubekreftede', value: unconfirmedCount || 0, color: '#A8A29E' },
+        ]}
+      />
 
-      <div className="flex gap-4 mb-8">
-        <Link href="/admin/posts" className="text-red-500 font-medium hover:text-red-600">
-          Alle artikler &rarr;
-        </Link>
-        <Link href="/admin/subscribers" className="text-red-500 font-medium hover:text-red-600">
-          Abonnenter &rarr;
-        </Link>
-      </div>
-
-      <h2 className="text-xl font-bold text-gray-900 mb-4">Siste artikler</h2>
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-200">
-            <tr>
-              <th className="text-left px-4 py-3 font-medium text-gray-500">Tittel</th>
-              <th className="text-left px-4 py-3 font-medium text-gray-500">Bydel</th>
-              <th className="text-left px-4 py-3 font-medium text-gray-500">Status</th>
-              <th className="text-right px-4 py-3 font-medium text-gray-500"></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {recentPosts?.map((post) => (
-              <tr key={post.id}>
-                <td className="px-4 py-3 font-medium text-gray-900">{post.title}</td>
-                <td className="px-4 py-3">
-                  <span
-                    className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-full text-white"
-                    style={{ backgroundColor: (post.bydeler as { color: string })?.color }}
-                  >
-                    {(post.bydeler as { name: string })?.name}
-                  </span>
-                </td>
-                <td className="px-4 py-3">
-                  <span className={`text-xs font-medium ${post.is_published ? 'text-green-600' : 'text-yellow-600'}`}>
-                    {post.is_published ? 'Publisert' : 'Utkast'}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-right">
-                  <Link
-                    href={`/admin/posts/${post.id}`}
-                    className="text-red-500 hover:text-red-600 text-xs font-medium"
-                  >
-                    Rediger
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <h2
+        className="text-xl font-bold mt-10 mb-4"
+        style={{ color: '#1C1917', fontFamily: 'var(--font-playfair)' }}
+      >
+        Abonnenter per bydel
+      </h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {bydeler?.map((bydel) => (
+          <div
+            key={bydel.id}
+            className="rounded-2xl p-5"
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #EDEBE8' }}
+          >
+            <BydelPill name={bydel.name} emoji={bydel.emoji} color={bydel.color} size="md" />
+            <p className="text-2xl font-bold mt-3" style={{ color: '#1C1917' }}>
+              {bydelCounts.get(bydel.id) || 0}
+            </p>
+            <p className="text-xs" style={{ color: '#A8A29E' }}>bekreftede</p>
+          </div>
+        ))}
       </div>
     </div>
   )

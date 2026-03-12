@@ -15,3 +15,10 @@ export function formatDate(date: string): string {
     year: 'numeric',
   })
 }
+
+export function formatShortDate(date: string): string {
+  return new Date(date).toLocaleDateString('nb-NO', {
+    day: 'numeric',
+    month: 'short',
+  })
+}

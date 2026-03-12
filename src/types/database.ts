@@ -15,6 +15,7 @@ export interface Database {
           slug: string
           name: string
           color: string
+          emoji: string
           created_at: string
         }
         Insert: {
@@ -22,6 +23,7 @@ export interface Database {
           slug: string
           name: string
           color: string
+          emoji?: string
           created_at?: string
         }
         Update: {
@@ -29,6 +31,7 @@ export interface Database {
           slug?: string
           name?: string
           color?: string
+          emoji?: string
           created_at?: string
         }
         Relationships: []
@@ -44,6 +47,7 @@ export interface Database {
           is_newsletter: boolean
           is_published: boolean
           published_at: string | null
+          author_id: string | null
           created_at: string
           updated_at: string
         }
@@ -57,6 +61,7 @@ export interface Database {
           is_newsletter?: boolean
           is_published?: boolean
           published_at?: string | null
+          author_id?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -70,6 +75,7 @@ export interface Database {
           is_newsletter?: boolean
           is_published?: boolean
           published_at?: string | null
+          author_id?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -92,6 +98,7 @@ export interface Database {
           is_active: boolean
           confirmed: boolean
           confirm_token: string
+          unsubscribe_token: string
           created_at: string
         }
         Insert: {
@@ -102,6 +109,7 @@ export interface Database {
           is_active?: boolean
           confirmed?: boolean
           confirm_token?: string
+          unsubscribe_token?: string
           created_at?: string
         }
         Update: {
@@ -112,6 +120,7 @@ export interface Database {
           is_active?: boolean
           confirmed?: boolean
           confirm_token?: string
+          unsubscribe_token?: string
           created_at?: string
         }
         Relationships: []

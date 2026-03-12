@@ -23,8 +23,15 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // Refresh session
-  await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // Protect admin routes
+  if (request.nextUrl.pathname.startsWith('/admin')) {
+    if (!user) {
+      const loginUrl = new URL('/login', request.url)
+      return NextResponse.redirect(loginUrl)
+    }
+  }
 
   return supabaseResponse
 }

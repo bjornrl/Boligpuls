@@ -1,18 +1,23 @@
 import type { Metadata } from 'next'
-import localFont from 'next/font/local'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+import { Outfit, Playfair_Display } from 'next/font/google'
 import './globals.css'
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  display: 'swap',
+})
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'Boligpuls Trondheim',
-  description: 'Nyhetsbrev om boligmarkedet i Trondheim — segmentert etter bydel.',
+  title: 'Boligpuls Trondheim — Nyhetsbrev om boligmarkedet',
+  description:
+    'Hold deg oppdatert på boligmarkedet i Trondheim. Få nyhetsbrev segmentert etter bydel — prisvekst, nybygg og bydelsutvikling.',
 }
 
 export default function RootLayout({
@@ -21,11 +26,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="nb">
-      <body className={`${geistSans.variable} font-sans bg-gray-50 text-gray-900 min-h-screen flex flex-col`}>
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+    <html lang="nb" className={`${outfit.variable} ${playfair.variable}`}>
+      <body className="min-h-screen flex flex-col" style={{ backgroundColor: '#FAF9F6', color: '#1C1917' }}>
+        {children}
       </body>
     </html>
   )
