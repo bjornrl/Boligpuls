@@ -30,7 +30,7 @@ export default function BydelSelector({ bydeler, selected, onChange }: BydelSele
             style={
               isSelected
                 ? { backgroundColor: bydel.color, color: '#FFFFFF', border: `2px solid ${bydel.color}` }
-                : { backgroundColor: '#FFFFFF', color: '#1C1917', border: '2px solid #E7E5E4' }
+                : { backgroundColor: '#FFFFFF', color: '#002D32', border: '2px solid #D4DCDE' }
             }
           >
             {bydel.emoji} {bydel.name}

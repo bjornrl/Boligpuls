@@ -17,15 +17,15 @@ export default async function AdminInnleggPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1
-          className="text-3xl font-bold"
-          style={{ color: '#1C1917', fontFamily: 'var(--font-playfair)' }}
+          className="text-3xl"
+          style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
         >
           Innlegg
         </h1>
         <Link
           href="/admin/skriv"
-          className="px-4 py-2 rounded-xl text-sm font-semibold text-white transition-colors"
-          style={{ backgroundColor: '#D4593A' }}
+          className="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
+          style={{ backgroundColor: '#D7B180', color: '#002D32' }}
         >
           Nytt innlegg
         </Link>
@@ -33,15 +33,15 @@ export default async function AdminInnleggPage() {
 
       <div
         className="rounded-2xl overflow-hidden"
-        style={{ backgroundColor: '#FFFFFF', border: '1px solid #EDEBE8' }}
+        style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
       >
         <table className="w-full text-sm">
-          <thead style={{ backgroundColor: '#FAF9F6', borderBottom: '1px solid #EDEBE8' }}>
+          <thead style={{ backgroundColor: '#F8F7F5', borderBottom: '1px solid #E8ECEE' }}>
             <tr>
-              <th className="text-left px-4 py-3 font-medium" style={{ color: '#78716C' }}>Tittel</th>
-              <th className="text-left px-4 py-3 font-medium" style={{ color: '#78716C' }}>Bydel</th>
-              <th className="text-left px-4 py-3 font-medium" style={{ color: '#78716C' }}>Status</th>
-              <th className="text-left px-4 py-3 font-medium" style={{ color: '#78716C' }}>Dato</th>
+              <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Tittel</th>
+              <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Bydel</th>
+              <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Status</th>
+              <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Dato</th>
               <th className="text-right px-4 py-3"></th>
             </tr>
           </thead>
@@ -49,27 +49,34 @@ export default async function AdminInnleggPage() {
             {posts?.map((post) => {
               const bydel = post.bydeler as { name: string; color: string; emoji: string } | null
               return (
-                <tr key={post.id} className="hover:bg-gray-50" style={{ borderBottom: '1px solid #F5F3EF' }}>
-                  <td className="px-4 py-3 font-medium" style={{ color: '#1C1917' }}>{post.title}</td>
+                <tr key={post.id} style={{ borderBottom: '1px solid #E8ECEE' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F8F7F5')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
+                >
+                  <td className="px-4 py-3 font-medium" style={{ color: '#002D32' }}>{post.title}</td>
                   <td className="px-4 py-3">
                     {bydel && <BydelPill name={bydel.name} emoji={bydel.emoji} color={bydel.color} />}
                   </td>
                   <td className="px-4 py-3">
                     <span
-                      className="text-xs font-medium"
-                      style={{ color: post.is_published ? '#166534' : '#C4942E' }}
+                      className="text-xs font-medium px-2 py-0.5 rounded-full"
+                      style={
+                        post.is_published
+                          ? { backgroundColor: '#DEE5E7', color: '#155356' }
+                          : { backgroundColor: '#F3E9DB', color: '#B8860B' }
+                      }
                     >
                       {post.is_published ? 'Publisert' : 'Utkast'}
                     </span>
                   </td>
-                  <td className="px-4 py-3" style={{ color: '#A8A29E' }}>
+                  <td className="px-4 py-3" style={{ color: '#9BAFB2' }}>
                     {formatDate(post.published_at || post.created_at)}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link
                       href={`/admin/skriv/${post.id}`}
                       className="text-xs font-medium"
-                      style={{ color: '#D4593A' }}
+                      style={{ color: '#155356' }}
                     >
                       Rediger
                     </Link>
@@ -80,7 +87,7 @@ export default async function AdminInnleggPage() {
           </tbody>
         </table>
         {(!posts || posts.length === 0) && (
-          <p className="text-center py-8" style={{ color: '#A8A29E' }}>
+          <p className="text-center py-8" style={{ color: '#9BAFB2' }}>
             Ingen innlegg ennå.
           </p>
         )}

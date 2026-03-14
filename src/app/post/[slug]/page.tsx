@@ -49,16 +49,16 @@ export default async function PostPage({ params }: { params: { slug: string } })
           <Link
             href="/"
             className="inline-flex items-center text-sm font-medium mb-8 transition-colors"
-            style={{ color: '#78716C' }}
+            style={{ color: '#5F7A7D' }}
           >
             &larr; Tilbake
           </Link>
 
           <div
             className="rounded-2xl overflow-hidden"
-            style={{ backgroundColor: '#FFFFFF', border: '1px solid #EDEBE8' }}
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
           >
-            <div className="h-1.5" style={{ backgroundColor: typedPost.bydeler.color }} />
+            <div className="h-1" style={{ backgroundColor: typedPost.bydeler.color }} />
             <div className="p-8 md:p-10">
               <div className="flex items-center gap-3 mb-6">
                 <BydelPill
@@ -68,17 +68,17 @@ export default async function PostPage({ params }: { params: { slug: string } })
                   size="md"
                 />
                 {typedPost.published_at && (
-                  <span className="text-sm" style={{ color: '#A8A29E' }}>
+                  <span className="text-sm" style={{ color: '#9BAFB2' }}>
                     {formatDate(typedPost.published_at)}
                   </span>
                 )}
               </div>
 
               <h1
-                className="text-3xl md:text-4xl font-bold mb-6"
+                className="text-3xl md:text-4xl mb-6"
                 style={{
-                  color: '#1C1917',
-                  fontFamily: 'var(--font-playfair)',
+                  color: '#002D32',
+                  fontFamily: '"Basel Classic", Georgia, serif',
                   letterSpacing: '-0.02em',
                 }}
               >

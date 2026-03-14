@@ -16,7 +16,7 @@ export default async function AdminForesporserPage() {
     <div>
       <h1
         className="text-3xl font-bold mb-6"
-        style={{ color: '#1C1917', fontFamily: 'var(--font-playfair)' }}
+        style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
       >
         Forespørsler
       </h1>

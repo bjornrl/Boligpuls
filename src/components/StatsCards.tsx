@@ -15,15 +15,15 @@ export default function StatsCards({ stats }: StatsCardsProps) {
           className="rounded-2xl p-5"
           style={{
             backgroundColor: '#FFFFFF',
-            border: '1px solid #EDEBE8',
+            border: '1px solid #E8ECEE',
           }}
         >
-          <p className="text-sm font-medium mb-1" style={{ color: '#78716C' }}>
+          <p className="text-sm font-medium mb-1" style={{ color: '#5F7A7D' }}>
             {stat.label}
           </p>
           <p
             className="text-3xl font-bold"
-            style={{ color: stat.color || '#1C1917', fontFamily: 'var(--font-outfit)' }}
+            style={{ color: stat.color || '#002D32' }}
           >
             {stat.value}
           </p>

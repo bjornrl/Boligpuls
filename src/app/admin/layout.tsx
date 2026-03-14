@@ -13,7 +13,7 @@ export default async function AdminLayout({
   if (!user) redirect('/login')
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#FAF9F6' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#F8F7F5' }}>
       <AdminNav email={user.email || ''} />
       <div className="max-w-[1120px] mx-auto px-4 py-8">
         {children}

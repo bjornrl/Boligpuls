@@ -1,40 +1,49 @@
+'use client'
+
 import Link from 'next/link'
 
 export default function Header() {
   return (
     <header
-      className="sticky top-0 z-50 border-b"
-      style={{
-        backgroundColor: 'rgba(250,249,246,0.82)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderColor: '#EDEBE8',
-      }}
+      className="sticky top-0 z-50"
+      style={{ backgroundColor: '#002D32' }}
     >
       <div className="max-w-[1120px] mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2.5">
           <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #D4593A, #C4942E)' }}
+            className="w-8 h-8 rounded-md flex items-center justify-center"
+            style={{ backgroundColor: '#D7B180' }}
           >
             <span className="text-white text-sm font-bold">B</span>
           </div>
-          <span className="text-lg font-bold" style={{ color: '#1C1917', fontFamily: 'var(--font-outfit)' }}>
-            Boligpuls Trondheim
-          </span>
+          <div className="flex items-baseline gap-2">
+            <span className="text-lg text-white" style={{ fontFamily: '"Basel Classic", Georgia, serif' }}>
+              Boligpuls
+            </span>
+            <span
+              className="text-[11px] uppercase tracking-wider"
+              style={{ color: 'rgba(255,255,255,0.5)', fontFamily: '"Basel Grotesk", system-ui, sans-serif', fontWeight: 500 }}
+            >
+              Trondheim
+            </span>
+          </div>
         </Link>
         <nav className="flex items-center gap-6">
           <Link
             href="/nyhetsbrev"
-            className="text-sm font-medium transition-colors"
-            style={{ color: '#78716C' }}
+            className="text-sm transition-opacity"
+            style={{ color: 'rgba(255,255,255,0.6)' }}
+            onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.color = 'rgba(255,255,255,1)')}
+            onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
           >
             Nyhetsbrev
           </Link>
           <Link
             href="/vurdering"
-            className="text-sm font-medium transition-colors flex items-center gap-1.5"
-            style={{ color: '#78716C' }}
+            className="text-sm flex items-center gap-1.5 transition-opacity"
+            style={{ color: 'rgba(255,255,255,0.6)' }}
+            onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.color = 'rgba(255,255,255,1)')}
+            onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -44,8 +53,8 @@ export default function Header() {
           </Link>
           <Link
             href="/nyhetsbrev"
-            className="text-sm font-medium px-4 py-2 rounded-xl transition-colors text-white"
-            style={{ backgroundColor: '#D4593A' }}
+            className="text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+            style={{ backgroundColor: '#D7B180', color: '#002D32' }}
           >
             Abonner
           </Link>

@@ -16,8 +16,8 @@ export default function BydelFilter({ bydeler, selected, onChange }: BydelFilter
         className="px-4 py-2 rounded-full text-sm font-medium transition-all"
         style={
           selected === null
-            ? { backgroundColor: '#1C1917', color: '#FFFFFF' }
-            : { backgroundColor: 'transparent', color: '#78716C', border: '1px solid #EDEBE8' }
+            ? { backgroundColor: '#002D32', color: '#FFFFFF' }
+            : { backgroundColor: '#FFFFFF', color: '#9BAFB2', border: '1px solid #D4DCDE' }
         }
       >
         Alle
@@ -29,11 +29,11 @@ export default function BydelFilter({ bydeler, selected, onChange }: BydelFilter
           className="px-4 py-2 rounded-full text-sm font-medium transition-all"
           style={
             selected === bydel.slug
-              ? { backgroundColor: bydel.color, color: '#FFFFFF' }
+              ? { backgroundColor: `${bydel.color}18`, color: bydel.color, border: `1px solid ${bydel.color}` }
               : {
-                  backgroundColor: `${bydel.color}12`,
-                  color: bydel.color,
-                  border: `1px solid ${bydel.color}20`,
+                  backgroundColor: '#FFFFFF',
+                  color: '#9BAFB2',
+                  border: '1px solid #D4DCDE',
                 }
           }
         >

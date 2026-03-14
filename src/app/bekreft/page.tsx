@@ -26,25 +26,25 @@ export default async function BekreftPage({
     <div className="max-w-lg mx-auto px-4 py-20 text-center">
       {success ? (
         <>
-          <div className="text-5xl mb-4">&#10003;</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <div className="text-5xl mb-4" style={{ color: '#155356' }}>&#10003;</div>
+          <h1 className="text-2xl mb-2" style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}>
             Abonnement bekreftet!
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="mb-6" style={{ color: '#5F7A7D' }}>
             Du vil nå motta nyhetsbrev om boligmarkedet i dine valgte bydeler.
           </p>
         </>
       ) : (
         <>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl mb-2" style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}>
             Ugyldig eller utløpt lenke
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="mb-6" style={{ color: '#5F7A7D' }}>
             Bekreftelseslenken er ugyldig eller har allerede blitt brukt.
           </p>
         </>
       )}
-      <Link href="/" className="text-red-500 font-medium hover:text-red-600">
+      <Link href="/" className="font-medium" style={{ color: '#155356' }}>
         Tilbake til forsiden &rarr;
       </Link>
     </div>

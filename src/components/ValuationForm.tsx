@@ -32,7 +32,6 @@ export default function ValuationForm() {
     setError('')
     setIsSubmitting(true)
 
-    // Find bydel slug from id
     const bydelSlug = bydeler.find((b) => b.id === selectedBydel)?.slug || undefined
 
     try {
@@ -69,29 +68,29 @@ export default function ValuationForm() {
     return (
       <div
         className="rounded-2xl p-10 text-center"
-        style={{ backgroundColor: '#FFFFFF', border: '1px solid #EDEBE8' }}
+        style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
       >
         <div
           className="w-14 h-14 rounded-full mx-auto mb-5 flex items-center justify-center"
-          style={{ backgroundColor: '#F0FDF4' }}
+          style={{ backgroundColor: '#DEE5E7' }}
         >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#166534" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#155356" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
         <h2
-          className="text-2xl font-bold mb-2"
-          style={{ color: '#1C1917', fontFamily: 'var(--font-playfair)' }}
+          className="text-2xl mb-2"
+          style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
         >
           Takk for henvendelsen
         </h2>
-        <p className="mb-6" style={{ color: '#78716C' }}>
+        <p className="mb-6" style={{ color: '#5F7A7D' }}>
           Vi tar kontakt innen 1–2 virkedager.
         </p>
         <button
           onClick={() => router.push('/')}
           className="px-6 py-3 rounded-xl text-sm font-medium transition-colors"
-          style={{ backgroundColor: '#F5F3EF', color: '#1C1917' }}
+          style={{ backgroundColor: '#DEE5E7', color: '#002D32' }}
         >
           Tilbake til oppdateringer
         </button>
@@ -103,7 +102,7 @@ export default function ValuationForm() {
     <form onSubmit={handleSubmit}>
       <div
         className="rounded-2xl p-6 md:p-8"
-        style={{ backgroundColor: '#FFFFFF', border: '1px solid #EDEBE8' }}
+        style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
       >
         {/* Type selector */}
         <div className="grid grid-cols-2 gap-3 mb-8">
@@ -119,20 +118,20 @@ export default function ValuationForm() {
               style={
                 requestType === type
                   ? {
-                      backgroundColor: '#F5F3EF',
-                      border: '2px solid #1C1917',
-                      color: '#1C1917',
+                      backgroundColor: '#DEE5E7',
+                      border: '2px solid #002D32',
+                      color: '#002D32',
                     }
                   : {
                       backgroundColor: '#FFFFFF',
-                      border: '2px solid #E7E5E4',
-                      color: '#78716C',
+                      border: '2px solid #D4DCDE',
+                      color: '#5F7A7D',
                     }
               }
             >
               <span className="flex items-center gap-2">
                 {requestType === type && (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1917" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#002D32" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 )}
@@ -145,7 +144,7 @@ export default function ValuationForm() {
         {/* Form fields */}
         <div className="space-y-5">
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#1C1917' }}>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
               Navn
             </label>
             <input
@@ -154,13 +153,13 @@ export default function ValuationForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors"
-              style={{ border: '1px solid #E7E5E4', color: '#1C1917' }}
+              style={{ border: '1px solid #D4DCDE', color: '#002D32' }}
               placeholder="Ditt fulle navn"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#1C1917' }}>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
               E-post
             </label>
             <input
@@ -169,27 +168,27 @@ export default function ValuationForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors"
-              style={{ border: '1px solid #E7E5E4', color: '#1C1917' }}
+              style={{ border: '1px solid #D4DCDE', color: '#002D32' }}
               placeholder="din@epost.no"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#1C1917' }}>
-              Telefon <span style={{ color: '#A8A29E', fontWeight: 400 }}>(valgfri)</span>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
+              Telefon <span style={{ color: '#9BAFB2', fontWeight: 400 }}>(valgfri)</span>
             </label>
             <input
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors"
-              style={{ border: '1px solid #E7E5E4', color: '#1C1917' }}
+              style={{ border: '1px solid #D4DCDE', color: '#002D32' }}
               placeholder="Mobilnummer"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#1C1917' }}>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
               Adresse
             </label>
             <input
@@ -198,14 +197,14 @@ export default function ValuationForm() {
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors"
-              style={{ border: '1px solid #E7E5E4', color: '#1C1917' }}
+              style={{ border: '1px solid #D4DCDE', color: '#002D32' }}
               placeholder="Gateadresse og husnummer"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#1C1917' }}>
-              Bydel <span style={{ color: '#A8A29E', fontWeight: 400 }}>(valgfri)</span>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
+              Bydel <span style={{ color: '#9BAFB2', fontWeight: 400 }}>(valgfri)</span>
             </label>
             <div className="flex flex-wrap gap-2">
               {bydeler.map((bydel) => {
@@ -234,22 +233,22 @@ export default function ValuationForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#1C1917' }}>
-              Melding <span style={{ color: '#A8A29E', fontWeight: 400 }}>(valgfri)</span>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
+              Melding <span style={{ color: '#9BAFB2', fontWeight: 400 }}>(valgfri)</span>
             </label>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
               className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors resize-none"
-              style={{ border: '1px solid #E7E5E4', color: '#1C1917' }}
+              style={{ border: '1px solid #D4DCDE', color: '#002D32' }}
               placeholder="Noe mer du vil fortelle oss?"
             />
           </div>
         </div>
 
         {error && (
-          <p className="mt-4 text-sm" style={{ color: '#D4593A' }}>
+          <p className="mt-4 text-sm px-3 py-2 rounded-lg" style={{ backgroundColor: '#F3E2DE', color: '#8B3A3A' }}>
             {error}
           </p>
         )}
@@ -257,16 +256,15 @@ export default function ValuationForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full mt-6 py-3.5 rounded-xl text-sm font-medium transition-all"
+          className="w-full mt-6 py-3.5 rounded-xl text-sm font-medium transition-all text-white"
           style={{
-            backgroundColor: isSubmitting ? '#E7E5E4' : '#1C1917',
-            color: '#FFFFFF',
+            backgroundColor: isSubmitting ? '#D4DCDE' : '#002D32',
           }}
         >
           {isSubmitting ? 'Sender...' : 'Send forespørsel'}
         </button>
 
-        <p className="mt-4 text-xs text-center" style={{ color: '#A8A29E' }}>
+        <p className="mt-4 text-xs text-center" style={{ color: '#9BAFB2' }}>
           Dine opplysninger behandles konfidensielt og brukes kun til å besvare din henvendelse.
         </p>
       </div>

@@ -34,24 +34,24 @@ export default async function AdminPage() {
   return (
     <div>
       <h1
-        className="text-3xl font-bold mb-8"
-        style={{ color: '#1C1917', fontFamily: 'var(--font-playfair)' }}
+        className="text-3xl mb-8"
+        style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
       >
         Dashboard
       </h1>
 
       <StatsCards
         stats={[
-          { label: 'Publiserte', value: publishedCount || 0, color: '#166534' },
-          { label: 'Utkast', value: draftCount || 0, color: '#C4942E' },
+          { label: 'Publiserte', value: publishedCount || 0, color: '#155356' },
+          { label: 'Utkast', value: draftCount || 0, color: '#B8860B' },
           { label: 'Bekreftede abonnenter', value: confirmedCount || 0 },
-          { label: 'Ubekreftede', value: unconfirmedCount || 0, color: '#A8A29E' },
+          { label: 'Ubekreftede', value: unconfirmedCount || 0, color: '#9BAFB2' },
         ]}
       />
 
       <h2
-        className="text-xl font-bold mt-10 mb-4"
-        style={{ color: '#1C1917', fontFamily: 'var(--font-playfair)' }}
+        className="text-xl mt-10 mb-4"
+        style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
       >
         Abonnenter per bydel
       </h2>
@@ -60,13 +60,13 @@ export default async function AdminPage() {
           <div
             key={bydel.id}
             className="rounded-2xl p-5"
-            style={{ backgroundColor: '#FFFFFF', border: '1px solid #EDEBE8' }}
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
           >
             <BydelPill name={bydel.name} emoji={bydel.emoji} color={bydel.color} size="md" />
-            <p className="text-2xl font-bold mt-3" style={{ color: '#1C1917' }}>
+            <p className="text-2xl font-bold mt-3" style={{ color: '#002D32' }}>
               {bydelCounts.get(bydel.id) || 0}
             </p>
-            <p className="text-xs" style={{ color: '#A8A29E' }}>bekreftede</p>
+            <p className="text-xs" style={{ color: '#9BAFB2' }}>bekreftede</p>
           </div>
         ))}
       </div>

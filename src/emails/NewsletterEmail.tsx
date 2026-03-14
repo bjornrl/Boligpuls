@@ -80,8 +80,8 @@ export default function NewsletterEmail({
 }
 
 const main = {
-  backgroundColor: '#FAF9F6',
-  fontFamily: "'Outfit', system-ui, sans-serif",
+  backgroundColor: '#F8F7F5',
+  fontFamily: "'Basel Grotesk', 'Helvetica', system-ui, sans-serif",
 }
 
 const container = {
@@ -91,69 +91,72 @@ const container = {
 }
 
 const header = {
+  backgroundColor: '#002D32',
+  borderRadius: '16px 16px 0 0',
+  padding: '24px 32px',
   textAlign: 'center' as const,
-  marginBottom: '32px',
 }
 
 const logo = {
   fontSize: '24px',
   fontWeight: '700' as const,
-  color: '#1C1917',
+  color: '#FFFFFF',
   margin: '0',
 }
 
 const content = {
   backgroundColor: '#FFFFFF',
-  borderRadius: '16px',
+  borderRadius: '0 0 16px 16px',
   padding: '40px 32px',
-  border: '1px solid #EDEBE8',
+  border: '1px solid #E8ECEE',
+  borderTop: 'none',
 }
 
 const date = {
   fontSize: '14px',
-  color: '#78716C',
+  color: '#5F7A7D',
   textAlign: 'center' as const,
   margin: '0 0 8px',
 }
 
 const title = {
   fontSize: '28px',
-  fontWeight: '700' as const,
-  color: '#1C1917',
+  fontWeight: '400' as const,
+  color: '#002D32',
   textAlign: 'center' as const,
   lineHeight: '1.3',
   marginBottom: '32px',
-  fontFamily: "'Georgia', serif",
+  fontFamily: "'Basel Classic', Georgia, serif",
 }
 
 const articleContent = {
   fontSize: '16px',
   lineHeight: '1.85',
-  color: '#1C1917',
+  color: '#155356',
 }
 
 const hr = {
-  borderColor: '#EDEBE8',
+  borderColor: '#E8ECEE',
   marginTop: '32px',
   marginBottom: '16px',
 }
 
 const footerText = {
   fontSize: '13px',
-  color: '#A8A29E',
+  color: '#9BAFB2',
   textAlign: 'center' as const,
   marginBottom: '8px',
 }
 
 const unsubLink = {
   fontSize: '13px',
-  color: '#78716C',
+  color: '#5F7A7D',
   textDecoration: 'underline',
 }
 
 const copyright = {
   fontSize: '12px',
-  color: '#A8A29E',
+  color: '#9BAFB2',
   textAlign: 'center' as const,
   marginTop: '16px',
 }

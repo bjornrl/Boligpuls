@@ -30,7 +30,6 @@ export default function SkrivPage() {
     setSlug(slugify(title))
   }, [title])
 
-  // Fetch subscriber count when bydel changes
   useEffect(() => {
     if (!bydelId || !isNewsletter) {
       setSubscriberCount(null)
@@ -87,48 +86,48 @@ export default function SkrivPage() {
   return (
     <div className="max-w-3xl">
       <h1
-        className="text-3xl font-bold mb-8"
-        style={{ color: '#1C1917', fontFamily: 'var(--font-playfair)' }}
+        className="text-3xl mb-8"
+        style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
       >
         Ny artikkel
       </h1>
       <form className="space-y-5">
         <div>
-          <label className="block text-sm font-medium mb-1.5" style={{ color: '#1C1917' }}>Tittel</label>
+          <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>Tittel</label>
           <input
             type="text"
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full px-4 py-2.5 rounded-xl text-sm"
-            style={{ border: '1.5px solid #E7E5E4', outline: 'none' }}
-            onFocus={(e) => (e.target.style.borderColor = '#D4593A')}
-            onBlur={(e) => (e.target.style.borderColor = '#E7E5E4')}
+            style={{ border: '1.5px solid #D4DCDE', outline: 'none' }}
+            onFocus={(e) => (e.target.style.borderColor = '#D7B180')}
+            onBlur={(e) => (e.target.style.borderColor = '#D4DCDE')}
           />
-          <p className="text-xs mt-1" style={{ color: '#A8A29E' }}>Slug: {slug}</p>
+          <p className="text-xs mt-1" style={{ color: '#9BAFB2' }}>Slug: {slug}</p>
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#1C1917' }}>Bydel</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#002D32' }}>Bydel</label>
           <BydelSingleSelect bydeler={bydeler} selected={bydelId} onChange={setBydelId} />
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1.5" style={{ color: '#1C1917' }}>Sammendrag</label>
+          <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>Sammendrag</label>
           <textarea
             required
             value={excerpt}
             onChange={(e) => setExcerpt(e.target.value)}
             rows={2}
             className="w-full px-4 py-2.5 rounded-xl text-sm resize-none"
-            style={{ border: '1.5px solid #E7E5E4', outline: 'none' }}
-            onFocus={(e) => (e.target.style.borderColor = '#D4593A')}
-            onBlur={(e) => (e.target.style.borderColor = '#E7E5E4')}
+            style={{ border: '1.5px solid #D4DCDE', outline: 'none' }}
+            onFocus={(e) => (e.target.style.borderColor = '#D7B180')}
+            onBlur={(e) => (e.target.style.borderColor = '#D4DCDE')}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1.5" style={{ color: '#1C1917' }}>
+          <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
             Innhold (Markdown)
           </label>
           <textarea
@@ -137,9 +136,9 @@ export default function SkrivPage() {
             onChange={(e) => setContent(e.target.value)}
             rows={16}
             className="w-full px-4 py-2.5 rounded-xl text-sm font-mono resize-y"
-            style={{ border: '1.5px solid #E7E5E4', outline: 'none' }}
-            onFocus={(e) => (e.target.style.borderColor = '#D4593A')}
-            onBlur={(e) => (e.target.style.borderColor = '#E7E5E4')}
+            style={{ border: '1.5px solid #D4DCDE', outline: 'none' }}
+            onFocus={(e) => (e.target.style.borderColor = '#D7B180')}
+            onBlur={(e) => (e.target.style.borderColor = '#D4DCDE')}
           />
         </div>
 
@@ -149,12 +148,12 @@ export default function SkrivPage() {
               type="checkbox"
               checked={isNewsletter}
               onChange={(e) => setIsNewsletter(e.target.checked)}
-              style={{ accentColor: '#D4593A' }}
+              style={{ accentColor: '#D7B180' }}
             />
-            <span className="text-sm" style={{ color: '#1C1917' }}>Send som nyhetsbrev</span>
+            <span className="text-sm" style={{ color: '#002D32' }}>Send som nyhetsbrev</span>
           </label>
           {isNewsletter && subscriberCount !== null && (
-            <span className="text-xs px-2 py-1 rounded-full" style={{ backgroundColor: '#F5F3EF', color: '#78716C' }}>
+            <span className="text-xs px-2 py-1 rounded-full" style={{ backgroundColor: '#DEE5E7', color: '#5F7A7D' }}>
               {subscriberCount} mottakere
             </span>
           )}
@@ -166,7 +165,7 @@ export default function SkrivPage() {
             disabled={loading}
             onClick={(e) => handleSubmit(e, false)}
             className="px-6 py-2.5 rounded-xl text-sm font-medium transition-colors disabled:opacity-50"
-            style={{ border: '1.5px solid #EDEBE8', color: '#1C1917' }}
+            style={{ border: '1.5px solid #D4DCDE', color: '#002D32' }}
           >
             Lagre utkast
           </button>
@@ -174,8 +173,8 @@ export default function SkrivPage() {
             type="submit"
             disabled={loading}
             onClick={(e) => handleSubmit(e, true)}
-            className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white transition-colors disabled:opacity-50"
-            style={{ backgroundColor: '#D4593A' }}
+            className="px-6 py-2.5 rounded-xl text-sm font-medium text-white transition-colors disabled:opacity-50"
+            style={{ backgroundColor: '#002D32' }}
           >
             Publiser
           </button>

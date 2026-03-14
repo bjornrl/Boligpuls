@@ -41,7 +41,6 @@ export default function SendPage() {
           const html = await marked(data.content)
           setContentHtml(html)
 
-          // Get subscriber count
           supabase
             .from('subscriber_bydeler')
             .select('subscriber_id, subscribers!inner(confirmed, is_active)', { count: 'exact', head: true })
@@ -78,14 +77,14 @@ export default function SendPage() {
   }
 
   if (!post) {
-    return <div className="py-12" style={{ color: '#A8A29E' }}>Laster...</div>
+    return <div className="py-12" style={{ color: '#9BAFB2' }}>Laster...</div>
   }
 
   return (
     <div className="max-w-3xl">
       <h1
-        className="text-3xl font-bold mb-6"
-        style={{ color: '#1C1917', fontFamily: 'var(--font-playfair)' }}
+        className="text-3xl mb-6"
+        style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
       >
         Send nyhetsbrev
       </h1>
@@ -93,23 +92,23 @@ export default function SendPage() {
       {result ? (
         <div
           className="rounded-2xl p-8 text-center"
-          style={{ backgroundColor: '#FFFFFF', border: '1px solid #EDEBE8' }}
+          style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
         >
           <div className="text-5xl mb-4">&#9993;</div>
-          <h2 className="text-xl font-bold mb-2" style={{ color: '#1C1917' }}>
+          <h2 className="text-xl mb-2" style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}>
             Nyhetsbrev sendt!
           </h2>
-          <p style={{ color: '#78716C' }}>
-            <span style={{ color: '#166534', fontWeight: 600 }}>{result.sent}</span> sendt
+          <p style={{ color: '#5F7A7D' }}>
+            <span style={{ color: '#155356', fontWeight: 600 }}>{result.sent}</span> sendt
             {result.failed > 0 && (
-              <>, <span style={{ color: '#D4593A', fontWeight: 600 }}>{result.failed}</span> feilet</>
+              <>, <span style={{ color: '#8B3A3A', fontWeight: 600 }}>{result.failed}</span> feilet</>
             )}
             {' '}av {result.total} totalt.
           </p>
           <Link
             href="/admin/innlegg"
             className="inline-block mt-6 text-sm font-medium"
-            style={{ color: '#D4593A' }}
+            style={{ color: '#155356' }}
           >
             &larr; Tilbake til innlegg
           </Link>
@@ -123,7 +122,7 @@ export default function SendPage() {
               color={post.bydeler.color}
               size="md"
             />
-            <span className="text-sm" style={{ color: '#78716C' }}>
+            <span className="text-sm" style={{ color: '#5F7A7D' }}>
               {subscriberCount} mottakere
             </span>
           </div>
@@ -131,16 +130,16 @@ export default function SendPage() {
           {/* Preview */}
           <div
             className="rounded-2xl overflow-hidden mb-6"
-            style={{ backgroundColor: '#FFFFFF', border: '1px solid #EDEBE8' }}
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
           >
             <div className="h-1.5" style={{ backgroundColor: post.bydeler.color }} />
             <div className="p-8">
-              <p className="text-sm mb-2" style={{ color: '#A8A29E' }}>
+              <p className="text-sm mb-2" style={{ color: '#9BAFB2' }}>
                 {formatDate(post.published_at || post.created_at)}
               </p>
               <h2
-                className="text-2xl font-bold mb-6"
-                style={{ color: '#1C1917', fontFamily: 'var(--font-playfair)' }}
+                className="text-2xl mb-6"
+                style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
               >
                 {post.title}
               </h2>
@@ -155,8 +154,8 @@ export default function SendPage() {
           <button
             onClick={handleSend}
             disabled={sending || subscriberCount === 0}
-            className="w-full py-3 rounded-xl text-sm font-semibold text-white transition-colors disabled:opacity-50"
-            style={{ backgroundColor: '#D4593A' }}
+            className="w-full py-3 rounded-xl text-sm font-medium text-white transition-colors disabled:opacity-50"
+            style={{ backgroundColor: '#002D32' }}
           >
             {sending
               ? 'Sender...'

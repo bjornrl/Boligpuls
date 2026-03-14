@@ -27,22 +27,22 @@ export default function AdminNav({ email }: { email: string }) {
     <nav
       className="sticky top-0 z-50 border-b"
       style={{
-        backgroundColor: 'rgba(250,249,246,0.82)',
+        backgroundColor: 'rgba(248,247,245,0.82)',
         backdropFilter: 'blur(20px)',
-        borderColor: '#EDEBE8',
+        borderColor: '#E8ECEE',
       }}
     >
       <div className="max-w-[1120px] mx-auto px-4">
         <div className="flex items-center justify-between h-14">
-          <Link href="/admin" className="font-bold text-lg" style={{ color: '#1C1917' }}>
+          <Link href="/admin" className="font-bold text-lg" style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}>
             Boligpuls Admin
           </Link>
           <div className="flex items-center gap-4">
-            <span className="text-sm" style={{ color: '#78716C' }}>{email}</span>
+            <span className="text-sm" style={{ color: '#5F7A7D' }}>{email}</span>
             <button
               onClick={handleLogout}
               className="text-sm font-medium px-3 py-1.5 rounded-lg transition-colors"
-              style={{ color: '#D4593A' }}
+              style={{ color: '#8B3A3A' }}
             >
               Logg ut
             </button>
@@ -50,7 +50,7 @@ export default function AdminNav({ email }: { email: string }) {
         </div>
         <div
           className="flex gap-1 -mb-px rounded-lg p-1"
-          style={{ backgroundColor: '#F5F3EF' }}
+          style={{ backgroundColor: '#DEE5E7' }}
         >
           {tabs.map((tab) => {
             const isActive =
@@ -66,10 +66,10 @@ export default function AdminNav({ email }: { email: string }) {
                   isActive
                     ? {
                         backgroundColor: '#FFFFFF',
-                        color: '#1C1917',
+                        color: '#002D32',
                         boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
                       }
-                    : { color: '#78716C' }
+                    : { color: '#5F7A7D' }
                 }
               >
                 {tab.label}

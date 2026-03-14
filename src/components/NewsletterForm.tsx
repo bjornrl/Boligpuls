@@ -51,10 +51,10 @@ export default function NewsletterForm() {
     return (
       <div className="text-center py-8">
         <div className="text-4xl mb-4">&#9993;</div>
-        <h3 className="text-xl font-bold mb-2" style={{ color: '#1C1917' }}>
+        <h3 className="text-xl mb-2" style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}>
           Sjekk innboksen din!
         </h3>
-        <p style={{ color: '#78716C' }}>
+        <p style={{ color: '#5F7A7D' }}>
           Vi har sendt deg en e-post med en bekreftelseslenke. Klikk på lenken for å aktivere abonnementet ditt.
         </p>
       </div>
@@ -64,7 +64,7 @@ export default function NewsletterForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="block text-sm font-medium mb-1.5" style={{ color: '#1C1917' }}>
+        <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
           Navn *
         </label>
         <input
@@ -74,14 +74,14 @@ export default function NewsletterForm() {
           onChange={(e) => setName(e.target.value)}
           placeholder="Ditt navn"
           className="w-full px-4 py-2.5 rounded-xl text-sm transition-colors"
-          style={{ border: '1.5px solid #E7E5E4', outline: 'none' }}
-          onFocus={(e) => (e.target.style.borderColor = '#D4593A')}
-          onBlur={(e) => (e.target.style.borderColor = '#E7E5E4')}
+          style={{ border: '1.5px solid #D4DCDE', outline: 'none' }}
+          onFocus={(e) => (e.target.style.borderColor = '#D7B180')}
+          onBlur={(e) => (e.target.style.borderColor = '#D4DCDE')}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1.5" style={{ color: '#1C1917' }}>
+        <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
           E-post *
         </label>
         <input
@@ -91,35 +91,35 @@ export default function NewsletterForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="din@epost.no"
           className="w-full px-4 py-2.5 rounded-xl text-sm transition-colors"
-          style={{ border: '1.5px solid #E7E5E4', outline: 'none' }}
-          onFocus={(e) => (e.target.style.borderColor = '#D4593A')}
-          onBlur={(e) => (e.target.style.borderColor = '#E7E5E4')}
+          style={{ border: '1.5px solid #D4DCDE', outline: 'none' }}
+          onFocus={(e) => (e.target.style.borderColor = '#D7B180')}
+          onBlur={(e) => (e.target.style.borderColor = '#D4DCDE')}
         />
       </div>
 
       <div>
-        <span className="block text-sm font-medium mb-2" style={{ color: '#1C1917' }}>Frekvens</span>
-        <div className="flex gap-4">
+        <span className="block text-sm font-medium mb-2" style={{ color: '#002D32' }}>Frekvens</span>
+        <div className="flex gap-3">
           {(['weekly', 'monthly'] as const).map((f) => (
-            <label key={f} className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="frequency"
-                value={f}
-                checked={frequency === f}
-                onChange={() => setFrequency(f)}
-                style={{ accentColor: '#D4593A' }}
-              />
-              <span className="text-sm" style={{ color: '#1C1917' }}>
-                {f === 'weekly' ? 'Ukentlig' : 'Månedlig'}
-              </span>
-            </label>
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFrequency(f)}
+              className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
+              style={
+                frequency === f
+                  ? { backgroundColor: '#002D32', color: '#FFFFFF' }
+                  : { backgroundColor: '#FFFFFF', color: '#5F7A7D', border: '1.5px solid #D4DCDE' }
+              }
+            >
+              {f === 'weekly' ? 'Ukentlig' : 'Månedlig'}
+            </button>
           ))}
         </div>
       </div>
 
       <div>
-        <span className="block text-sm font-medium mb-2" style={{ color: '#1C1917' }}>
+        <span className="block text-sm font-medium mb-2" style={{ color: '#002D32' }}>
           Velg bydeler *
         </span>
         <BydelSelector
@@ -132,14 +132,14 @@ export default function NewsletterForm() {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full py-3 rounded-xl text-sm font-semibold text-white transition-colors disabled:opacity-50"
-        style={{ backgroundColor: '#D4593A' }}
+        className="w-full py-3 rounded-xl text-sm font-medium text-white transition-colors disabled:opacity-50"
+        style={{ backgroundColor: '#D7B180', color: '#002D32' }}
       >
         {status === 'loading' ? 'Registrerer...' : 'Abonner gratis'}
       </button>
 
       {message && status === 'error' && (
-        <p className="text-sm text-center" style={{ color: '#D4593A' }}>
+        <p className="text-sm text-center" style={{ color: '#8B3A3A' }}>
           {message}
         </p>
       )}

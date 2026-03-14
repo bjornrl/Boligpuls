@@ -1,23 +1,10 @@
 import type { Metadata } from 'next'
-import { Outfit, Playfair_Display } from 'next/font/google'
 import './globals.css'
-
-const outfit = Outfit({
-  subsets: ['latin'],
-  variable: '--font-outfit',
-  display: 'swap',
-})
-
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-playfair',
-  display: 'swap',
-})
 
 export const metadata: Metadata = {
   title: 'Boligpuls Trondheim — Nyhetsbrev om boligmarkedet',
   description:
-    'Hold deg oppdatert på boligmarkedet i Trondheim. Få nyhetsbrev segmentert etter bydel — prisvekst, nybygg og bydelsutvikling.',
+    'Hei! Mitt navn er Martin Brandvik. Jeg jobber i Nordvik Bolig i Trondheim til vanlig. En del av arbeidshverdagen min er å holde folk oppdatert på boligmarkedet i Trondheim Nå kan du også, helt kostnadsfritt, få oppdateringer jevnlig.',
 }
 
 export default function RootLayout({
@@ -26,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="nb" className={`${outfit.variable} ${playfair.variable}`}>
-      <body className="min-h-screen flex flex-col" style={{ backgroundColor: '#FAF9F6', color: '#1C1917' }}>
+    <html lang="nb">
+      <body className="min-h-screen flex flex-col" style={{ backgroundColor: '#F8F7F5', color: '#002D32' }}>
         {children}
       </body>
     </html>

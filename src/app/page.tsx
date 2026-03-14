@@ -48,24 +48,40 @@ export default function HomePage() {
       <main className="flex-1">
         {/* Hero */}
         <section
-          className="py-20"
-          style={{ backgroundColor: '#1C1917' }}
+          className="py-20 relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #002D32 0%, #155356 100%)' }}
         >
-          <div className="max-w-[1120px] mx-auto px-4 text-center">
+          {/* Decorative circles */}
+          <div
+            className="absolute -top-20 -right-20 w-80 h-80 rounded-full"
+            style={{ backgroundColor: 'rgba(215,177,128,0.08)' }}
+          />
+          <div
+            className="absolute -bottom-16 -left-16 w-64 h-64 rounded-full"
+            style={{ backgroundColor: 'rgba(215,177,128,0.06)' }}
+          />
+          <div className="max-w-[1120px] mx-auto px-4 text-center relative z-10">
             <h1
-              className="text-4xl md:text-5xl font-bold text-white mb-4"
-              style={{ fontFamily: 'var(--font-playfair)', letterSpacing: '-0.02em' }}
+              className="text-4xl md:text-5xl text-white mb-4"
+              style={{ fontFamily: '"Basel Classic", Georgia, serif', letterSpacing: '-0.02em' }}
             >
               Boligmarkedet i Trondheim
             </h1>
-            <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: '#A8A29E' }}>
+            <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.6)' }}>
               Hold deg oppdatert på boligmarkedet i din bydel. Få ukentlige eller
               månedlige oppdateringer rett i innboksen.
             </p>
+            <div className="flex items-center justify-center gap-2 mb-8" style={{ color: 'rgba(215,177,128,0.7)' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                <polyline points="17 6 23 6 23 12" />
+              </svg>
+              <span className="text-sm">Markedsoppdateringer for Trondheim</span>
+            </div>
             <Link
               href="/nyhetsbrev"
-              className="inline-block text-white px-8 py-3 rounded-xl text-base font-semibold transition-colors"
-              style={{ backgroundColor: '#D4593A' }}
+              className="inline-block px-8 py-3 rounded-xl text-base font-medium transition-colors"
+              style={{ backgroundColor: '#D7B180', color: '#002D32' }}
             >
               Abonner gratis
             </Link>
@@ -83,7 +99,7 @@ export default function HomePage() {
           </div>
 
           {loading ? (
-            <div className="text-center py-12" style={{ color: '#A8A29E' }}>
+            <div className="text-center py-12" style={{ color: '#9BAFB2' }}>
               Laster artikler...
             </div>
           ) : filteredPosts.length > 0 ? (
@@ -93,7 +109,7 @@ export default function HomePage() {
               ))}
             </div>
           ) : (
-            <p className="text-center py-12" style={{ color: '#A8A29E' }}>
+            <p className="text-center py-12" style={{ color: '#9BAFB2' }}>
               Ingen artikler publisert ennå. Kom tilbake snart!
             </p>
           )}

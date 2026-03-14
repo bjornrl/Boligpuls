@@ -18,14 +18,14 @@ export default function BekreftPage({
         <div className="max-w-lg mx-auto px-4 py-20 text-center">
           {success ? (
             <>
-              <div className="text-5xl mb-4" style={{ color: '#166534' }}>&#10003;</div>
+              <div className="text-5xl mb-4" style={{ color: '#155356' }}>&#10003;</div>
               <h1
-                className="text-2xl font-bold mb-2"
-                style={{ color: '#1C1917', fontFamily: 'var(--font-playfair)' }}
+                className="text-2xl mb-2"
+                style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
               >
                 Abonnement bekreftet!
               </h1>
-              <p className="mb-6" style={{ color: '#78716C' }}>
+              <p className="mb-6" style={{ color: '#5F7A7D' }}>
                 Du vil nå motta nyhetsbrev om boligmarkedet i dine valgte bydeler.
               </p>
             </>
@@ -33,12 +33,12 @@ export default function BekreftPage({
             <>
               <div className="text-5xl mb-4">&#9888;</div>
               <h1
-                className="text-2xl font-bold mb-2"
-                style={{ color: '#1C1917', fontFamily: 'var(--font-playfair)' }}
+                className="text-2xl mb-2"
+                style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
               >
                 Ugyldig eller utløpt lenke
               </h1>
-              <p className="mb-6" style={{ color: '#78716C' }}>
+              <p className="mb-6" style={{ color: '#5F7A7D' }}>
                 Bekreftelseslenken er ugyldig eller har allerede blitt brukt.
               </p>
             </>
@@ -46,7 +46,7 @@ export default function BekreftPage({
           <Link
             href="/"
             className="inline-block text-sm font-medium transition-colors"
-            style={{ color: '#D4593A' }}
+            style={{ color: '#155356' }}
           >
             Tilbake til forsiden &rarr;
           </Link>

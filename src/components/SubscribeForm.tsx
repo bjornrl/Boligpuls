@@ -59,7 +59,7 @@ export default function SubscribeForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="name" className="block text-sm font-medium mb-1" style={{ color: '#002D32' }}>
           Navn
         </label>
         <input
@@ -67,13 +67,16 @@ export default function SubscribeForm() {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          className="w-full px-4 py-2 rounded-lg text-sm"
+          style={{ border: '1.5px solid #D4DCDE', outline: 'none' }}
+          onFocus={(e) => (e.target.style.borderColor = '#D7B180')}
+          onBlur={(e) => (e.target.style.borderColor = '#D4DCDE')}
           placeholder="Ditt navn"
         />
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="email" className="block text-sm font-medium mb-1" style={{ color: '#002D32' }}>
           E-post *
         </label>
         <input
@@ -82,56 +85,48 @@ export default function SubscribeForm() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          className="w-full px-4 py-2 rounded-lg text-sm"
+          style={{ border: '1.5px solid #D4DCDE', outline: 'none' }}
+          onFocus={(e) => (e.target.style.borderColor = '#D7B180')}
+          onBlur={(e) => (e.target.style.borderColor = '#D4DCDE')}
           placeholder="din@epost.no"
         />
       </div>
 
       <div>
-        <span className="block text-sm font-medium text-gray-700 mb-2">Frekvens</span>
-        <div className="flex gap-4">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="radio"
-              name="frequency"
-              value="weekly"
-              checked={frequency === 'weekly'}
-              onChange={() => setFrequency('weekly')}
-              className="text-red-500 focus:ring-red-500"
-            />
-            <span className="text-sm">Ukentlig</span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="radio"
-              name="frequency"
-              value="monthly"
-              checked={frequency === 'monthly'}
-              onChange={() => setFrequency('monthly')}
-              className="text-red-500 focus:ring-red-500"
-            />
-            <span className="text-sm">Månedlig</span>
-          </label>
+        <span className="block text-sm font-medium mb-2" style={{ color: '#002D32' }}>Frekvens</span>
+        <div className="flex gap-3">
+          {(['weekly', 'monthly'] as const).map((f) => (
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFrequency(f)}
+              className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
+              style={
+                frequency === f
+                  ? { backgroundColor: '#002D32', color: '#FFFFFF' }
+                  : { backgroundColor: '#FFFFFF', color: '#5F7A7D', border: '1.5px solid #D4DCDE' }
+              }
+            >
+              {f === 'weekly' ? 'Ukentlig' : 'Månedlig'}
+            </button>
+          ))}
         </div>
       </div>
 
       <div>
-        <span className="block text-sm font-medium text-gray-700 mb-2">Velg bydeler *</span>
+        <span className="block text-sm font-medium mb-2" style={{ color: '#002D32' }}>Velg bydeler *</span>
         <div className="grid grid-cols-2 gap-2">
           {bydeler.map((bydel) => (
             <button
               key={bydel.id}
               type="button"
               onClick={() => toggleBydel(bydel.id)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium border-2 transition-colors ${
-                selectedBydeler.includes(bydel.id)
-                  ? 'text-white border-transparent'
-                  : 'text-gray-700 border-gray-200 hover:border-gray-300'
-              }`}
+              className="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
               style={
                 selectedBydeler.includes(bydel.id)
-                  ? { backgroundColor: bydel.color, borderColor: bydel.color }
-                  : undefined
+                  ? { backgroundColor: bydel.color, color: '#FFFFFF', border: `2px solid ${bydel.color}` }
+                  : { backgroundColor: '#FFFFFF', color: '#002D32', border: '2px solid #D4DCDE' }
               }
             >
               {bydel.name}
@@ -143,16 +138,16 @@ export default function SubscribeForm() {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full bg-red-500 text-white py-3 rounded-lg font-medium hover:bg-red-600 transition-colors disabled:opacity-50"
+        className="w-full py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
+        style={{ backgroundColor: '#D7B180', color: '#002D32' }}
       >
         {status === 'loading' ? 'Registrerer...' : 'Abonner gratis'}
       </button>
 
       {message && (
         <p
-          className={`text-sm text-center ${
-            status === 'success' ? 'text-green-600' : 'text-red-600'
-          }`}
+          className="text-sm text-center"
+          style={{ color: status === 'success' ? '#155356' : '#8B3A3A' }}
         >
           {message}
         </p>

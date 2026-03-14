@@ -2,26 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Basel Grotesk — brødtekst, UI-elementer, knapper, labels */
+@font-face {
+  font-family: 'Basel Grotesk';
+  src: url('/fonts/Basel-Grotesk-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Basel Classic — overskrifter, hero-tekst, artikkel-titler */
+@font-face {
+  font-family: 'Basel Classic';
+  src: url('/fonts/Basel-Classic-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --color-primary: #002D32;
+  --color-secondary: #155356;
+  --color-accent: #D7B180;
+  --color-white: #FFFFFF;
+  --color-bg: #F8F7F5;
+  --color-bg-alt: #F1EFEC;
+  --color-text: #002D32;
+  --color-text-secondary: #155356;
+  --color-text-muted: #5F7A7D;
+  --color-text-disabled: #9BAFB2;
+  --color-border: #D4DCDE;
+  --color-border-subtle: #E8ECEE;
+  --color-tint-green: #DEE5E7;
+  --color-tint-red: #F3E2DE;
+  --color-tint-gold: #F3E9DB;
+  --color-success: #155356;
+  --color-warning: #B8860B;
+  --color-error: #8B3A3A;
+}
+
 body {
-  font-family: 'Outfit', system-ui, sans-serif;
-  background-color: #FAF9F6;
-  color: #1C1917;
+  font-family: 'Basel Grotesk', system-ui, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 700;
+  font-family: 'Basel Classic', Georgia, serif;
+  font-weight: 400;
   letter-spacing: -0.02em;
 }
 
-.prose h1 { @apply text-3xl font-bold mb-4; color: #1C1917; }
-.prose h2 { @apply text-2xl font-bold mb-3 mt-8; color: #1C1917; }
-.prose h3 { @apply text-xl font-semibold mb-2 mt-6; color: #1C1917; }
-.prose p { @apply mb-4 leading-relaxed; color: #1C1917; line-height: 1.85; }
+.prose h1 { @apply text-3xl mb-4; color: var(--color-primary); font-family: 'Basel Classic', Georgia, serif; }
+.prose h2 { @apply text-2xl mb-3 mt-8; color: var(--color-primary); font-family: 'Basel Classic', Georgia, serif; }
+.prose h3 { @apply text-xl mb-2 mt-6; color: var(--color-primary); font-family: 'Basel Classic', Georgia, serif; }
+.prose p { @apply mb-4 leading-relaxed; color: var(--color-text-secondary); line-height: 1.85; font-size: 15.5px; }
 .prose ul { @apply list-disc pl-6 mb-4 space-y-1; }
 .prose ol { @apply list-decimal pl-6 mb-4 space-y-1; }
-.prose li { color: #1C1917; line-height: 1.85; }
-.prose blockquote { @apply border-l-4 pl-4 italic my-4; border-color: #EDEBE8; color: #78716C; }
-.prose strong { @apply font-bold; color: #1C1917; }
-.prose a { color: #D4593A; text-decoration: underline; }
-.prose a:hover { color: #b84830; }
+.prose li { color: var(--color-text-secondary); line-height: 1.85; }
+.prose blockquote { @apply border-l-4 pl-4 italic my-4; border-color: var(--color-border-subtle); color: var(--color-text-muted); }
+.prose strong { @apply font-bold; color: var(--color-primary); }
+.prose a { color: var(--color-secondary); text-decoration: underline; }
+.prose a:hover { color: var(--color-primary); }

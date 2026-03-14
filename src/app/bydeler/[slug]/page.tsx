@@ -39,7 +39,9 @@ export default async function BydelPage({ params }: { params: { slug: string } }
     <div className="max-w-6xl mx-auto px-4 py-12">
       <div className="flex items-center gap-3 mb-8">
         <div className="w-4 h-4 rounded-full" style={{ backgroundColor: bydel.color }} />
-        <h1 className="text-3xl font-bold text-gray-900">{bydel.name}</h1>
+        <h1 className="text-3xl" style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}>
+          {bydel.name}
+        </h1>
       </div>
 
       {posts && posts.length > 0 ? (
@@ -49,7 +51,7 @@ export default async function BydelPage({ params }: { params: { slug: string } }
           ))}
         </div>
       ) : (
-        <p className="text-gray-500 text-center py-12">
+        <p className="text-center py-12" style={{ color: '#9BAFB2' }}>
           Ingen artikler publisert for {bydel.name} ennå.
         </p>
       )}

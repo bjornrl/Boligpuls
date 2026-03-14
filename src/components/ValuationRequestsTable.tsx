@@ -8,9 +8,9 @@ interface Props {
 }
 
 const statusConfig = {
-  ny: { label: 'Ny', color: '#C4942E', bg: '#FEF9C3' },
-  kontaktet: { label: 'Kontaktet', color: '#3D6E99', bg: '#DBEAFE' },
-  fullfort: { label: 'Fullført', color: '#166534', bg: '#DCFCE7' },
+  ny: { label: 'Ny', color: '#B8860B', bg: '#F3E9DB' },
+  kontaktet: { label: 'Kontaktet', color: '#155356', bg: '#DEE5E7' },
+  fullfort: { label: 'Fullført', color: '#FFFFFF', bg: '#155356' },
 }
 
 function formatDate(dateStr: string) {
@@ -57,12 +57,12 @@ export default function ValuationRequestsTable({ requests: initialRequests }: Pr
           <div
             key={key}
             className="rounded-2xl p-5"
-            style={{ backgroundColor: '#FFFFFF', border: '1px solid #EDEBE8' }}
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
           >
-            <p className="text-sm font-medium" style={{ color: '#78716C' }}>
+            <p className="text-sm font-medium" style={{ color: '#5F7A7D' }}>
               {statusConfig[key].label}
             </p>
-            <p className="text-2xl font-bold mt-1" style={{ color: statusConfig[key].color }}>
+            <p className="text-2xl font-bold mt-1" style={{ color: statusConfig[key].color === '#FFFFFF' ? '#155356' : statusConfig[key].color }}>
               {count}
             </p>
           </div>
@@ -73,23 +73,23 @@ export default function ValuationRequestsTable({ requests: initialRequests }: Pr
       {requests.length === 0 ? (
         <div
           className="rounded-2xl p-10 text-center"
-          style={{ backgroundColor: '#FFFFFF', border: '1px solid #EDEBE8' }}
+          style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
         >
-          <p style={{ color: '#78716C' }}>Ingen forespørsler ennå.</p>
+          <p style={{ color: '#5F7A7D' }}>Ingen forespørsler ennå.</p>
         </div>
       ) : (
         <div
           className="rounded-2xl overflow-hidden"
-          style={{ border: '1px solid #EDEBE8' }}
+          style={{ border: '1px solid #E8ECEE' }}
         >
           <table className="w-full" style={{ backgroundColor: '#FFFFFF' }}>
             <thead>
-              <tr style={{ borderBottom: '1px solid #EDEBE8' }}>
+              <tr style={{ borderBottom: '1px solid #E8ECEE', backgroundColor: '#F8F7F5' }}>
                 {['Navn', 'Type', 'Adresse', 'Bydel', 'Status', 'Dato', ''].map((h) => (
                   <th
                     key={h}
                     className="text-left px-4 py-3 text-xs font-medium"
-                    style={{ color: '#A8A29E' }}
+                    style={{ color: '#9BAFB2' }}
                   >
                     {h}
                   </th>
@@ -106,20 +106,20 @@ export default function ValuationRequestsTable({ requests: initialRequests }: Pr
                       key={req.id}
                       onClick={() => setExpandedId(isExpanded ? null : req.id)}
                       className="cursor-pointer transition-colors"
-                      style={{ borderBottom: '1px solid #EDEBE8' }}
-                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FAF9F6')}
+                      style={{ borderBottom: '1px solid #E8ECEE' }}
+                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F8F7F5')}
                       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
                     >
-                      <td className="px-4 py-3 text-sm font-medium" style={{ color: '#1C1917' }}>
+                      <td className="px-4 py-3 text-sm font-medium" style={{ color: '#002D32' }}>
                         {req.name}
                       </td>
-                      <td className="px-4 py-3 text-sm" style={{ color: '#78716C' }}>
+                      <td className="px-4 py-3 text-sm" style={{ color: '#5F7A7D' }}>
                         {req.request_type === 'verdivurdering' ? 'Verdivurdering' : 'Salgstilbud'}
                       </td>
-                      <td className="px-4 py-3 text-sm" style={{ color: '#78716C' }}>
+                      <td className="px-4 py-3 text-sm" style={{ color: '#5F7A7D' }}>
                         {req.address}
                       </td>
-                      <td className="px-4 py-3 text-sm" style={{ color: '#78716C' }}>
+                      <td className="px-4 py-3 text-sm" style={{ color: '#5F7A7D' }}>
                         {req.bydeler ? `${req.bydeler.emoji} ${req.bydeler.name}` : '—'}
                       </td>
                       <td className="px-4 py-3">
@@ -130,7 +130,7 @@ export default function ValuationRequestsTable({ requests: initialRequests }: Pr
                           {cfg.label}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-sm" style={{ color: '#A8A29E' }}>
+                      <td className="px-4 py-3 text-sm" style={{ color: '#9BAFB2' }}>
                         {formatDate(req.created_at)}
                       </td>
                       <td className="px-4 py-3">
@@ -140,7 +140,7 @@ export default function ValuationRequestsTable({ requests: initialRequests }: Pr
                               onClick={() => updateStatus(req.id, 'kontaktet')}
                               disabled={updatingId === req.id}
                               className="text-xs px-3 py-1.5 rounded-lg font-medium transition-colors"
-                              style={{ backgroundColor: '#DBEAFE', color: '#3D6E99' }}
+                              style={{ backgroundColor: '#DEE5E7', color: '#155356' }}
                             >
                               Marker kontaktet
                             </button>
@@ -149,8 +149,8 @@ export default function ValuationRequestsTable({ requests: initialRequests }: Pr
                             <button
                               onClick={() => updateStatus(req.id, 'fullfort')}
                               disabled={updatingId === req.id}
-                              className="text-xs px-3 py-1.5 rounded-lg font-medium transition-colors"
-                              style={{ backgroundColor: '#DCFCE7', color: '#166534' }}
+                              className="text-xs px-3 py-1.5 rounded-lg font-medium transition-colors text-white"
+                              style={{ backgroundColor: '#155356' }}
                             >
                               Marker fullført
                             </button>
@@ -159,21 +159,21 @@ export default function ValuationRequestsTable({ requests: initialRequests }: Pr
                       </td>
                     </tr>
                     {isExpanded && (
-                      <tr key={`${req.id}-detail`} style={{ borderBottom: '1px solid #EDEBE8' }}>
-                        <td colSpan={7} className="px-4 py-4" style={{ backgroundColor: '#FAF9F6' }}>
+                      <tr key={`${req.id}-detail`} style={{ borderBottom: '1px solid #E8ECEE' }}>
+                        <td colSpan={7} className="px-4 py-4" style={{ backgroundColor: '#F8F7F5' }}>
                           <div className="grid grid-cols-2 gap-4 text-sm">
                             <div>
-                              <p style={{ color: '#A8A29E' }} className="text-xs mb-1">E-post</p>
-                              <p style={{ color: '#1C1917' }}>{req.email}</p>
+                              <p style={{ color: '#9BAFB2' }} className="text-xs mb-1">E-post</p>
+                              <p style={{ color: '#002D32' }}>{req.email}</p>
                             </div>
                             <div>
-                              <p style={{ color: '#A8A29E' }} className="text-xs mb-1">Telefon</p>
-                              <p style={{ color: '#1C1917' }}>{req.phone || '—'}</p>
+                              <p style={{ color: '#9BAFB2' }} className="text-xs mb-1">Telefon</p>
+                              <p style={{ color: '#002D32' }}>{req.phone || '—'}</p>
                             </div>
                             {req.message && (
                               <div className="col-span-2">
-                                <p style={{ color: '#A8A29E' }} className="text-xs mb-1">Melding</p>
-                                <p style={{ color: '#1C1917' }}>{req.message}</p>
+                                <p style={{ color: '#9BAFB2' }} className="text-xs mb-1">Melding</p>
+                                <p style={{ color: '#002D32' }}>{req.message}</p>
                               </div>
                             )}
                           </div>
