@@ -1,11 +1,23 @@
-import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { sanityClient } from '@/sanity/client'
+import { allBydelerQuery } from '@/sanity/queries'
+import type { SanityBydel } from '@/sanity/types'
 import BydelerGrid from '@/components/BydelerGrid'
+
+export const revalidate = 60
 
 export const metadata = { title: 'Bydeler — Boligpuls Trondheim' }
 
 export default async function BydelerPage() {
-  const supabase = createServerSupabaseClient()
-  const { data: bydeler } = await supabase.from('bydeler').select('*').order('name')
+  const bydeler = await sanityClient.fetch<SanityBydel[]>(allBydelerQuery)
+
+  const mapped = (bydeler || []).map((b) => ({
+    id: b._id,
+    slug: b.slug,
+    name: b.name,
+    color: b.color,
+    emoji: b.emoji || '',
+    created_at: '',
+  }))
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
@@ -15,7 +27,7 @@ export default async function BydelerPage() {
       <p className="mb-8" style={{ color: '#5F7A7D' }}>
         Velg en bydel for å se artikler og oppdateringer om boligmarkedet.
       </p>
-      {bydeler && <BydelerGrid bydeler={bydeler} />}
+      <BydelerGrid bydeler={mapped} />
     </div>
   )
 }

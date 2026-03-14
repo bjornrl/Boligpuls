@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import { createServerSupabaseClient } from '@/lib/supabase/server'
-import { PostWithBydel } from '@/types/index'
+import { PortableText } from '@portabletext/react'
+import { sanityClient } from '@/sanity/client'
+import { postBySlugQuery } from '@/sanity/queries'
+import type { SanityPost } from '@/sanity/types'
 import { formatDate } from '@/lib/utils'
 import BydelPill from '@/components/BydelPill'
 import Header from '@/components/Header'
@@ -12,34 +12,19 @@ import Footer from '@/components/Footer'
 export const revalidate = 60
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const supabase = createServerSupabaseClient()
-  const { data: post } = await supabase
-    .from('posts')
-    .select('title, excerpt')
-    .eq('slug', params.slug)
-    .eq('is_published', true)
-    .single()
+  const post = await sanityClient.fetch<SanityPost | null>(postBySlugQuery, { slug: params.slug })
 
   if (!post) return { title: 'Artikkel ikke funnet' }
   return {
-    title: `${post.title} — Boligpuls Trondheim`,
-    description: post.excerpt,
+    title: `${post.seoTitle || post.title} — Boligpuls Trondheim`,
+    description: post.seoDescription || post.excerpt,
   }
 }
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
-  const supabase = createServerSupabaseClient()
-
-  const { data: post } = await supabase
-    .from('posts')
-    .select('*, bydeler(*)')
-    .eq('slug', params.slug)
-    .eq('is_published', true)
-    .single()
+  const post = await sanityClient.fetch<SanityPost | null>(postBySlugQuery, { slug: params.slug })
 
   if (!post) notFound()
-
-  const typedPost = post as unknown as PostWithBydel
 
   return (
     <>
@@ -58,18 +43,20 @@ export default async function PostPage({ params }: { params: { slug: string } })
             className="rounded-2xl overflow-hidden"
             style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
           >
-            <div className="h-1" style={{ backgroundColor: typedPost.bydeler.color }} />
+            <div className="h-1" style={{ backgroundColor: post.bydel?.color || '#002D32' }} />
             <div className="p-8 md:p-10">
               <div className="flex items-center gap-3 mb-6">
-                <BydelPill
-                  name={typedPost.bydeler.name}
-                  emoji={typedPost.bydeler.emoji}
-                  color={typedPost.bydeler.color}
-                  size="md"
-                />
-                {typedPost.published_at && (
+                {post.bydel && (
+                  <BydelPill
+                    name={post.bydel.name}
+                    emoji={post.bydel.emoji}
+                    color={post.bydel.color}
+                    size="md"
+                  />
+                )}
+                {post.publishedAt && (
                   <span className="text-sm" style={{ color: '#9BAFB2' }}>
-                    {formatDate(typedPost.published_at)}
+                    {formatDate(post.publishedAt)}
                   </span>
                 )}
               </div>
@@ -82,13 +69,11 @@ export default async function PostPage({ params }: { params: { slug: string } })
                   letterSpacing: '-0.02em',
                 }}
               >
-                {typedPost.title}
+                {post.title}
               </h1>
 
               <div className="prose max-w-none" style={{ lineHeight: '1.85' }}>
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {typedPost.content}
-                </ReactMarkdown>
+                <PortableText value={post.content} />
               </div>
             </div>
           </div>

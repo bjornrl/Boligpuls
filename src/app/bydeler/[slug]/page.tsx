@@ -1,39 +1,50 @@
 import { notFound } from 'next/navigation'
-import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { sanityClient } from '@/sanity/client'
+import { bydelBySlugQuery, postsByBydelQuery } from '@/sanity/queries'
+import type { SanityPost, SanityBydel } from '@/sanity/types'
 import PostCard from '@/components/PostCard'
-import { PostWithBydel } from '@/types/database'
 
 export const revalidate = 60
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const supabase = createServerSupabaseClient()
-  const { data: bydel } = await supabase
-    .from('bydeler')
-    .select('name')
-    .eq('slug', params.slug)
-    .single()
+  const bydel = await sanityClient.fetch<SanityBydel | null>(bydelBySlugQuery, { slug: params.slug })
 
   if (!bydel) return { title: 'Bydel ikke funnet' }
   return { title: `${bydel.name} — Boligpuls Trondheim` }
 }
 
-export default async function BydelPage({ params }: { params: { slug: string } }) {
-  const supabase = createServerSupabaseClient()
+function mapPost(p: SanityPost) {
+  return {
+    id: p._id,
+    title: p.title,
+    slug: p.slug,
+    excerpt: p.excerpt,
+    content: '',
+    bydel_id: p.bydel?._id || '',
+    is_newsletter: p.isNewsletter,
+    is_published: true,
+    published_at: p.publishedAt,
+    author_id: null,
+    created_at: p.publishedAt,
+    updated_at: p.publishedAt,
+    bydeler: {
+      id: p.bydel?._id || '',
+      slug: p.bydel?.slug || '',
+      name: p.bydel?.name || '',
+      color: p.bydel?.color || '#002D32',
+      emoji: p.bydel?.emoji || '',
+      created_at: '',
+    },
+  }
+}
 
-  const { data: bydel } = await supabase
-    .from('bydeler')
-    .select('*')
-    .eq('slug', params.slug)
-    .single()
+export default async function BydelPage({ params }: { params: { slug: string } }) {
+  const bydel = await sanityClient.fetch<SanityBydel | null>(bydelBySlugQuery, { slug: params.slug })
 
   if (!bydel) notFound()
 
-  const { data: posts } = await supabase
-    .from('posts')
-    .select('*, bydeler(*)')
-    .eq('bydel_id', bydel.id)
-    .eq('is_published', true)
-    .order('published_at', { ascending: false })
+  const posts = await sanityClient.fetch<SanityPost[]>(postsByBydelQuery, { slug: params.slug })
+  const mappedPosts = (posts || []).map(mapPost)
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
@@ -44,9 +55,9 @@ export default async function BydelPage({ params }: { params: { slug: string } }
         </h1>
       </div>
 
-      {posts && posts.length > 0 ? (
+      {mappedPosts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {(posts as PostWithBydel[]).map((post) => (
+          {mappedPosts.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
         </div>

@@ -3,51 +3,56 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useParams } from 'next/navigation'
-import { marked } from 'marked'
 import { formatDate } from '@/lib/utils'
 import BydelPill from '@/components/BydelPill'
 import Link from 'next/link'
 
-type PostWithBydel = {
-  id: string
+type SanityPostData = {
+  _id: string
   title: string
-  content: string
   excerpt: string
-  published_at: string | null
-  created_at: string
-  bydel_id: string
-  bydeler: { name: string; color: string; emoji: string }
+  publishedAt: string | null
+  bydel: { name: string; slug: string; color: string; emoji: string } | null
 }
 
 export default function SendPage() {
   const { postId } = useParams<{ postId: string }>()
-  const [post, setPost] = useState<PostWithBydel | null>(null)
-  const [contentHtml, setContentHtml] = useState('')
+  const [post, setPost] = useState<SanityPostData | null>(null)
   const [subscriberCount, setSubscriberCount] = useState(0)
   const [sending, setSending] = useState(false)
   const [result, setResult] = useState<{ sent: number; failed: number; total: number } | null>(null)
 
   useEffect(() => {
-    const supabase = createClient()
+    // Fetch post from Sanity via a simple GROQ query
+    const projectId = 'p7x7ccrx'
+    const dataset = 'production'
+    const query = encodeURIComponent(`*[_type == "post" && _id == "${postId}"][0]{_id,title,excerpt,publishedAt,bydel->{name,"slug":slug.current,color,emoji}}`)
+    fetch(`https://${projectId}.api.sanity.io/v2026-03-14/data/query/${dataset}?query=${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.result) {
+          setPost(data.result)
 
-    supabase
-      .from('posts')
-      .select('*, bydeler(name, color, emoji)')
-      .eq('id', postId)
-      .single()
-      .then(async ({ data }) => {
-        if (data) {
-          setPost(data as unknown as PostWithBydel)
-          const html = await marked(data.content)
-          setContentHtml(html)
-
-          supabase
-            .from('subscriber_bydeler')
-            .select('subscriber_id, subscribers!inner(confirmed, is_active)', { count: 'exact', head: true })
-            .eq('bydel_id', data.bydel_id)
-            .eq('subscribers.confirmed', true)
-            .eq('subscribers.is_active', true)
-            .then(({ count }) => setSubscriberCount(count || 0))
+          // Get subscriber count for this bydel
+          if (data.result.bydel?.slug) {
+            const supabase = createClient()
+            supabase
+              .from('bydeler')
+              .select('id')
+              .eq('slug', data.result.bydel.slug)
+              .single()
+              .then(({ data: bydelData }) => {
+                if (bydelData) {
+                  supabase
+                    .from('subscriber_bydeler')
+                    .select('subscriber_id, subscribers!inner(confirmed, is_active)', { count: 'exact', head: true })
+                    .eq('bydel_id', bydelData.id)
+                    .eq('subscribers.confirmed', true)
+                    .eq('subscribers.is_active', true)
+                    .then(({ count }) => setSubscriberCount(count || 0))
+                }
+              })
+          }
         }
       })
   }, [postId])
@@ -116,38 +121,35 @@ export default function SendPage() {
       ) : (
         <>
           <div className="flex items-center gap-3 mb-6">
-            <BydelPill
-              name={post.bydeler.name}
-              emoji={post.bydeler.emoji}
-              color={post.bydeler.color}
-              size="md"
-            />
+            {post.bydel && (
+              <BydelPill
+                name={post.bydel.name}
+                emoji={post.bydel.emoji}
+                color={post.bydel.color}
+                size="md"
+              />
+            )}
             <span className="text-sm" style={{ color: '#5F7A7D' }}>
               {subscriberCount} mottakere
             </span>
           </div>
 
-          {/* Preview */}
           <div
             className="rounded-2xl overflow-hidden mb-6"
             style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
           >
-            <div className="h-1.5" style={{ backgroundColor: post.bydeler.color }} />
+            <div className="h-1.5" style={{ backgroundColor: post.bydel?.color || '#002D32' }} />
             <div className="p-8">
               <p className="text-sm mb-2" style={{ color: '#9BAFB2' }}>
-                {formatDate(post.published_at || post.created_at)}
+                {post.publishedAt ? formatDate(post.publishedAt) : '—'}
               </p>
               <h2
-                className="text-2xl mb-6"
+                className="text-2xl mb-4"
                 style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
               >
                 {post.title}
               </h2>
-              <div
-                className="prose max-w-none"
-                style={{ lineHeight: '1.85' }}
-                dangerouslySetInnerHTML={{ __html: contentHtml }}
-              />
+              <p style={{ color: '#5F7A7D' }}>{post.excerpt}</p>
             </div>
           </div>
 

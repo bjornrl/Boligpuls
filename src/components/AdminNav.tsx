@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 const tabs = [
   { label: 'Oversikt', href: '/admin' },
   { label: 'Innlegg', href: '/admin/innlegg' },
-  { label: 'Skriv nytt', href: '/admin/skriv' },
+  { label: 'Studio', href: '/studio' },
   { label: 'Abonnenter', href: '/admin/abonnenter' },
   { label: 'Forespørsler', href: '/admin/foresporser' },
 ]

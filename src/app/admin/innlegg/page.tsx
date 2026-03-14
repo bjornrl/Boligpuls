@@ -1,17 +1,16 @@
 import Link from 'next/link'
-import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { sanityClient } from '@/sanity/client'
+import { allPostsQuery } from '@/sanity/queries'
+import type { SanityPost } from '@/sanity/types'
 import { formatDate } from '@/lib/utils'
 import BydelPill from '@/components/BydelPill'
+
+export const revalidate = 60
 
 export const metadata = { title: 'Innlegg — Admin' }
 
 export default async function AdminInnleggPage() {
-  const supabase = createServerSupabaseClient()
-
-  const { data: posts } = await supabase
-    .from('posts')
-    .select('*, bydeler(*)')
-    .order('created_at', { ascending: false })
+  const posts = await sanityClient.fetch<SanityPost[]>(allPostsQuery)
 
   return (
     <div>
@@ -23,12 +22,23 @@ export default async function AdminInnleggPage() {
           Innlegg
         </h1>
         <Link
-          href="/admin/skriv"
+          href="/studio/structure/post"
           className="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
           style={{ backgroundColor: '#D7B180', color: '#002D32' }}
         >
-          Nytt innlegg
+          Nytt innlegg i Studio
         </Link>
+      </div>
+
+      <div
+        className="rounded-xl p-4 mb-6"
+        style={{ backgroundColor: '#DEE5E7', border: '1px solid #D4DCDE' }}
+      >
+        <p className="text-sm" style={{ color: '#155356' }}>
+          Innlegg redigeres nå i{' '}
+          <Link href="/studio" className="font-medium underline">Sanity Studio</Link>.
+          Her ser du en oversikt over publiserte innlegg.
+        </p>
       </div>
 
       <div
@@ -40,55 +50,63 @@ export default async function AdminInnleggPage() {
             <tr>
               <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Tittel</th>
               <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Bydel</th>
-              <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Status</th>
+              <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Nyhetsbrev</th>
               <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Dato</th>
               <th className="text-right px-4 py-3"></th>
             </tr>
           </thead>
           <tbody>
-            {posts?.map((post) => {
-              const bydel = post.bydeler as { name: string; color: string; emoji: string } | null
-              return (
-                <tr key={post.id} style={{ borderBottom: '1px solid #E8ECEE' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F8F7F5')}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
-                >
-                  <td className="px-4 py-3 font-medium" style={{ color: '#002D32' }}>{post.title}</td>
-                  <td className="px-4 py-3">
-                    {bydel && <BydelPill name={bydel.name} emoji={bydel.emoji} color={bydel.color} />}
-                  </td>
-                  <td className="px-4 py-3">
+            {posts?.map((post) => (
+              <tr key={post._id} style={{ borderBottom: '1px solid #E8ECEE' }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLTableRowElement).style.backgroundColor = '#F8F7F5')}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLTableRowElement).style.backgroundColor = '#FFFFFF')}
+              >
+                <td className="px-4 py-3 font-medium" style={{ color: '#002D32' }}>
+                  <Link href={`/post/${post.slug}`}>{post.title}</Link>
+                </td>
+                <td className="px-4 py-3">
+                  {post.bydel && (
+                    <BydelPill name={post.bydel.name} emoji={post.bydel.emoji} color={post.bydel.color} />
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  {post.isNewsletter && (
                     <span
                       className="text-xs font-medium px-2 py-0.5 rounded-full"
-                      style={
-                        post.is_published
-                          ? { backgroundColor: '#DEE5E7', color: '#155356' }
-                          : { backgroundColor: '#F3E9DB', color: '#B8860B' }
-                      }
+                      style={{ backgroundColor: '#F3E9DB', color: '#B8860B' }}
                     >
-                      {post.is_published ? 'Publisert' : 'Utkast'}
+                      Nyhetsbrev
                     </span>
-                  </td>
-                  <td className="px-4 py-3" style={{ color: '#9BAFB2' }}>
-                    {formatDate(post.published_at || post.created_at)}
-                  </td>
-                  <td className="px-4 py-3 text-right">
+                  )}
+                </td>
+                <td className="px-4 py-3" style={{ color: '#9BAFB2' }}>
+                  {post.publishedAt ? formatDate(post.publishedAt) : '—'}
+                </td>
+                <td className="px-4 py-3 text-right flex gap-2 justify-end">
+                  {post.isNewsletter && (
                     <Link
-                      href={`/admin/skriv/${post.id}`}
-                      className="text-xs font-medium"
-                      style={{ color: '#155356' }}
+                      href={`/admin/send/${post._id}`}
+                      className="text-xs font-medium px-3 py-1.5 rounded-lg"
+                      style={{ backgroundColor: '#DEE5E7', color: '#155356' }}
                     >
-                      Rediger
+                      Send
                     </Link>
-                  </td>
-                </tr>
-              )
-            })}
+                  )}
+                  <Link
+                    href={`/studio/structure/post;${post._id}`}
+                    className="text-xs font-medium"
+                    style={{ color: '#155356' }}
+                  >
+                    Rediger i Studio
+                  </Link>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
         {(!posts || posts.length === 0) && (
           <p className="text-center py-8" style={{ color: '#9BAFB2' }}>
-            Ingen innlegg ennå.
+            Ingen innlegg ennå. Opprett innlegg i <Link href="/studio" className="underline" style={{ color: '#155356' }}>Sanity Studio</Link>.
           </p>
         )}
       </div>

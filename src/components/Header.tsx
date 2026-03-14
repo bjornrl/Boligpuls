@@ -49,7 +49,16 @@ export default function Header() {
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
-            Vurdering
+            Verdivurdering/På flytefot
+          </Link>
+          <Link
+            href="/om"
+            className="text-sm transition-opacity"
+            style={{ color: 'rgba(255,255,255,0.6)' }}
+            onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.color = 'rgba(255,255,255,1)')}
+            onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
+          >
+            Om meg
           </Link>
           <Link
             href="/nyhetsbrev"

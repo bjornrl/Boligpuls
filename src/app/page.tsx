@@ -1,46 +1,59 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import PostCard from '@/components/PostCard'
-import BydelFilter from '@/components/BydelFilter'
-import { Bydel, PostWithBydel } from '@/types/index'
+import HomeContent from '@/components/HomeContent'
+import { sanityClient } from '@/sanity/client'
+import { allPostsQuery, allBydelerQuery, siteSettingsQuery } from '@/sanity/queries'
+import type { SanityPost, SanityBydel, SiteSettings } from '@/sanity/types'
 
-export default function HomePage() {
-  const [bydeler, setBydeler] = useState<Bydel[]>([])
-  const [posts, setPosts] = useState<PostWithBydel[]>([])
-  const [selectedBydel, setSelectedBydel] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
+export const revalidate = 60
 
-  useEffect(() => {
-    async function load() {
-      const bydelRes = await fetch('/api/bydeler')
-      const bydelData = await bydelRes.json()
-      setBydeler(bydelData)
+// Map Sanity data to the shape our components expect
+function mapPost(p: SanityPost) {
+  return {
+    id: p._id,
+    title: p.title,
+    slug: p.slug,
+    excerpt: p.excerpt,
+    content: '',
+    bydel_id: p.bydel?._id || '',
+    is_newsletter: p.isNewsletter,
+    is_published: true,
+    published_at: p.publishedAt,
+    author_id: null,
+    created_at: p.publishedAt,
+    updated_at: p.publishedAt,
+    bydeler: {
+      id: p.bydel?._id || '',
+      slug: p.bydel?.slug || '',
+      name: p.bydel?.name || '',
+      color: p.bydel?.color || '#002D32',
+      emoji: p.bydel?.emoji || '',
+      created_at: '',
+    },
+  }
+}
 
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      const postsRes = await fetch(
-        `${supabaseUrl}/rest/v1/posts?select=*,bydeler(*)&is_published=eq.true&order=published_at.desc`,
-        {
-          headers: {
-            apikey: supabaseKey,
-            Authorization: `Bearer ${supabaseKey}`,
-          },
-        }
-      )
-      const postsData = await postsRes.json()
-      setPosts(postsData)
-      setLoading(false)
-    }
-    load()
-  }, [])
+function mapBydel(b: SanityBydel) {
+  return {
+    id: b._id,
+    slug: b.slug,
+    name: b.name,
+    color: b.color,
+    emoji: b.emoji || '',
+    created_at: '',
+  }
+}
 
-  const filteredPosts = selectedBydel
-    ? posts.filter((p) => p.bydeler.slug === selectedBydel)
-    : posts
+export default async function HomePage() {
+  const [posts, bydeler, settings] = await Promise.all([
+    sanityClient.fetch<SanityPost[]>(allPostsQuery),
+    sanityClient.fetch<SanityBydel[]>(allBydelerQuery),
+    sanityClient.fetch<SiteSettings | null>(siteSettingsQuery),
+  ])
+
+  const mappedPosts = (posts || []).map(mapPost)
+  const mappedBydeler = (bydeler || []).map(mapBydel)
 
   return (
     <>
@@ -51,7 +64,6 @@ export default function HomePage() {
           className="py-20 relative overflow-hidden"
           style={{ background: 'linear-gradient(135deg, #002D32 0%, #155356 100%)' }}
         >
-          {/* Decorative circles */}
           <div
             className="absolute -top-20 -right-20 w-80 h-80 rounded-full"
             style={{ backgroundColor: 'rgba(215,177,128,0.08)' }}
@@ -65,11 +77,10 @@ export default function HomePage() {
               className="text-4xl md:text-5xl text-white mb-4"
               style={{ fontFamily: '"Basel Classic", Georgia, serif', letterSpacing: '-0.02em' }}
             >
-              Boligmarkedet i Trondheim
+              {settings?.heroTitle || 'Boligmarkedet i Trondheim'}
             </h1>
             <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              Hold deg oppdatert på boligmarkedet i din bydel. Få ukentlige eller
-              månedlige oppdateringer rett i innboksen.
+              {settings?.heroSubtitle || 'Hold deg oppdatert på boligmarkedet i din bydel. Få ukentlige eller månedlige oppdateringer rett i innboksen.'}
             </p>
             <div className="flex items-center justify-center gap-2 mb-8" style={{ color: 'rgba(215,177,128,0.7)' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -88,32 +99,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Filter + Posts */}
-        <section className="max-w-[1120px] mx-auto px-4 py-12">
-          <div className="mb-8">
-            <BydelFilter
-              bydeler={bydeler}
-              selected={selectedBydel}
-              onChange={setSelectedBydel}
-            />
-          </div>
-
-          {loading ? (
-            <div className="text-center py-12" style={{ color: '#9BAFB2' }}>
-              Laster artikler...
-            </div>
-          ) : filteredPosts.length > 0 ? (
-            <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))' }}>
-              {filteredPosts.map((post) => (
-                <PostCard key={post.id} post={post} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-center py-12" style={{ color: '#9BAFB2' }}>
-              Ingen artikler publisert ennå. Kom tilbake snart!
-            </p>
-          )}
-        </section>
+        {/* Filter + Posts (client-side filtering) */}
+        <HomeContent posts={mappedPosts} bydeler={mappedBydeler} />
       </main>
       <Footer />
     </>

@@ -2,8 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendEmail } from '@/lib/resend'
-import { marked } from 'marked'
 import { formatDate } from '@/lib/utils'
+import { sanityClient } from '@/sanity/client'
+import { postByIdQuery } from '@/sanity/queries'
+import { portableTextToHtml } from '@/sanity/portableTextToHtml'
+import type { SanityPost } from '@/sanity/types'
 import NewsletterEmail from '@/emails/NewsletterEmail'
 
 export async function POST(request: NextRequest) {
@@ -21,26 +24,38 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'postId er påkrevd' }, { status: 400 })
   }
 
-  const admin = createAdminClient()
-
-  // Get the post with bydel
-  const { data: post } = await admin
-    .from('posts')
-    .select('*, bydeler(*)')
-    .eq('id', postId)
-    .single()
+  // Fetch post from Sanity
+  const post = await sanityClient.fetch<SanityPost | null>(postByIdQuery, { id: postId })
 
   if (!post) {
     return NextResponse.json({ error: 'Innlegg ikke funnet' }, { status: 404 })
   }
 
-  const bydel = post.bydeler as { id: string; name: string; color: string; emoji: string }
+  const bydel = post.bydel
+
+  if (!bydel) {
+    return NextResponse.json({ error: 'Innlegget mangler bydel' }, { status: 400 })
+  }
+
+  const admin = createAdminClient()
+
+  // Look up the bydel slug in Supabase subscriber_bydeler
+  // We need to match Sanity bydel to Supabase bydel by slug
+  const { data: supabaseBydel } = await admin
+    .from('bydeler')
+    .select('id')
+    .eq('slug', bydel.slug)
+    .single()
+
+  if (!supabaseBydel) {
+    return NextResponse.json({ error: 'Bydelen finnes ikke i abonnent-systemet' }, { status: 404 })
+  }
 
   // Get active + confirmed subscribers for this bydel
   const { data: subscriberLinks } = await admin
     .from('subscriber_bydeler')
     .select('subscriber_id')
-    .eq('bydel_id', post.bydel_id)
+    .eq('bydel_id', supabaseBydel.id)
 
   if (!subscriberLinks || subscriberLinks.length === 0) {
     return NextResponse.json({ sent: 0, failed: 0, total: 0 })
@@ -59,9 +74,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ sent: 0, failed: 0, total: 0 })
   }
 
-  // Convert markdown to HTML
-  const contentHtml = await marked(post.content)
-  const publishedDate = post.published_at ? formatDate(post.published_at) : formatDate(post.created_at)
+  // Convert portable text to HTML
+  const contentHtml = portableTextToHtml(post.content)
+  const publishedDate = post.publishedAt ? formatDate(post.publishedAt) : formatDate(new Date().toISOString())
 
   let sent = 0
   let failed = 0
@@ -76,7 +91,7 @@ export async function POST(request: NextRequest) {
         react: NewsletterEmail({
           postTitle: post.title,
           bydelName: bydel.name,
-          bydelEmoji: bydel.emoji,
+          bydelEmoji: bydel.emoji || '',
           bydelColor: bydel.color,
           contentHtml,
           publishedDate,
@@ -99,7 +114,6 @@ export async function POST(request: NextRequest) {
       failed++
     }
 
-    // Small delay to avoid rate limiting
     await new Promise((resolve) => setTimeout(resolve, 100))
   }
 
