@@ -52,3 +52,20 @@ export type NewsletterSend = {
   sent_at: string
   status: 'sent' | 'failed' | 'bounced'
 }
+
+export type ValuationRequest = {
+  id: string
+  name: string
+  email: string
+  phone: string | null
+  address: string
+  bydel_id: string | null
+  request_type: 'verdivurdering' | 'salgstilbud'
+  message: string | null
+  status: 'ny' | 'kontaktet' | 'fullfort'
+  created_at: string
+}
+
+export type ValuationRequestWithBydel = ValuationRequest & {
+  bydeler: Bydel | null
+}

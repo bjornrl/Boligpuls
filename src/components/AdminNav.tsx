@@ -9,6 +9,7 @@ const tabs = [
   { label: 'Innlegg', href: '/admin/innlegg' },
   { label: 'Skriv nytt', href: '/admin/skriv' },
   { label: 'Abonnenter', href: '/admin/abonnenter' },
+  { label: 'Forespørsler', href: '/admin/foresporser' },
 ]
 
 export default function AdminNav({ email }: { email: string }) {

@@ -194,6 +194,53 @@ export interface Database {
           }
         ]
       }
+      valuation_requests: {
+        Row: {
+          id: string
+          name: string
+          email: string
+          phone: string | null
+          address: string
+          bydel_id: string | null
+          request_type: string
+          message: string | null
+          status: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          email: string
+          phone?: string | null
+          address: string
+          bydel_id?: string | null
+          request_type: string
+          message?: string | null
+          status?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          email?: string
+          phone?: string | null
+          address?: string
+          bydel_id?: string | null
+          request_type?: string
+          message?: string | null
+          status?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'valuation_requests_bydel_id_fkey'
+            columns: ['bydel_id']
+            isOneToOne: false
+            referencedRelation: 'bydeler'
+            referencedColumns: ['id']
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
