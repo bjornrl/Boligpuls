@@ -57,9 +57,7 @@ export default async function AdminInnleggPage() {
           </thead>
           <tbody>
             {posts?.map((post) => (
-              <tr key={post._id} style={{ borderBottom: '1px solid #E8ECEE' }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLTableRowElement).style.backgroundColor = '#F8F7F5')}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLTableRowElement).style.backgroundColor = '#FFFFFF')}
+              <tr key={post._id} className="hover:bg-[#F8F7F5] transition-colors" style={{ borderBottom: '1px solid #E8ECEE' }}
               >
                 <td className="px-4 py-3 font-medium" style={{ color: '#002D32' }}>
                   <Link href={`/post/${post.slug}`}>{post.title}</Link>
