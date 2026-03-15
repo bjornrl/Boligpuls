@@ -100,14 +100,14 @@ export async function POST(request: NextRequest) {
       })
 
       await admin.from('newsletter_sends').insert({
-        post_id: postId,
+        sanity_post_id: postId,
         subscriber_id: subscriber.id,
         status: 'sent',
       })
       sent++
     } catch {
       await admin.from('newsletter_sends').insert({
-        post_id: postId,
+        sanity_post_id: postId,
         subscriber_id: subscriber.id,
         status: 'failed',
       })
