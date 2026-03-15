@@ -48,11 +48,19 @@ export async function POST(request: NextRequest) {
   const supabase = createAdminClient()
 
   // Check if email already exists
-  const { data: existing } = await supabase
+  const { data: existing, error: lookupError } = await supabase
     .from('subscribers')
     .select('id, confirmed, is_active, confirm_token')
     .eq('email', email)
-    .single()
+    .maybeSingle()
+
+  if (lookupError) {
+    console.error('Subscriber lookup error:', lookupError)
+    return NextResponse.json(
+      { error: 'Noe gikk galt. Prøv igjen senere.' },
+      { status: 500 }
+    )
+  }
 
   if (existing) {
     if (existing.confirmed && existing.is_active) {

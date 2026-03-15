@@ -12,8 +12,8 @@ export async function sendEmail({
   react: React.ReactElement
 }) {
   return resend.emails.send({
-    from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
-    to,
+    from: process.env.RESEND_FROM_EMAIL || 'Boligpuls Trondheim <onboarding@resend.dev>',
+    to: [to],
     subject,
     react,
   })
