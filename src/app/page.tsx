@@ -39,7 +39,7 @@ export default async function HomePage() {
               {settings?.heroTitle || 'Boligmarkedet i Trondheim'}
             </h1>
             <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              {settings?.heroSubtitle || 'Ukentlige og månedlige rapporter om boligmarkedet — pluss kvartals- og årsrapporter rett i innboksen.'}
+              {settings?.heroSubtitle || 'Ukentlige og månedlige rapporter om boligmarkedet, pluss kvartals- og årsrapporter rett i innboksen'}
             </p>
             <div className="flex items-center justify-center gap-2 mb-8" style={{ color: 'rgba(215,177,128,0.7)' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -53,7 +53,7 @@ export default async function HomePage() {
               className="inline-block px-8 py-3 rounded-xl text-base font-medium transition-colors"
               style={{ backgroundColor: '#D7B180', color: '#002D32' }}
             >
-              Abonner gratis
+              Abonner
             </Link>
           </div>
         </section>

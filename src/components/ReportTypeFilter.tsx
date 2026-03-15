@@ -9,9 +9,9 @@ interface ReportTypeFilterProps {
 
 const filterOptions: { label: string; value: ReportType | null }[] = [
   { label: 'Alle', value: null },
-  { label: '📊 Ukentlig', value: 'ukentlig' },
-  { label: '📈 Månedlig', value: 'manedlig' },
-  { label: '📋 Kvartal', value: 'kvartal' },
+  { label: '📊 Ukesrapport', value: 'ukentlig' },
+  { label: '📈 Månedsrapport', value: 'manedlig' },
+  { label: '📋 Kvartalsrapport', value: 'kvartal' },
   { label: '📑 Årsrapport', value: 'arsrapport' },
 ]
 

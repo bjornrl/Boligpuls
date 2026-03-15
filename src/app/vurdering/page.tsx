@@ -3,7 +3,7 @@ import Footer from '@/components/Footer'
 import ValuationForm from '@/components/ValuationForm'
 
 export const metadata = {
-  title: 'Boligvurdering — Eiendom Trondheim',
+  title: 'Boligvurdering — EIENDOM Trondheim',
   description: 'Få en uforpliktende boligvurdering basert på lokalkunnskap og markedsdata.',
 }
 
@@ -18,10 +18,10 @@ export default function VurderingPage() {
               className="text-3xl mb-3"
               style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif', letterSpacing: '-0.02em' }}
             >
-              Få en uforpliktende boligvurdering
+              Få en uforpliktende verdivurdering
             </h1>
             <p style={{ color: '#5F7A7D', lineHeight: 1.6 }}>
-              Lurer du på hva boligen din er verdt, eller vurderer du å selge? Vi gir deg en grundig vurdering basert på lokalkunnskap og markedsdata.
+              Lurer du på hva boligen din er verdt. Mine vurderinger er basert på kjennskap til byen vår. Gi lyd her, så tar jeg kontakt.
             </p>
           </div>
 

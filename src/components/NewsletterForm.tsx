@@ -113,7 +113,7 @@ export default function NewsletterForm() {
         className="w-full py-3 rounded-xl text-sm font-medium text-white transition-colors disabled:opacity-50"
         style={{ backgroundColor: '#D7B180', color: '#002D32' }}
       >
-        {status === 'loading' ? 'Registrerer...' : 'Abonner gratis'}
+        {status === 'loading' ? 'Registrerer...' : 'Abonner'}
       </button>
 
       {message && status === 'error' && (

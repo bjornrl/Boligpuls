@@ -1,38 +1,26 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Bydel } from '@/types/index'
 
 type RequestType = 'verdivurdering' | 'salgstilbud'
 
 export default function ValuationForm() {
   const router = useRouter()
-  const [bydeler, setBydeler] = useState<Bydel[]>([])
   const [requestType, setRequestType] = useState<RequestType>('verdivurdering')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
-  const [selectedBydel, setSelectedBydel] = useState('')
   const [message, setMessage] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    fetch('/api/bydeler')
-      .then((res) => res.json())
-      .then((data) => setBydeler(data))
-      .catch(() => {})
-  }, [])
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
     setIsSubmitting(true)
-
-    const bydelSlug = bydeler.find((b) => b.id === selectedBydel)?.slug || undefined
 
     try {
       const res = await fetch('/api/valuation-request', {
@@ -43,7 +31,6 @@ export default function ValuationForm() {
           email,
           phone: phone || undefined,
           address,
-          bydel: bydelSlug,
           requestType,
           message: message || undefined,
         }),
@@ -200,36 +187,6 @@ export default function ValuationForm() {
               style={{ border: '1px solid #D4DCDE', color: '#002D32' }}
               placeholder="Gateadresse og husnummer"
             />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
-              Bydel <span style={{ color: '#9BAFB2', fontWeight: 400 }}>(valgfri)</span>
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {bydeler.map((bydel) => {
-                const isSelected = selectedBydel === bydel.id
-                return (
-                  <button
-                    key={bydel.id}
-                    type="button"
-                    onClick={() => setSelectedBydel(isSelected ? '' : bydel.id)}
-                    className="px-3 py-1.5 rounded-full text-xs font-medium transition-all"
-                    style={
-                      isSelected
-                        ? { backgroundColor: bydel.color, color: '#FFFFFF' }
-                        : {
-                            backgroundColor: `${bydel.color}12`,
-                            color: bydel.color,
-                            border: `1px solid ${bydel.color}20`,
-                          }
-                    }
-                  >
-                    {bydel.emoji} {bydel.name}
-                  </button>
-                )
-              })}
-            </div>
           </div>
 
           <div>

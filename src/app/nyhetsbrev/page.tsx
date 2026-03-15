@@ -2,7 +2,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import NewsletterForm from '@/components/NewsletterForm'
 
-export const metadata = { title: 'Nyhetsbrev — Eiendom Trondheim' }
+export const metadata = { title: 'Nyhetsbrev — Boligpuls Trondheim' }
 
 export default function NyhetsbrevPage() {
   return (
@@ -16,11 +16,11 @@ export default function NyhetsbrevPage() {
               className="text-3xl mb-2"
               style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif', letterSpacing: '-0.02em' }}
             >
-              Meld deg på nyhetsbrevet vårt
+              Abonner på EIENDOM Trondheim
             </h1>
             <p style={{ color: '#5F7A7D' }}>
-              Få ukentlige og månedlige oppdateringer om boligmarkedet i Trondheim —
-              pluss kvartals- og årsrapporter rett i innboksen.
+              Velg de bydelene du er interessert i, og få oppdateringer om boligmarkedet
+              rett i innboksen.
             </p>
           </div>
           <div
