@@ -1,47 +1,22 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Bydel } from '@/types/index'
-import BydelSelector from './BydelSelector'
+import { useState } from 'react'
 
 export default function NewsletterForm() {
-  const [bydeler, setBydeler] = useState<Bydel[]>([])
-  const [selectedBydeler, setSelectedBydeler] = useState<string[]>([])
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [frequency, setFrequency] = useState<'weekly' | 'monthly'>('weekly')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
 
-  useEffect(() => {
-    fetch('/api/bydeler')
-      .then((res) => res.json())
-      .then((data) => setBydeler(data))
-  }, [])
-
-  // When switching to weekly, auto-select "trondheim" and clear individual bydeler
-  useEffect(() => {
-    if (frequency === 'weekly') {
-      setSelectedBydeler(['trondheim'])
-    } else {
-      setSelectedBydeler([])
-    }
-  }, [frequency])
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (frequency === 'monthly' && selectedBydeler.length === 0) {
-      setMessage('Velg minst en bydel.')
-      setStatus('error')
-      return
-    }
-
     setStatus('loading')
     try {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name, frequency, bydeler: selectedBydeler }),
+        body: JSON.stringify({ email, name, frequency }),
       })
 
       if (!res.ok) {
@@ -69,9 +44,6 @@ export default function NewsletterForm() {
       </div>
     )
   }
-
-  // Filter out "trondheim" from bydel selector for monthly view
-  const individualBydeler = bydeler.filter((b) => b.slug !== 'trondheim')
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -128,29 +100,12 @@ export default function NewsletterForm() {
             </button>
           ))}
         </div>
+        <p className="text-xs mt-2" style={{ color: '#9BAFB2' }}>
+          {frequency === 'weekly'
+            ? 'Korte ukentlige oppdateringer + alle månedlige og kvartalsvise rapporter'
+            : 'Månedlige rapporter + kvartalsvise og årlige rapporter'}
+        </p>
       </div>
-
-      {frequency === 'weekly' ? (
-        <div
-          className="rounded-xl p-4"
-          style={{ backgroundColor: '#DEE5E7', border: '1px solid #D4DCDE' }}
-        >
-          <p className="text-sm" style={{ color: '#155356' }}>
-            Ukentlige oppdateringer dekker hele Trondheim kommune.
-          </p>
-        </div>
-      ) : (
-        <div>
-          <span className="block text-sm font-medium mb-2" style={{ color: '#002D32' }}>
-            Velg bydeler *
-          </span>
-          <BydelSelector
-            bydeler={individualBydeler}
-            selected={selectedBydeler}
-            onChange={setSelectedBydeler}
-          />
-        </div>
-      )}
 
       <button
         type="submit"

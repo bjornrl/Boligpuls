@@ -2,7 +2,7 @@ import { sanityClient } from '@/sanity/client'
 import { postByIdQuery } from '@/sanity/queries'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { formatDate } from '@/lib/utils'
-import BydelPill from '@/components/BydelPill'
+import { reportTypeConfig } from '@/sanity/types'
 import SendNewsletterButton from './SendNewsletterButton'
 import type { SanityPost } from '@/sanity/types'
 
@@ -23,27 +23,23 @@ export default async function SendPage({ params }: { params: Promise<{ postId: s
     )
   }
 
-  // Get subscriber count from Supabase
-  let subscriberCount = 0
-  if (post.bydel?.slug) {
-    const admin = createAdminClient()
-    const { data: bydelData } = await admin
-      .from('bydeler')
-      .select('id')
-      .eq('slug', post.bydel.slug.toLowerCase())
-      .maybeSingle()
+  const config = reportTypeConfig[post.reportType]
 
-    if (bydelData) {
-      const { count } = await admin
-        .from('subscriber_bydeler')
-        .select('subscriber_id, subscribers!inner(confirmed, is_active)', { count: 'exact', head: true })
-        .eq('bydel_id', bydelData.id)
-        .eq('subscribers.confirmed', true)
-        .eq('subscribers.is_active', true)
+  // Get subscriber count
+  const admin = createAdminClient()
+  let query = admin
+    .from('subscribers')
+    .select('*', { count: 'exact', head: true })
+    .eq('is_active', true)
+    .eq('confirmed', true)
 
-      subscriberCount = count || 0
-    }
+  // Weekly reports only go to weekly subscribers
+  if (post.reportType === 'ukentlig') {
+    query = query.eq('frequency', 'weekly')
   }
+
+  const { count } = await query
+  const subscriberCount = count || 0
 
   return (
     <div className="max-w-3xl">
@@ -55,16 +51,22 @@ export default async function SendPage({ params }: { params: Promise<{ postId: s
       </h1>
 
       <div className="flex items-center gap-3 mb-6">
-        {post.bydel && (
-          <BydelPill
-            name={post.bydel.name}
-            emoji={post.bydel.emoji}
-            color={post.bydel.color}
-            size="md"
-          />
+        {config && (
+          <span
+            className="text-sm font-medium px-3 py-1 rounded-full"
+            style={{ backgroundColor: `${config.color}15`, color: config.color }}
+          >
+            {config.emoji} {config.label}
+          </span>
+        )}
+        {post.reportPeriod && (
+          <span className="text-sm" style={{ color: '#5F7A7D' }}>
+            {post.reportPeriod}
+          </span>
         )}
         <span className="text-sm" style={{ color: '#5F7A7D' }}>
           {subscriberCount} mottakere
+          {post.reportType === 'ukentlig' && ' (kun ukentlige abonnenter)'}
         </span>
       </div>
 
@@ -72,7 +74,7 @@ export default async function SendPage({ params }: { params: Promise<{ postId: s
         className="rounded-2xl overflow-hidden mb-6"
         style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
       >
-        <div className="h-1.5" style={{ backgroundColor: post.bydel?.color || '#002D32' }} />
+        <div className="h-1.5" style={{ backgroundColor: config?.color || '#002D32' }} />
         <div className="p-8">
           <p className="text-sm mb-2" style={{ color: '#9BAFB2' }}>
             {post.publishedAt ? formatDate(post.publishedAt) : '—'}

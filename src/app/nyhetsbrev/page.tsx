@@ -16,11 +16,11 @@ export default function NyhetsbrevPage() {
               className="text-3xl mb-2"
               style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif', letterSpacing: '-0.02em' }}
             >
-              Abonner på nyhetsbrev
+              Meld deg på nyhetsbrevet vårt
             </h1>
             <p style={{ color: '#5F7A7D' }}>
-              Velg de bydelene du er interessert i, og få oppdateringer om boligmarkedet
-              rett i innboksen.
+              Få ukentlige og månedlige oppdateringer om boligmarkedet i Trondheim —
+              pluss kvartals- og årsrapporter rett i innboksen.
             </p>
           </div>
           <div

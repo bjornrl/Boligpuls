@@ -19,11 +19,24 @@ export const post = defineType({
       validation: (rule) => rule.required().error('Slug er påkrevd'),
     }),
     defineField({
-      name: 'bydel',
-      title: 'Bydel',
-      type: 'reference',
-      to: [{ type: 'bydel' }],
-      validation: (rule) => rule.required().error('Velg en bydel'),
+      name: 'reportType',
+      title: 'Rapporttype',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Ukentlig oppdatering', value: 'ukentlig' },
+          { title: 'Månedlig rapport', value: 'manedlig' },
+          { title: 'Kvartalsrapport', value: 'kvartal' },
+          { title: 'Årsrapport', value: 'arsrapport' },
+        ],
+      },
+      validation: (rule) => rule.required().error('Velg en rapporttype'),
+    }),
+    defineField({
+      name: 'reportPeriod',
+      title: 'Periode',
+      type: 'string',
+      description: 'F.eks. "Uke 11, 2026", "Mars 2026", "Q1 2026", "2025"',
     }),
     defineField({
       name: 'excerpt',
@@ -67,7 +80,42 @@ export const post = defineType({
             ],
           },
         },
+        {
+          type: 'object',
+          name: 'bydelSection',
+          title: 'Bydel-seksjon',
+          fields: [
+            {
+              name: 'bydel',
+              title: 'Bydel',
+              type: 'reference',
+              to: [{ type: 'bydel' }],
+            },
+            {
+              name: 'content',
+              title: 'Innhold for denne bydelen',
+              type: 'array',
+              of: [
+                { type: 'block' },
+                { type: 'image', options: { hotspot: true } },
+              ],
+            },
+          ],
+          preview: {
+            select: { title: 'bydel.name', emoji: 'bydel.emoji' },
+            prepare({ title, emoji }: { title?: string; emoji?: string }) {
+              return { title: `${emoji || ''} ${title || 'Velg bydel'}` }
+            },
+          },
+        },
       ],
+    }),
+    defineField({
+      name: 'bydeler',
+      title: 'Bydeler omtalt i rapporten',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'bydel' }] }],
+      description: 'Hvilke bydeler er omtalt? Brukes for innholdsfortegnelse.',
     }),
     defineField({
       name: 'isNewsletter',
@@ -83,10 +131,17 @@ export const post = defineType({
       initialValue: () => new Date().toISOString(),
     }),
     defineField({
+      name: 'bydel',
+      title: 'Bydel (utgått)',
+      type: 'reference',
+      to: [{ type: 'bydel' }],
+      hidden: true,
+    }),
+    defineField({
       name: 'seoTitle',
       title: 'SEO-tittel',
       type: 'string',
-      description: 'Valgfri tittel for søkemotorer (bruker vanlig tittel hvis tom)',
+      description: 'Valgfri tittel for søkemotorer',
       group: 'seo',
     }),
     defineField({
@@ -94,7 +149,7 @@ export const post = defineType({
       title: 'SEO-beskrivelse',
       type: 'text',
       rows: 2,
-      description: 'Valgfri beskrivelse for søkemotorer (bruker sammendrag hvis tom)',
+      description: 'Valgfri beskrivelse for søkemotorer',
       group: 'seo',
     }),
   ],
@@ -111,14 +166,20 @@ export const post = defineType({
   preview: {
     select: {
       title: 'title',
-      bydel: 'bydel.name',
-      emoji: 'bydel.emoji',
+      reportType: 'reportType',
+      period: 'reportPeriod',
       date: 'publishedAt',
     },
-    prepare({ title, bydel, emoji, date }) {
+    prepare({ title, reportType, period, date }: { title?: string; reportType?: string; period?: string; date?: string }) {
+      const typeLabels: Record<string, string> = {
+        ukentlig: '📊 Ukentlig',
+        manedlig: '📈 Månedlig',
+        kvartal: '📋 Kvartal',
+        arsrapport: '📑 Årsrapport',
+      }
       return {
         title,
-        subtitle: `${emoji || ''} ${bydel || 'Ingen bydel'} — ${date ? new Date(date).toLocaleDateString('nb-NO') : 'Ikke publisert'}`,
+        subtitle: `${typeLabels[reportType || ''] || ''} ${period || ''} — ${date ? new Date(date).toLocaleDateString('nb-NO') : 'Ikke publisert'}`,
       }
     },
   },

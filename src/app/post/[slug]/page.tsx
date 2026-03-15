@@ -4,8 +4,9 @@ import { PortableText } from '@portabletext/react'
 import { sanityClient } from '@/sanity/client'
 import { postBySlugQuery } from '@/sanity/queries'
 import type { SanityPost } from '@/sanity/types'
+import { reportTypeConfig } from '@/sanity/types'
 import { formatDate } from '@/lib/utils'
-import BydelPill from '@/components/BydelPill'
+import ReportTypeBadge from '@/components/ReportTypeBadge'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
@@ -26,6 +27,23 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
   if (!post) notFound()
 
+  const config = reportTypeConfig[post.reportType]
+
+  // Extract bydel sections from content for table of contents
+  const bydelSections = (post.content || [])
+    .filter((block) => block._type === 'bydelSection')
+    .map((block) => {
+      const section = block as unknown as {
+        bydel?: { name?: string; emoji?: string; slug?: string }
+      }
+      return {
+        name: section.bydel?.name || '',
+        emoji: section.bydel?.emoji || '',
+        slug: section.bydel?.slug || '',
+      }
+    })
+    .filter((s) => s.slug)
+
   return (
     <>
       <Header />
@@ -43,16 +61,14 @@ export default async function PostPage({ params }: { params: { slug: string } })
             className="rounded-2xl overflow-hidden"
             style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
           >
-            <div className="h-1" style={{ backgroundColor: post.bydel?.color || '#002D32' }} />
+            <div className="h-1" style={{ backgroundColor: config?.color || '#002D32' }} />
             <div className="p-8 md:p-10">
               <div className="flex items-center gap-3 mb-6">
-                {post.bydel && (
-                  <BydelPill
-                    name={post.bydel.name}
-                    emoji={post.bydel.emoji}
-                    color={post.bydel.color}
-                    size="md"
-                  />
+                <ReportTypeBadge type={post.reportType} size="md" />
+                {post.reportPeriod && (
+                  <span className="text-sm" style={{ color: '#5F7A7D' }}>
+                    {post.reportPeriod}
+                  </span>
                 )}
                 {post.publishedAt && (
                   <span className="text-sm" style={{ color: '#9BAFB2' }}>
@@ -71,6 +87,29 @@ export default async function PostPage({ params }: { params: { slug: string } })
               >
                 {post.title}
               </h1>
+
+              {bydelSections.length > 0 && (
+                <div
+                  className="rounded-xl p-4 mb-8"
+                  style={{ backgroundColor: '#F8F7F5', border: '1px solid #E8ECEE' }}
+                >
+                  <p className="text-sm font-medium mb-2" style={{ color: '#002D32' }}>
+                    Hopp til bydel:
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {bydelSections.map((s) => (
+                      <a
+                        key={s.slug}
+                        href={`#${s.slug}`}
+                        className="text-xs font-medium px-3 py-1.5 rounded-lg transition-colors hover:opacity-80"
+                        style={{ backgroundColor: '#DEE5E7', color: '#155356' }}
+                      >
+                        {s.emoji} {s.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="prose max-w-none" style={{ lineHeight: '1.85' }}>
                 <PortableText value={post.content} />

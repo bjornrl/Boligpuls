@@ -1,6 +1,6 @@
 import { groq } from 'next-sanity'
 
-// All published posts with bydel
+// All published posts
 export const allPostsQuery = groq`
   *[_type == "post" && defined(publishedAt)] | order(publishedAt desc) {
     _id,
@@ -8,17 +8,13 @@ export const allPostsQuery = groq`
     "slug": slug.current,
     excerpt,
     content,
+    reportType,
+    reportPeriod,
     isNewsletter,
     publishedAt,
     seoTitle,
     seoDescription,
-    bydel->{
-      _id,
-      name,
-      "slug": slug.current,
-      emoji,
-      color
-    }
+    "bydeler": bydeler[]->{ _id, name, "slug": slug.current, emoji, color }
   }
 `
 
@@ -30,17 +26,13 @@ export const postBySlugQuery = groq`
     "slug": slug.current,
     excerpt,
     content,
+    reportType,
+    reportPeriod,
     isNewsletter,
     publishedAt,
     seoTitle,
     seoDescription,
-    bydel->{
-      _id,
-      name,
-      "slug": slug.current,
-      emoji,
-      color
-    }
+    "bydeler": bydeler[]->{ _id, name, "slug": slug.current, emoji, color }
   }
 `
 
@@ -52,15 +44,11 @@ export const postByIdQuery = groq`
     "slug": slug.current,
     excerpt,
     content,
+    reportType,
+    reportPeriod,
     isNewsletter,
     publishedAt,
-    bydel->{
-      _id,
-      name,
-      "slug": slug.current,
-      emoji,
-      color
-    }
+    "bydeler": bydeler[]->{ _id, name, "slug": slug.current, emoji, color }
   }
 `
 
@@ -73,26 +61,6 @@ export const allBydelerQuery = groq`
     emoji,
     color,
     description
-  }
-`
-
-// Posts by bydel slug
-export const postsByBydelQuery = groq`
-  *[_type == "post" && defined(publishedAt) && bydel->slug.current == $slug] | order(publishedAt desc) {
-    _id,
-    title,
-    "slug": slug.current,
-    excerpt,
-    content,
-    isNewsletter,
-    publishedAt,
-    bydel->{
-      _id,
-      name,
-      "slug": slug.current,
-      emoji,
-      color
-    }
   }
 `
 

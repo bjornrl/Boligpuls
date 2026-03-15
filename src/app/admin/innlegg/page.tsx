@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { sanityClient } from '@/sanity/client'
 import { allPostsQuery } from '@/sanity/queries'
 import type { SanityPost } from '@/sanity/types'
+import { reportTypeConfig } from '@/sanity/types'
 import { formatDate } from '@/lib/utils'
-import BydelPill from '@/components/BydelPill'
 
 export const revalidate = 60
 
@@ -49,57 +49,57 @@ export default async function AdminInnleggPage() {
           <thead style={{ backgroundColor: '#F8F7F5', borderBottom: '1px solid #E8ECEE' }}>
             <tr>
               <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Tittel</th>
-              <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Bydel</th>
-              <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Nyhetsbrev</th>
+              <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Type</th>
+              <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Periode</th>
               <th className="text-left px-4 py-3 font-medium" style={{ color: '#9BAFB2' }}>Dato</th>
               <th className="text-right px-4 py-3"></th>
             </tr>
           </thead>
           <tbody>
-            {posts?.map((post) => (
-              <tr key={post._id} className="hover:bg-[#F8F7F5] transition-colors" style={{ borderBottom: '1px solid #E8ECEE' }}
-              >
-                <td className="px-4 py-3 font-medium" style={{ color: '#002D32' }}>
-                  <Link href={`/post/${post.slug}`}>{post.title}</Link>
-                </td>
-                <td className="px-4 py-3">
-                  {post.bydel && (
-                    <BydelPill name={post.bydel.name} emoji={post.bydel.emoji} color={post.bydel.color} />
-                  )}
-                </td>
-                <td className="px-4 py-3">
-                  {post.isNewsletter && (
-                    <span
-                      className="text-xs font-medium px-2 py-0.5 rounded-full"
-                      style={{ backgroundColor: '#F3E9DB', color: '#B8860B' }}
-                    >
-                      Nyhetsbrev
-                    </span>
-                  )}
-                </td>
-                <td className="px-4 py-3" style={{ color: '#9BAFB2' }}>
-                  {post.publishedAt ? formatDate(post.publishedAt) : '—'}
-                </td>
-                <td className="px-4 py-3 text-right flex gap-2 justify-end">
-                  {post.isNewsletter && (
+            {posts?.map((post) => {
+              const config = reportTypeConfig[post.reportType]
+              return (
+                <tr key={post._id} className="hover:bg-[#F8F7F5] transition-colors" style={{ borderBottom: '1px solid #E8ECEE' }}>
+                  <td className="px-4 py-3 font-medium" style={{ color: '#002D32' }}>
+                    <Link href={`/post/${post.slug}`}>{post.title}</Link>
+                  </td>
+                  <td className="px-4 py-3">
+                    {config && (
+                      <span
+                        className="text-xs font-medium px-2 py-0.5 rounded-full"
+                        style={{ backgroundColor: `${config.color}15`, color: config.color }}
+                      >
+                        {config.emoji} {config.label}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3" style={{ color: '#5F7A7D' }}>
+                    {post.reportPeriod || '—'}
+                  </td>
+                  <td className="px-4 py-3" style={{ color: '#9BAFB2' }}>
+                    {post.publishedAt ? formatDate(post.publishedAt) : '—'}
+                  </td>
+                  <td className="px-4 py-3 text-right flex gap-2 justify-end">
+                    {post.isNewsletter && (
+                      <Link
+                        href={`/admin/send/${post._id}`}
+                        className="text-xs font-medium px-3 py-1.5 rounded-lg"
+                        style={{ backgroundColor: '#DEE5E7', color: '#155356' }}
+                      >
+                        Send
+                      </Link>
+                    )}
                     <Link
-                      href={`/admin/send/${post._id}`}
-                      className="text-xs font-medium px-3 py-1.5 rounded-lg"
-                      style={{ backgroundColor: '#DEE5E7', color: '#155356' }}
+                      href={`/studio/structure/post;${post._id}`}
+                      className="text-xs font-medium"
+                      style={{ color: '#155356' }}
                     >
-                      Send
+                      Rediger i Studio
                     </Link>
-                  )}
-                  <Link
-                    href={`/studio/structure/post;${post._id}`}
-                    className="text-xs font-medium"
-                    style={{ color: '#155356' }}
-                  >
-                    Rediger i Studio
-                  </Link>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
         {(!posts || posts.length === 0) && (
