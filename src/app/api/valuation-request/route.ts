@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
   try {
     await sendEmail({
       to: email,
-      subject: 'Vi har mottatt din henvendelse — Eiendom Trondheim',
+      subject: 'Vi har mottatt din henvendelse — EIENDOM Trondheim',
       react: ValuationConfirmEmail({ name, requestType }),
     })
   } catch (err) {

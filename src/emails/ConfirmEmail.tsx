@@ -20,16 +20,16 @@ export default function ConfirmEmail({ name, confirmUrl }: ConfirmEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Bekreft e-postadressen din for Eiendom Trondheim</Preview>
+      <Preview>Bekreft e-postadressen din for EIENDOM Trondheim</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={header}>
-            <Text style={logo}>Eiendom Trondheim</Text>
+            <Text style={logo}>EIENDOM Trondheim</Text>
           </Section>
           <Section style={content}>
             <Text style={heading}>Hei {name}!</Text>
             <Text style={paragraph}>
-              Takk for at du meldte deg på Eiendom Trondheim.
+              Takk for at du meldte deg på EIENDOM Trondheim.
             </Text>
             <Text style={paragraph}>
               Klikk knappen under for å bekrefte e-postadressen din:

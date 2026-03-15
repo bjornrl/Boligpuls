@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 className="text-white text-lg mb-3" style={{ fontFamily: '"Basel Classic", Georgia, serif' }}>
-              Eiendom Trondheim
+              EIENDOM Trondheim
             </h3>
             <p className="text-sm" style={{ color: '#9BAFB2' }}>
               Din kilde til oppdateringer om boligmarkedet i Trondheim.
@@ -24,13 +24,13 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-medium mb-3" style={{ fontFamily: '"Basel Grotesk", system-ui, sans-serif' }}>Om oss</h4>
             <p className="text-sm" style={{ color: '#9BAFB2' }}>
-              Eiendom Trondheim leverer nyhetsbrev om boligmarkedet
+              EIENDOM Trondheim leverer nyhetsbrev om boligmarkedet
               i Trondheims bydeler.
             </p>
           </div>
         </div>
         <div className="mt-8 pt-8 text-center text-sm" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', color: '#5F7A7D' }}>
-          &copy; {new Date().getFullYear()} Eiendom Trondheim. Alle rettigheter reservert.
+          &copy; {new Date().getFullYear()} EIENDOM Trondheim. Alle rettigheter reservert.
         </div>
       </div>
     </footer>

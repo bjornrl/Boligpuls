@@ -21,7 +21,7 @@ export default function VurderingPage() {
               Få en uforpliktende verdivurdering
             </h1>
             <p style={{ color: '#5F7A7D', lineHeight: 1.6 }}>
-              Lurer du på hva boligen din er verdt. Mine vurderinger er basert på kjennskap til byen vår. Gi lyd her, så tar jeg kontakt.
+              Lurer du på hva boligen din er verdt? Mine vurderinger er basert på kjennskap til byen vår. Gi en lyd her, så tar jeg kontakt.
             </p>
           </div>
 

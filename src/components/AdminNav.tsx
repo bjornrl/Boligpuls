@@ -35,7 +35,7 @@ export default function AdminNav({ email }: { email: string }) {
       <div className="max-w-[1120px] mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           <Link href="/admin" className="font-bold text-lg" style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}>
-            Eiendom Trondheim Admin
+            EIENDOM Trondheim Admin
           </Link>
           <div className="flex items-center gap-4">
             <span className="text-sm" style={{ color: '#5F7A7D' }}>{email}</span>
@@ -65,10 +65,10 @@ export default function AdminNav({ email }: { email: string }) {
                 style={
                   isActive
                     ? {
-                        backgroundColor: '#FFFFFF',
-                        color: '#002D32',
-                        boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-                      }
+                      backgroundColor: '#FFFFFF',
+                      color: '#002D32',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+                    }
                     : { color: '#5F7A7D' }
                 }
               >

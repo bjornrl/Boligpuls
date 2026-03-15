@@ -10,71 +10,54 @@ import {
   Preview,
 } from '@react-email/components'
 
-interface BydelRef {
-  name: string
-  slug: string
-  emoji: string
-}
-
 interface NewsletterEmailProps {
   postTitle: string
-  reportLabel: string
-  reportPeriod: string
+  bydelName: string
+  bydelEmoji: string
+  bydelColor: string
   contentHtml: string
   publishedDate: string
   unsubscribeUrl: string
-  bydeler: BydelRef[]
 }
 
 export default function NewsletterEmail({
   postTitle,
-  reportLabel,
-  reportPeriod,
+  bydelName,
+  bydelEmoji,
+  bydelColor,
   contentHtml,
   publishedDate,
   unsubscribeUrl,
-  bydeler,
 }: NewsletterEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>{postTitle} — Eiendom Trondheim</Preview>
+      <Preview>{postTitle} — EIENDOM Trondheim</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={header}>
-            <Text style={logo}>Eiendom Trondheim</Text>
+            <Text style={logo}>EIENDOM Trondheim</Text>
           </Section>
           <Section style={content}>
-            {reportLabel && (
-              <Section style={{ textAlign: 'center' as const, marginBottom: '16px' }}>
-                <Text
-                  style={{
-                    display: 'inline-block',
-                    backgroundColor: '#DEE5E7',
-                    color: '#155356',
-                    borderRadius: '100px',
-                    padding: '6px 16px',
-                    fontSize: '13px',
-                    fontWeight: '600' as const,
-                    margin: '0',
-                  }}
-                >
-                  {reportLabel}{reportPeriod ? ` — ${reportPeriod}` : ''}
-                </Text>
-              </Section>
-            )}
+            <Section style={{ textAlign: 'center' as const, marginBottom: '24px' }}>
+              <Text
+                style={{
+                  display: 'inline-block',
+                  backgroundColor: `${bydelColor}20`,
+                  color: bydelColor,
+                  borderRadius: '100px',
+                  padding: '6px 16px',
+                  fontSize: '14px',
+                  fontWeight: '600' as const,
+                  border: `1px solid ${bydelColor}30`,
+                  margin: '0',
+                }}
+              >
+                {bydelEmoji} {bydelName}
+              </Text>
+            </Section>
             <Text style={date}>{publishedDate}</Text>
             <Text style={title}>{postTitle}</Text>
-            {bydeler && bydeler.length > 0 && (
-              <Section style={{ marginBottom: '24px', textAlign: 'center' as const }}>
-                <Text style={{ fontSize: '13px', color: '#5F7A7D', margin: '0 0 8px' }}>
-                  <strong>I denne rapporten:</strong>
-                </Text>
-                <Text style={{ fontSize: '13px', color: '#155356', margin: '0' }}>
-                  {bydeler.map((b) => `${b.emoji} ${b.name}`).join(' · ')}
-                </Text>
-              </Section>
-            )}
             <div
               dangerouslySetInnerHTML={{ __html: contentHtml }}
               style={articleContent}
@@ -82,14 +65,14 @@ export default function NewsletterEmail({
           </Section>
           <Hr style={hr} />
           <Text style={footerText}>
-            Du mottar dette fordi du abonnerer på Eiendom Trondheim.
+            Du mottar dette fordi du abonnerer på EIENDOM Trondheim.
           </Text>
           <Section style={{ textAlign: 'center' as const }}>
             <Link href={unsubscribeUrl} style={unsubLink}>
               Avmeld nyhetsbrev
             </Link>
           </Section>
-          <Text style={copyright}>&copy; 2026 Eiendom Trondheim</Text>
+          <Text style={copyright}>&copy; 2026 EIENDOM Trondheim</Text>
           <Text style={siteLink}>
             <a href="https://eiendomtrondheim.no" style={{ color: '#155356', textDecoration: 'underline' }}>
               eiendomtrondheim.no

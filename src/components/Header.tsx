@@ -15,7 +15,7 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2.5">
           <div className="flex items-baseline gap-2">
             <span className="text-lg text-white" style={{ fontFamily: '"Basel Classic", Georgia, serif' }}>
-              Eiendom Trondheim
+              EIENDOM Trondheim
             </span>
           </div>
         </Link>
