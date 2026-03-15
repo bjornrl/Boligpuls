@@ -58,7 +58,7 @@ export default function NewsletterEmail({
             </Section>
             <Text style={date}>{publishedDate}</Text>
             <Text style={title}>{postTitle}</Text>
-            <Section
+            <div
               dangerouslySetInnerHTML={{ __html: contentHtml }}
               style={articleContent}
             />

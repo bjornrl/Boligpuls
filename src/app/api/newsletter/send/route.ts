@@ -85,6 +85,7 @@ export async function POST(request: NextRequest) {
     const unsubscribeUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/unsubscribe?token=${subscriber.unsubscribe_token}`
 
     try {
+      console.log(`[newsletter] Sending to ${subscriber.email}...`)
       await sendEmail({
         to: subscriber.email,
         subject: `${post.title} — Boligpuls ${bydel.name}`,
@@ -105,7 +106,8 @@ export async function POST(request: NextRequest) {
         status: 'sent',
       })
       sent++
-    } catch {
+    } catch (err) {
+      console.error(`[newsletter] Failed to send to ${subscriber.email}:`, err)
       await admin.from('newsletter_sends').insert({
         sanity_post_id: postId,
         subscriber_id: subscriber.id,
