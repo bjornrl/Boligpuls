@@ -144,14 +144,18 @@ export async function POST(request: NextRequest) {
 
   // Send confirmation email
   const confirmUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/confirm?token=${subscriber.confirm_token}`
+  console.log('[subscribe] About to send confirmation email to:', email)
+  console.log('[subscribe] confirmUrl:', confirmUrl)
   try {
     await sendEmail({
       to: email,
       subject: 'Bekreft e-postadressen din — Boligpuls Trondheim',
       react: ConfirmEmail({ name, confirmUrl }),
     })
+    console.log('[subscribe] Email sent successfully')
   } catch (err) {
-    console.error('Failed to send confirmation email:', err)
+    console.error('[subscribe] Failed to send confirmation email:', err)
+    // Still return success since subscriber was created
   }
 
   return NextResponse.json({ success: true })

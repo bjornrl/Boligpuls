@@ -1,6 +1,6 @@
 import { Resend } from 'resend'
 
-export const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function sendEmail({
   to,
@@ -11,10 +11,22 @@ export async function sendEmail({
   subject: string
   react: React.ReactElement
 }) {
-  return resend.emails.send({
-    from: process.env.RESEND_FROM_EMAIL || 'Boligpuls Trondheim <onboarding@resend.dev>',
+  const from = process.env.RESEND_FROM_EMAIL || 'Boligpuls Trondheim <onboarding@resend.dev>'
+  console.log('[sendEmail] Sending email:', { from, to, subject })
+  console.log('[sendEmail] RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY)
+
+  const { data, error } = await resend.emails.send({
+    from,
     to: [to],
     subject,
     react,
   })
+
+  if (error) {
+    console.error('[sendEmail] Resend error:', JSON.stringify(error))
+    throw new Error(`Resend error: ${JSON.stringify(error)}`)
+  }
+
+  console.log('[sendEmail] Success:', JSON.stringify(data))
+  return { data, error }
 }
