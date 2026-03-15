@@ -5,7 +5,7 @@ import PostCard from '@/components/PostCard'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
-export const metadata = { title: 'Artikler — Eiendom Trondheim' }
+export const metadata = { title: 'Artikler — EIENDOM Trondheim' }
 export const revalidate = 60
 
 export default async function ArtiklerPage() {

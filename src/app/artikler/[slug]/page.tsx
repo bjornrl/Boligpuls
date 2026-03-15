@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     .single()
 
   if (!post) return { title: 'Artikkel ikke funnet' }
-  return { title: `${post.title} — Eiendom Trondheim`, description: post.excerpt }
+  return { title: `${post.title} — EIENDOM Trondheim`, description: post.excerpt }
 }
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
