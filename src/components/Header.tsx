@@ -18,7 +18,7 @@ export default function Header() {
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-lg text-white" style={{ fontFamily: '"Basel Classic", Georgia, serif' }}>
-              Boligpuls
+              Eiendom Trondheim
             </span>
             <span
               className="text-[11px] uppercase tracking-wider"
