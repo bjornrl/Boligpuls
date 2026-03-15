@@ -5,7 +5,7 @@ import BydelerGrid from '@/components/BydelerGrid'
 
 export const revalidate = 60
 
-export const metadata = { title: 'Bydeler — Boligpuls Trondheim' }
+export const metadata = { title: 'Bydeler — Eiendom Trondheim' }
 
 export default async function BydelerPage() {
   const bydeler = await sanityClient.fetch<SanityBydel[]>(allBydelerQuery)

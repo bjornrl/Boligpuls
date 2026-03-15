@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
-export const metadata = { title: 'Avmeldt — Boligpuls Trondheim' }
+export const metadata = { title: 'Avmeldt — Eiendom Trondheim' }
 
 export default function AvmeldtPage() {
   return (
@@ -18,7 +18,7 @@ export default function AvmeldtPage() {
             Du er avmeldt
           </h1>
           <p className="mb-6" style={{ color: '#5F7A7D' }}>
-            Du vil ikke lenger motta nyhetsbrev fra Boligpuls Trondheim. Vi håper å se deg igjen!
+            Du vil ikke lenger motta nyhetsbrev fra Eiendom Trondheim. Vi håper å se deg igjen!
           </p>
           <Link
             href="/"

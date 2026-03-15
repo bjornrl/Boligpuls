@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
       console.log(`[newsletter] Sending to ${subscriber.email}...`)
       await sendEmail({
         to: subscriber.email,
-        subject: `${post.title} — Boligpuls ${bydel.name}`,
+        subject: `${post.title} — Eiendom Trondheim ${bydel.name}`,
         react: NewsletterEmail({
           postTitle: post.title,
           bydelName: bydel.name,

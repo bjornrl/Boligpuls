@@ -14,7 +14,7 @@ export default function Header() {
             className="w-8 h-8 rounded-md flex items-center justify-center"
             style={{ backgroundColor: '#D7B180' }}
           >
-            <span className="text-white text-sm font-bold">B</span>
+            <span className="text-white text-xs font-bold">ET</span>
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-lg text-white" style={{ fontFamily: '"Basel Classic", Georgia, serif' }}>

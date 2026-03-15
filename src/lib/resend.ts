@@ -11,7 +11,7 @@ export async function sendEmail({
   subject: string
   react: React.ReactElement
 }) {
-  const from = process.env.RESEND_FROM_EMAIL || 'Boligpuls Trondheim <onboarding@resend.dev>'
+  const from = process.env.RESEND_FROM_EMAIL || 'Eiendom Trondheim <onboarding@resend.dev>'
   console.log('[sendEmail] Sending email:', { from, to, subject })
   console.log('[sendEmail] RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY)
 

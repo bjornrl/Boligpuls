@@ -20,16 +20,16 @@ export default function ConfirmEmail({ name, confirmUrl }: ConfirmEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Bekreft e-postadressen din for Boligpuls Trondheim</Preview>
+      <Preview>Bekreft e-postadressen din for Eiendom Trondheim</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={header}>
-            <Text style={logo}>Boligpuls Trondheim</Text>
+            <Text style={logo}>Eiendom Trondheim</Text>
           </Section>
           <Section style={content}>
             <Text style={heading}>Hei {name}!</Text>
             <Text style={paragraph}>
-              Takk for at du meldte deg på Boligpuls Trondheim.
+              Takk for at du meldte deg på Eiendom Trondheim.
             </Text>
             <Text style={paragraph}>
               Klikk knappen under for å bekrefte e-postadressen din:
@@ -47,7 +47,12 @@ export default function ConfirmEmail({ name, confirmUrl }: ConfirmEmailProps) {
             </Text>
           </Section>
           <Hr style={hr} />
-          <Text style={footer}>&copy; 2026 Boligpuls Trondheim</Text>
+          <Text style={footer}>&copy; 2026 Eiendom Trondheim</Text>
+          <Text style={siteLink}>
+            <a href="https://eiendomtrondheim.no" style={{ color: '#155356', textDecoration: 'underline' }}>
+              eiendomtrondheim.no
+            </a>
+          </Text>
         </Container>
       </Body>
     </Html>
@@ -139,4 +144,11 @@ const footer = {
   fontSize: '12px',
   color: '#9BAFB2',
   textAlign: 'center' as const,
+}
+
+const siteLink = {
+  fontSize: '13px',
+  color: '#9BAFB2',
+  textAlign: 'center' as const,
+  marginTop: '8px',
 }

@@ -32,11 +32,11 @@ export default function NewsletterEmail({
   return (
     <Html>
       <Head />
-      <Preview>{postTitle} — Boligpuls Trondheim</Preview>
+      <Preview>{postTitle} — Eiendom Trondheim</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={header}>
-            <Text style={logo}>Boligpuls Trondheim</Text>
+            <Text style={logo}>Eiendom Trondheim</Text>
           </Section>
           <Section style={content}>
             <Section style={{ textAlign: 'center' as const, marginBottom: '24px' }}>
@@ -65,14 +65,19 @@ export default function NewsletterEmail({
           </Section>
           <Hr style={hr} />
           <Text style={footerText}>
-            Du mottar dette fordi du abonnerer på Boligpuls Trondheim.
+            Du mottar dette fordi du abonnerer på Eiendom Trondheim.
           </Text>
           <Section style={{ textAlign: 'center' as const }}>
             <Link href={unsubscribeUrl} style={unsubLink}>
               Avmeld nyhetsbrev
             </Link>
           </Section>
-          <Text style={copyright}>&copy; 2026 Boligpuls Trondheim</Text>
+          <Text style={copyright}>&copy; 2026 Eiendom Trondheim</Text>
+          <Text style={siteLink}>
+            <a href="https://eiendomtrondheim.no" style={{ color: '#155356', textDecoration: 'underline' }}>
+              eiendomtrondheim.no
+            </a>
+          </Text>
         </Container>
       </Body>
     </Html>
@@ -159,4 +164,11 @@ const copyright = {
   color: '#9BAFB2',
   textAlign: 'center' as const,
   marginTop: '16px',
+}
+
+const siteLink = {
+  fontSize: '13px',
+  color: '#9BAFB2',
+  textAlign: 'center' as const,
+  marginTop: '8px',
 }

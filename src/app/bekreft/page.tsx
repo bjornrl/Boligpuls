@@ -1,7 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 
-export const metadata = { title: 'Bekreft abonnement — Boligpuls Trondheim' }
+export const metadata = { title: 'Bekreft abonnement — Eiendom Trondheim' }
 
 export default async function BekreftPage({
   searchParams,

@@ -19,11 +19,11 @@ export default function WelcomeEmail({ name, bydeler, frequency }: WelcomeEmailP
   return (
     <Html>
       <Head />
-      <Preview>Velkommen til Boligpuls Trondheim</Preview>
+      <Preview>Velkommen til Eiendom Trondheim</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={header}>
-            <Text style={logo}>Boligpuls Trondheim</Text>
+            <Text style={logo}>Eiendom Trondheim</Text>
           </Section>
           <Section style={content}>
             <Text style={heading}>Velkommen, {name}!</Text>
@@ -43,7 +43,12 @@ export default function WelcomeEmail({ name, bydeler, frequency }: WelcomeEmailP
             </Text>
           </Section>
           <Hr style={hr} />
-          <Text style={footer}>&copy; 2026 Boligpuls Trondheim</Text>
+          <Text style={footer}>&copy; 2026 Eiendom Trondheim</Text>
+          <Text style={siteLink}>
+            <a href="https://eiendomtrondheim.no" style={{ color: '#155356', textDecoration: 'underline' }}>
+              eiendomtrondheim.no
+            </a>
+          </Text>
         </Container>
       </Body>
     </Html>
@@ -120,4 +125,11 @@ const footer = {
   fontSize: '12px',
   color: '#9BAFB2',
   textAlign: 'center' as const,
+}
+
+const siteLink = {
+  fontSize: '13px',
+  color: '#9BAFB2',
+  textAlign: 'center' as const,
+  marginTop: '8px',
 }

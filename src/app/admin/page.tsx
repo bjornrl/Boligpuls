@@ -7,7 +7,7 @@ import type { SanityBydel } from '@/sanity/types'
 
 export const revalidate = 60
 
-export const metadata = { title: 'Admin — Boligpuls Trondheim' }
+export const metadata = { title: 'Admin — Eiendom Trondheim' }
 
 export default async function AdminPage() {
   const supabase = createServerSupabaseClient()

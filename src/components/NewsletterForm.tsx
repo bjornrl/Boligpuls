@@ -19,10 +19,19 @@ export default function NewsletterForm() {
       .then((data) => setBydeler(data))
   }, [])
 
+  // When switching to weekly, auto-select "trondheim" and clear individual bydeler
+  useEffect(() => {
+    if (frequency === 'weekly') {
+      setSelectedBydeler(['trondheim'])
+    } else {
+      setSelectedBydeler([])
+    }
+  }, [frequency])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (selectedBydeler.length === 0) {
-      setMessage('Velg minst én bydel.')
+    if (frequency === 'monthly' && selectedBydeler.length === 0) {
+      setMessage('Velg minst en bydel.')
       setStatus('error')
       return
     }
@@ -60,6 +69,9 @@ export default function NewsletterForm() {
       </div>
     )
   }
+
+  // Filter out "trondheim" from bydel selector for monthly view
+  const individualBydeler = bydeler.filter((b) => b.slug !== 'trondheim')
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -118,16 +130,27 @@ export default function NewsletterForm() {
         </div>
       </div>
 
-      <div>
-        <span className="block text-sm font-medium mb-2" style={{ color: '#002D32' }}>
-          Velg bydeler *
-        </span>
-        <BydelSelector
-          bydeler={bydeler}
-          selected={selectedBydeler}
-          onChange={setSelectedBydeler}
-        />
-      </div>
+      {frequency === 'weekly' ? (
+        <div
+          className="rounded-xl p-4"
+          style={{ backgroundColor: '#DEE5E7', border: '1px solid #D4DCDE' }}
+        >
+          <p className="text-sm" style={{ color: '#155356' }}>
+            Ukentlige oppdateringer dekker hele Trondheim kommune.
+          </p>
+        </div>
+      ) : (
+        <div>
+          <span className="block text-sm font-medium mb-2" style={{ color: '#002D32' }}>
+            Velg bydeler *
+          </span>
+          <BydelSelector
+            bydeler={individualBydeler}
+            selected={selectedBydeler}
+            onChange={setSelectedBydeler}
+          />
+        </div>
+      )}
 
       <button
         type="submit"

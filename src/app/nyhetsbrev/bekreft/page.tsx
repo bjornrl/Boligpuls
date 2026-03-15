@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
-export const metadata = { title: 'Bekreft abonnement — Boligpuls Trondheim' }
+export const metadata = { title: 'Bekreft abonnement — Eiendom Trondheim' }
 
 export default function BekreftPage({
   searchParams,

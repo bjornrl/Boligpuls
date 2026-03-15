@@ -3,7 +3,7 @@ import Footer from '@/components/Footer'
 import ValuationForm from '@/components/ValuationForm'
 
 export const metadata = {
-  title: 'Boligvurdering — Boligpuls Trondheim',
+  title: 'Boligvurdering — Eiendom Trondheim',
   description: 'Få en uforpliktende boligvurdering basert på lokalkunnskap og markedsdata.',
 }
 

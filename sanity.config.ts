@@ -5,7 +5,7 @@ import { schemaTypes } from './src/sanity/schemas'
 
 export default defineConfig({
   name: 'boligpuls',
-  title: 'Boligpuls Trondheim',
+  title: 'Eiendom Trondheim',
 
   projectId: 'p7x7ccrx',
   dataset: 'production',

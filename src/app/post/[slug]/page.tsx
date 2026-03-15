@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   if (!post) return { title: 'Artikkel ikke funnet' }
   return {
-    title: `${post.seoTitle || post.title} — Boligpuls Trondheim`,
+    title: `${post.seoTitle || post.title} — Eiendom Trondheim`,
     description: post.seoDescription || post.excerpt,
   }
 }

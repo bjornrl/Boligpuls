@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
   try {
     await sendEmail({
       to: subscriber.email,
-      subject: 'Velkommen til Boligpuls Trondheim!',
+      subject: 'Velkommen til Eiendom Trondheim!',
       react: WelcomeEmail({
         name: subscriber.name,
         bydeler,

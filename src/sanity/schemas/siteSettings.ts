@@ -25,13 +25,13 @@ export const siteSettings = defineType({
       title: 'Om oss-tekst',
       type: 'text',
       rows: 4,
-      description: 'Tekst i footer om Boligpuls',
+      description: 'Tekst i footer om Eiendom Trondheim',
     }),
     defineField({
       name: 'seoTitle',
       title: 'Standard SEO-tittel',
       type: 'string',
-      initialValue: 'Boligpuls Trondheim — Nyhetsbrev om boligmarkedet',
+      initialValue: 'Eiendom Trondheim — Nyhetsbrev om boligmarkedet',
     }),
     defineField({
       name: 'seoDescription',

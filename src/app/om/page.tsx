@@ -3,8 +3,8 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 export const metadata = {
-  title: 'Om meg — Boligpuls Trondheim',
-  description: 'Lær mer om personen bak Boligpuls Trondheim og hvordan du kan ta kontakt.',
+  title: 'Om meg — Eiendom Trondheim',
+  description: 'Lær mer om personen bak Eiendom Trondheim og hvordan du kan ta kontakt.',
 }
 
 export default function OmPage() {
@@ -46,10 +46,10 @@ export default function OmPage() {
 
             <div className="space-y-4" style={{ color: '#155356', lineHeight: 1.75 }}>
               <p>
-                Hei! Mitt navn er Martin Brandvik, og jeg jobber som eiendomsmegler hos Nordvik Bolig i Trondheim. Boligpuls Trondheim er et prosjekt jeg har startet for å holde folk oppdatert på boligmarkedet i byen vår.
+                Hei! Mitt navn er Martin Brandvik, og jeg jobber som eiendomsmegler hos Nordvik Bolig i Trondheim. Eiendom Trondheim er et prosjekt jeg har startet for å holde folk oppdatert på boligmarkedet i byen vår.
               </p>
               <p>
-                Jeg brenner for å gjøre boligmarkedet mer tilgjengelig og forståelig. Gjennom Boligpuls deler jeg oppdateringer, analyser og innsikt om prisutviklingen i de ulike bydelene — helt kostnadsfritt.
+                Jeg brenner for å gjøre boligmarkedet mer tilgjengelig og forståelig. Gjennom Eiendom Trondheim deler jeg oppdateringer, analyser og innsikt om prisutviklingen i de ulike bydelene — helt kostnadsfritt.
               </p>
               <p>
                 Enten du vurderer å kjøpe, selge, eller bare er nysgjerrig på markedet, håper jeg innholdet her er nyttig for deg.
@@ -99,8 +99,8 @@ export default function OmPage() {
                 </div>
                 <div>
                   <p className="text-xs font-medium" style={{ color: '#9BAFB2' }}>Telefon</p>
-                  <a href="tel:+4790000000" className="text-sm font-medium" style={{ color: '#002D32' }}>
-                    Ring meg for en prat
+                  <a href="tel:+4746422304" className="text-sm font-medium" style={{ color: '#002D32' }}>
+                    +47 464 22 304
                   </a>
                 </div>
               </div>

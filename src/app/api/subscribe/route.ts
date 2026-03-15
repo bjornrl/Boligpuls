@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
       try {
         await sendEmail({
           to: email,
-          subject: 'Bekreft e-postadressen din — Boligpuls Trondheim',
+          subject: 'Bekreft e-postadressen din — Eiendom Trondheim',
           react: ConfirmEmail({ name, confirmUrl }),
         })
       } catch (err) {
@@ -149,7 +149,7 @@ export async function POST(request: NextRequest) {
   try {
     await sendEmail({
       to: email,
-      subject: 'Bekreft e-postadressen din — Boligpuls Trondheim',
+      subject: 'Bekreft e-postadressen din — Eiendom Trondheim',
       react: ConfirmEmail({ name, confirmUrl }),
     })
     console.log('[subscribe] Email sent successfully')

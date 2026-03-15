@@ -2,7 +2,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server'
 import PostCard from '@/components/PostCard'
 import { PostWithBydel } from '@/types/database'
 
-export const metadata = { title: 'Artikler — Boligpuls Trondheim' }
+export const metadata = { title: 'Artikler — Eiendom Trondheim' }
 export const revalidate = 60
 
 export default async function ArtiklerPage() {

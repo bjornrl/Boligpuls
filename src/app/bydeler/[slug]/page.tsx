@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const bydel = await sanityClient.fetch<SanityBydel | null>(bydelBySlugQuery, { slug: params.slug })
 
   if (!bydel) return { title: 'Bydel ikke funnet' }
-  return { title: `${bydel.name} — Boligpuls Trondheim` }
+  return { title: `${bydel.name} — Eiendom Trondheim` }
 }
 
 function mapPost(p: SanityPost) {
