@@ -10,8 +10,7 @@ export default function Footer() {
               Eiendom Trondheim
             </h3>
             <p className="text-sm" style={{ color: '#9BAFB2' }}>
-              Din kilde til oppdateringer om boligmarkedet i Trondheim,
-              segmentert etter bydel.
+              Din kilde til oppdateringer om boligmarkedet i Trondheim.
             </p>
           </div>
           <div>

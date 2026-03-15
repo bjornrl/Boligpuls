@@ -51,15 +51,13 @@ export default function OmPage() {
             <div className="space-y-4" style={{ color: '#155356', lineHeight: 1.75 }}>
               <p>
                 Hei! Jeg heter Martin Brandvik, og jobber hos Nordvik Bolig i Trondheim.
+                <p>
+                  EIENDOM Trondheim startet som jevnlige oppdateringer av boligmarkedet over epost. Jeg tenkte det var greit å dele med alle som er interesserte.
 
-                EIENDOM Trondheim startet som jevnlige oppdateringer av boligmarkedet over epost. Jeg tenkte det var greit å dele med alle som er interesserte.
+                </p>
+                <p>
+                  Kanskje du skal selge snart og lurer på hva boligen din faktisk er verdt. Kanskje du bare syns boligmarkedet er interessant å følge med på. Uansett håper jeg dette nyhetsbrevet gjør det litt enklere for deg å være oppdatert.              </p>
 
-                Kanskje du skal selge snart og lurer på hva boligen din faktisk er verdt. Kanskje du bare syns boligmarkedet er interessant å følge med på. Uansett håper jeg dette nyhetsbrevet gjør det litt enklere for deg å være oppdatert.              </p>
-              <p>
-                Jeg brenner for å gjøre boligmarkedet mer tilgjengelig og forståelig. Gjennom Eiendom Trondheim deler jeg oppdateringer, analyser og innsikt om prisutviklingen i de ulike bydelene — helt kostnadsfritt.
-              </p>
-              <p>
-                Enten du vurderer å kjøpe, selge, eller bare er nysgjerrig på markedet, håper jeg innholdet her er nyttig for deg.
               </p>
             </div>
           </div>
