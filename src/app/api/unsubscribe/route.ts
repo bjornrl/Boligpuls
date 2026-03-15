@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     .from('subscribers')
     .select('id')
     .eq('unsubscribe_token', token)
-    .single()
+    .maybeSingle()
 
   if (subscriber) {
     await supabase

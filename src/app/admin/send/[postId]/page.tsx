@@ -39,8 +39,8 @@ export default function SendPage() {
             supabase
               .from('bydeler')
               .select('id')
-              .eq('slug', data.result.bydel.slug)
-              .single()
+              .eq('slug', data.result.bydel.slug.toLowerCase())
+              .maybeSingle()
               .then(({ data: bydelData }) => {
                 if (bydelData) {
                   supabase

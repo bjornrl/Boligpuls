@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     .from('subscribers')
     .select('id, name, email, frequency, confirm_token')
     .eq('confirm_token', token)
-    .single()
+    .maybeSingle()
 
   if (!subscriber) {
     return NextResponse.redirect(new URL('/nyhetsbrev/bekreft?status=error', request.url))

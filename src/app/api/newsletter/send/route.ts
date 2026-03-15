@@ -44,8 +44,8 @@ export async function POST(request: NextRequest) {
   const { data: supabaseBydel } = await admin
     .from('bydeler')
     .select('id')
-    .eq('slug', bydel.slug)
-    .single()
+    .eq('slug', bydel.slug.toLowerCase())
+    .maybeSingle()
 
   if (!supabaseBydel) {
     return NextResponse.json({ error: 'Bydelen finnes ikke i abonnent-systemet' }, { status: 404 })
