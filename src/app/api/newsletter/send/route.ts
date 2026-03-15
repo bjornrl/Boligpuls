@@ -31,44 +31,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Innlegg ikke funnet' }, { status: 404 })
   }
 
-  const bydel = post.bydel
-
-  if (!bydel) {
-    return NextResponse.json({ error: 'Innlegget mangler bydel' }, { status: 400 })
-  }
-
   const admin = createAdminClient()
 
-  // Look up the bydel slug in Supabase subscriber_bydeler
-  // We need to match Sanity bydel to Supabase bydel by slug
-  const { data: supabaseBydel } = await admin
-    .from('bydeler')
-    .select('id')
-    .eq('slug', bydel.slug.toLowerCase())
-    .maybeSingle()
-
-  if (!supabaseBydel) {
-    return NextResponse.json({ error: 'Bydelen finnes ikke i abonnent-systemet' }, { status: 404 })
-  }
-
-  // Get active + confirmed subscribers for this bydel
-  const { data: subscriberLinks } = await admin
-    .from('subscriber_bydeler')
-    .select('subscriber_id')
-    .eq('bydel_id', supabaseBydel.id)
-
-  if (!subscriberLinks || subscriberLinks.length === 0) {
-    return NextResponse.json({ sent: 0, failed: 0, total: 0 })
-  }
-
-  const subscriberIds = subscriberLinks.map((l) => l.subscriber_id)
-
-  const { data: subscribers } = await admin
+  // Get subscribers based on report type
+  // Weekly reports → only subscribers with frequency = 'weekly'
+  // Monthly/quarterly/annual → ALL active confirmed subscribers
+  let query = admin
     .from('subscribers')
     .select('*')
-    .in('id', subscriberIds)
     .eq('is_active', true)
     .eq('confirmed', true)
+
+  if (post.reportType === 'ukentlig') {
+    query = query.eq('frequency', 'weekly')
+  }
+
+  const { data: subscribers } = await query
 
   if (!subscribers || subscribers.length === 0) {
     return NextResponse.json({ sent: 0, failed: 0, total: 0 })
@@ -77,6 +55,15 @@ export async function POST(request: NextRequest) {
   // Convert portable text to HTML
   const contentHtml = portableTextToHtml(post.content)
   const publishedDate = post.publishedAt ? formatDate(post.publishedAt) : formatDate(new Date().toISOString())
+
+  // Build report type label
+  const typeLabels: Record<string, string> = {
+    ukentlig: 'Ukentlig oppdatering',
+    manedlig: 'Månedlig rapport',
+    kvartal: 'Kvartalsrapport',
+    arsrapport: 'Årsrapport',
+  }
+  const reportLabel = typeLabels[post.reportType] || ''
 
   let sent = 0
   let failed = 0
@@ -88,15 +75,15 @@ export async function POST(request: NextRequest) {
       console.log(`[newsletter] Sending to ${subscriber.email}...`)
       await sendEmail({
         to: subscriber.email,
-        subject: `${post.title} — EIENDOM Trondheim ${bydel.name}`,
+        subject: `${post.title} — EIENDOM Trondheim`,
         react: NewsletterEmail({
           postTitle: post.title,
-          bydelName: bydel.name,
-          bydelEmoji: bydel.emoji || '',
-          bydelColor: bydel.color,
+          reportLabel,
+          reportPeriod: post.reportPeriod || '',
           contentHtml,
           publishedDate,
           unsubscribeUrl,
+          bydeler: post.bydeler || [],
         }),
       })
 

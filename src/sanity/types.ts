@@ -37,8 +37,8 @@ export type SiteSettings = {
 }
 
 export const reportTypeConfig: Record<ReportType, { label: string; emoji: string; color: string }> = {
-  ukentlig: { label: 'Ukentlig', emoji: '📊', color: '#155356' },
-  manedlig: { label: 'Månedlig', emoji: '📈', color: '#D7B180' },
-  kvartal: { label: 'Kvartalsrapport', emoji: '📋', color: '#002D32' },
-  arsrapport: { label: 'Årsrapport', emoji: '📑', color: '#7B5EA7' },
+  ukentlig: { label: 'Ukesrapport', emoji: '📊', color: '#155356' },
+  manedlig: { label: 'Månedsrapport', emoji: '📈', color: '#155356' },
+  kvartal: { label: 'Kvartalsrapport', emoji: '📋', color: '#155356' },
+  arsrapport: { label: 'Årsrapport', emoji: '📑', color: '#155356' },
 }

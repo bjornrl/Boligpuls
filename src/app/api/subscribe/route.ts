@@ -27,12 +27,12 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json()
-  const { email, name, bydeler, frequency } = body
+  const { email, name, frequency } = body
 
   // Validate
-  if (!email || !name || !bydeler || bydeler.length === 0) {
+  if (!email || !name) {
     return NextResponse.json(
-      { error: 'Navn, e-post og minst én bydel er påkrevd.' },
+      { error: 'Navn og e-post er påkrevd.' },
       { status: 400 }
     )
   }
@@ -72,33 +72,16 @@ export async function POST(request: NextRequest) {
 
     // Unconfirmed — update and resend
     if (!existing.confirmed) {
-      // Look up bydel IDs from slugs
-      const { data: bydelRows } = await supabase
-        .from('bydeler')
-        .select('id')
-        .in('slug', bydeler)
-
-      if (!bydelRows || bydelRows.length === 0) {
-        return NextResponse.json({ error: 'Ugyldige bydeler.' }, { status: 400 })
-      }
-
-      // Update subscriber
       await supabase
         .from('subscribers')
         .update({ name, frequency: frequency || 'weekly' })
         .eq('id', existing.id)
 
-      // Delete old bydel links and re-insert
-      await supabase.from('subscriber_bydeler').delete().eq('subscriber_id', existing.id)
-      await supabase.from('subscriber_bydeler').insert(
-        bydelRows.map((b) => ({ subscriber_id: existing.id, bydel_id: b.id }))
-      )
-
       const confirmUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/confirm?token=${existing.confirm_token}`
       try {
         await sendEmail({
           to: email,
-          subject: 'Bekreft e-postadressen din — Eiendom Trondheim',
+          subject: 'Bekreft e-postadressen din — EIENDOM Trondheim',
           react: ConfirmEmail({ name, confirmUrl }),
         })
       } catch (err) {
@@ -107,16 +90,6 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({ success: true })
     }
-  }
-
-  // Look up bydel IDs from slugs
-  const { data: bydelRows } = await supabase
-    .from('bydeler')
-    .select('id')
-    .in('slug', bydeler)
-
-  if (!bydelRows || bydelRows.length === 0) {
-    return NextResponse.json({ error: 'Ugyldige bydeler.' }, { status: 400 })
   }
 
   // Create subscriber
@@ -137,25 +110,16 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // Link bydeler
-  await supabase.from('subscriber_bydeler').insert(
-    bydelRows.map((b) => ({ subscriber_id: subscriber.id, bydel_id: b.id }))
-  )
-
   // Send confirmation email
   const confirmUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/confirm?token=${subscriber.confirm_token}`
-  console.log('[subscribe] About to send confirmation email to:', email)
-  console.log('[subscribe] confirmUrl:', confirmUrl)
   try {
     await sendEmail({
       to: email,
       subject: 'Bekreft e-postadressen din — EIENDOM Trondheim',
       react: ConfirmEmail({ name, confirmUrl }),
     })
-    console.log('[subscribe] Email sent successfully')
   } catch (err) {
     console.error('[subscribe] Failed to send confirmation email:', err)
-    // Still return success since subscriber was created
   }
 
   return NextResponse.json({ success: true })

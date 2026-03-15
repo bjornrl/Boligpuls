@@ -72,7 +72,7 @@ export default function ValuationForm() {
           Takk for henvendelsen
         </h2>
         <p className="mb-6" style={{ color: '#5F7A7D' }}>
-          Vi tar kontakt innen 1–2 virkedager.
+          Du hører fra meg snart!
         </p>
         <button
           onClick={() => router.push('/')}
@@ -105,15 +105,15 @@ export default function ValuationForm() {
               style={
                 requestType === type
                   ? {
-                      backgroundColor: '#DEE5E7',
-                      border: '2px solid #002D32',
-                      color: '#002D32',
-                    }
+                    backgroundColor: '#DEE5E7',
+                    border: '2px solid #002D32',
+                    color: '#002D32',
+                  }
                   : {
-                      backgroundColor: '#FFFFFF',
-                      border: '2px solid #D4DCDE',
-                      color: '#5F7A7D',
-                    }
+                    backgroundColor: '#FFFFFF',
+                    border: '2px solid #D4DCDE',
+                    color: '#5F7A7D',
+                  }
               }
             >
               <span className="flex items-center gap-2">

@@ -10,24 +10,30 @@ import {
   Preview,
 } from '@react-email/components'
 
+interface BydelRef {
+  name: string
+  slug: string
+  emoji: string
+}
+
 interface NewsletterEmailProps {
   postTitle: string
-  bydelName: string
-  bydelEmoji: string
-  bydelColor: string
+  reportLabel: string
+  reportPeriod: string
   contentHtml: string
   publishedDate: string
   unsubscribeUrl: string
+  bydeler: BydelRef[]
 }
 
 export default function NewsletterEmail({
   postTitle,
-  bydelName,
-  bydelEmoji,
-  bydelColor,
+  reportLabel,
+  reportPeriod,
   contentHtml,
   publishedDate,
   unsubscribeUrl,
+  bydeler,
 }: NewsletterEmailProps) {
   return (
     <Html>
@@ -39,25 +45,36 @@ export default function NewsletterEmail({
             <Text style={logo}>EIENDOM Trondheim</Text>
           </Section>
           <Section style={content}>
-            <Section style={{ textAlign: 'center' as const, marginBottom: '24px' }}>
-              <Text
-                style={{
-                  display: 'inline-block',
-                  backgroundColor: `${bydelColor}20`,
-                  color: bydelColor,
-                  borderRadius: '100px',
-                  padding: '6px 16px',
-                  fontSize: '14px',
-                  fontWeight: '600' as const,
-                  border: `1px solid ${bydelColor}30`,
-                  margin: '0',
-                }}
-              >
-                {bydelEmoji} {bydelName}
-              </Text>
-            </Section>
+            {reportLabel && (
+              <Section style={{ textAlign: 'center' as const, marginBottom: '16px' }}>
+                <Text
+                  style={{
+                    display: 'inline-block',
+                    backgroundColor: '#DEE5E7',
+                    color: '#155356',
+                    borderRadius: '100px',
+                    padding: '6px 16px',
+                    fontSize: '13px',
+                    fontWeight: '600' as const,
+                    margin: '0',
+                  }}
+                >
+                  {reportLabel}{reportPeriod ? ` — ${reportPeriod}` : ''}
+                </Text>
+              </Section>
+            )}
             <Text style={date}>{publishedDate}</Text>
             <Text style={title}>{postTitle}</Text>
+            {bydeler && bydeler.length > 0 && (
+              <Section style={{ marginBottom: '24px', textAlign: 'center' as const }}>
+                <Text style={{ fontSize: '13px', color: '#5F7A7D', margin: '0 0 8px' }}>
+                  <strong>I denne rapporten:</strong>
+                </Text>
+                <Text style={{ fontSize: '13px', color: '#155356', margin: '0' }}>
+                  {bydeler.map((b) => `${b.emoji} ${b.name}`).join(' · ')}
+                </Text>
+              </Section>
+            )}
             <div
               dangerouslySetInnerHTML={{ __html: contentHtml }}
               style={articleContent}
