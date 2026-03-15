@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
@@ -25,29 +26,35 @@ export default function OmPage() {
             style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
           >
             <div className="flex items-start gap-6 mb-6">
-              <div
-                className="w-20 h-20 rounded-xl flex items-center justify-center shrink-0"
-                style={{ backgroundColor: '#DEE5E7' }}
-              >
-                <span className="text-3xl">👋</span>
+              <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0">
+                <Image
+                  src="/fonts/profile-photo.jpg"
+                  alt="Martin Brandvik"
+                  width={80}
+                  height={80}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <h2
-                  className="text-xl mb-1"
+                  className="text-3xl mb-1"
                   style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
                 >
                   Martin Brandvik
                 </h2>
-                <p className="text-sm" style={{ color: '#5F7A7D' }}>
+                {/* <p className="text-sm" style={{ color: '#5F7A7D' }}>
                   Eiendomsmegler — Nordvik Bolig, Trondheim
-                </p>
+                </p> */}
               </div>
             </div>
 
             <div className="space-y-4" style={{ color: '#155356', lineHeight: 1.75 }}>
               <p>
-                Hei! Mitt navn er Martin Brandvik, og jeg jobber som eiendomsmegler hos Nordvik Bolig i Trondheim. Eiendom Trondheim er et prosjekt jeg har startet for å holde folk oppdatert på boligmarkedet i byen vår.
-              </p>
+                Hei! Jeg heter Martin Brandvik, og jobber hos Nordvik Bolig i Trondheim.
+
+                EIENDOM Trondheim startet som jevnlige oppdateringer av boligmarkedet over epost. Jeg tenkte det var greit å dele med alle som er interesserte.
+
+                Kanskje du skal selge snart og lurer på hva boligen din faktisk er verdt. Kanskje du bare syns boligmarkedet er interessant å følge med på. Uansett håper jeg dette nyhetsbrevet gjør det litt enklere for deg å være oppdatert.              </p>
               <p>
                 Jeg brenner for å gjøre boligmarkedet mer tilgjengelig og forståelig. Gjennom Eiendom Trondheim deler jeg oppdateringer, analyser og innsikt om prisutviklingen i de ulike bydelene — helt kostnadsfritt.
               </p>
@@ -134,7 +141,7 @@ export default function OmPage() {
                   className="px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
                   style={{ backgroundColor: '#002D32', color: '#FFFFFF' }}
                 >
-                  Be om vurdering
+                  Be om verdivurdering
                 </Link>
                 <Link
                   href="/nyhetsbrev"
