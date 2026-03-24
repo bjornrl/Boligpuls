@@ -30,3 +30,31 @@ export async function sendEmail({
   console.log('[sendEmail] Success:', JSON.stringify(data))
   return { data, error }
 }
+
+export async function sendEmailHtml({
+  to,
+  subject,
+  html,
+}: {
+  to: string
+  subject: string
+  html: string
+}) {
+  const from = process.env.RESEND_FROM_EMAIL || 'Eiendom Trondheim <onboarding@resend.dev>'
+  console.log('[sendEmailHtml] Sending HTML email:', { from, to, subject })
+
+  const { data, error } = await resend.emails.send({
+    from,
+    to: [to],
+    subject,
+    html,
+  })
+
+  if (error) {
+    console.error('[sendEmailHtml] Resend error:', JSON.stringify(error))
+    throw new Error(`Resend error: ${JSON.stringify(error)}`)
+  }
+
+  console.log('[sendEmailHtml] Success:', JSON.stringify(data))
+  return { data, error }
+}

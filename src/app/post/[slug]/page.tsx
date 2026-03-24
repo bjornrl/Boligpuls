@@ -6,6 +6,7 @@ import { postBySlugQuery } from '@/sanity/queries'
 import type { SanityPost } from '@/sanity/types'
 import { reportTypeConfig } from '@/sanity/types'
 import { formatDate } from '@/lib/utils'
+import { sanitizeNewsletter } from '@/lib/sanitize'
 import ReportTypeBadge from '@/components/ReportTypeBadge'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -111,9 +112,18 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 </div>
               )}
 
-              <div className="prose max-w-none" style={{ lineHeight: '1.85' }}>
-                <PortableText value={post.content} />
-              </div>
+              {post.contentMode === 'html' && post.htmlContent ? (
+                <iframe
+                  srcDoc={sanitizeNewsletter(post.htmlContent)}
+                  style={{ width: '100%', minHeight: '80vh', border: 'none' }}
+                  title={post.title}
+                  sandbox="allow-same-origin allow-popups"
+                />
+              ) : (
+                <div className="prose max-w-none" style={{ lineHeight: '1.85' }}>
+                  <PortableText value={post.content} />
+                </div>
+              )}
             </div>
           </div>
         </article>

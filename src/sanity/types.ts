@@ -11,11 +11,15 @@ export type SanityBydel = {
 
 export type ReportType = 'ukentlig' | 'manedlig' | 'kvartal' | 'arsrapport'
 
+export type ContentMode = 'portable-text' | 'html'
+
 export type SanityPost = {
   _id: string
   title: string
   slug: string
   excerpt: string
+  contentMode?: ContentMode
+  htmlContent?: string
   content: PortableTextBlock[]
   reportType: ReportType
   reportPeriod?: string

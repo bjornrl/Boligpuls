@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { sendEmail } from '@/lib/resend'
+import { sendEmail, sendEmailHtml } from '@/lib/resend'
 import { formatDate } from '@/lib/utils'
 import { sanityClient } from '@/sanity/client'
 import { postByIdQuery } from '@/sanity/queries'
@@ -52,8 +52,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ sent: 0, failed: 0, total: 0 })
   }
 
-  // Convert portable text to HTML
-  const contentHtml = portableTextToHtml(post.content)
+  // Get HTML content — either directly from htmlContent or convert from portable text
+  const isHtmlMode = post.contentMode === 'html' && post.htmlContent
+  const contentHtml = isHtmlMode ? post.htmlContent! : portableTextToHtml(post.content)
   const publishedDate = post.publishedAt ? formatDate(post.publishedAt) : formatDate(new Date().toISOString())
 
   // Build report type label
@@ -73,19 +74,40 @@ export async function POST(request: NextRequest) {
 
     try {
       console.log(`[newsletter] Sending to ${subscriber.email}...`)
-      await sendEmail({
-        to: subscriber.email,
-        subject: `${post.title} — EIENDOM Trondheim`,
-        react: NewsletterEmail({
-          postTitle: post.title,
-          reportLabel,
-          reportPeriod: post.reportPeriod || '',
-          contentHtml,
-          publishedDate,
-          unsubscribeUrl,
-          bydeler: post.bydeler || [],
-        }),
-      })
+
+      if (isHtmlMode) {
+        // For HTML content, send the raw HTML directly with footer appended
+        const footer = `
+          <hr style="border: none; border-top: 1px solid #E8ECEE; margin: 32px 0;" />
+          <div style="text-align: center; padding: 20px 0; font-family: Arial, sans-serif;">
+            <p style="font-size: 13px; color: #9BAFB2; margin: 0 0 8px;">
+              <a href="${process.env.NEXT_PUBLIC_BASE_URL}" style="color: #155356;">eiendomtrondheim.no</a>
+            </p>
+            <p style="font-size: 12px; color: #9BAFB2; margin: 0;">
+              <a href="${unsubscribeUrl}" style="color: #9BAFB2;">Avmeld nyhetsbrev</a>
+            </p>
+          </div>
+        `
+        await sendEmailHtml({
+          to: subscriber.email,
+          subject: `${post.title} — EIENDOM Trondheim`,
+          html: contentHtml + footer,
+        })
+      } else {
+        await sendEmail({
+          to: subscriber.email,
+          subject: `${post.title} — EIENDOM Trondheim`,
+          react: NewsletterEmail({
+            postTitle: post.title,
+            reportLabel,
+            reportPeriod: post.reportPeriod || '',
+            contentHtml,
+            publishedDate,
+            unsubscribeUrl,
+            bydeler: post.bydeler || [],
+          }),
+        })
+      }
 
       await admin.from('newsletter_sends').insert({
         sanity_post_id: postId,

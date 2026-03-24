@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { HtmlUploader } from '../components/HtmlUploader'
 
 export const post = defineType({
   name: 'post',
@@ -47,9 +48,33 @@ export const post = defineType({
       validation: (rule) => rule.required().error('Sammendrag er påkrevd'),
     }),
     defineField({
+      name: 'contentMode',
+      title: 'Innholdstype',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Rik tekst (Portable Text)', value: 'portable-text' },
+          { title: 'HTML', value: 'html' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'html',
+      description: 'Velg om innholdet er skrevet i Studio (rik tekst) eller lastet opp som HTML.',
+    }),
+    defineField({
+      name: 'htmlContent',
+      title: 'HTML-innhold',
+      type: 'text',
+      components: {
+        input: HtmlUploader,
+      },
+      hidden: ({ parent }) => parent?.contentMode !== 'html',
+    }),
+    defineField({
       name: 'content',
-      title: 'Innhold',
+      title: 'Innhold (rik tekst)',
       type: 'array',
+      hidden: ({ parent }) => parent?.contentMode === 'html',
       of: [
         {
           type: 'block',
