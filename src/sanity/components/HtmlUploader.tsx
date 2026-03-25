@@ -1,11 +1,15 @@
 'use client'
 
 import { useCallback, useState } from 'react'
-import { set, unset } from 'sanity'
+import { set, unset, type FormPatch, type PatchEvent } from 'sanity'
 import { Stack, Card, Button, Text, TextArea, Flex } from '@sanity/ui'
 
-export function HtmlUploader(props: any) {
-  const { onChange, value = '' } = props
+interface HtmlUploaderProps {
+  value?: string
+  onChange: (patch: FormPatch | FormPatch[] | PatchEvent) => void
+}
+
+export function HtmlUploader({ onChange, value = '' }: HtmlUploaderProps) {
   const [preview, setPreview] = useState(false)
 
   const handleFileUpload = useCallback(
