@@ -29,6 +29,7 @@ export const post = defineType({
           { title: 'Månedlig rapport', value: 'manedlig' },
           { title: 'Kvartalsrapport', value: 'kvartal' },
           { title: 'Årsrapport', value: 'arsrapport' },
+          { title: 'Lokalmarkedet', value: 'lokalmarkedet' },
         ],
       },
       validation: (rule) => rule.required().error('Velg en rapporttype'),
@@ -60,6 +61,21 @@ export const post = defineType({
       },
       initialValue: 'html',
       description: 'Velg om innholdet er skrevet i Studio (rik tekst) eller lastet opp som HTML.',
+    }),
+    defineField({
+      name: 'contentFormat',
+      title: 'HTML-format',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Ren HTML', value: 'html' },
+          { title: 'MJML (anbefalt for e-post)', value: 'mjml' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'mjml',
+      hidden: ({ parent }) => parent?.contentMode !== 'html',
+      description: 'MJML kompileres automatisk til e-postvennlig HTML som fungerer i alle e-postklienter.',
     }),
     defineField({
       name: 'htmlContent',
@@ -201,6 +217,7 @@ export const post = defineType({
         manedlig: '📈 Månedlig',
         kvartal: '📋 Kvartal',
         arsrapport: '📑 Årsrapport',
+        lokalmarkedet: '🏠 Lokalmarkedet',
       }
       return {
         title,

@@ -3,8 +3,9 @@ import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendEmail, sendEmailHtml } from '@/lib/resend'
 import { formatDate } from '@/lib/utils'
-import { sanityClient } from '@/sanity/client'
+import { sanityWriteClient } from '@/sanity/client'
 import { postByIdQuery } from '@/sanity/queries'
+import mjml2html from 'mjml'
 import { portableTextToHtml } from '@/sanity/portableTextToHtml'
 import type { SanityPost } from '@/sanity/types'
 import NewsletterEmail from '@/emails/NewsletterEmail'
@@ -19,13 +20,14 @@ export async function POST(request: NextRequest) {
   }
 
   const { postId } = await request.json()
+  console.log('[newsletter] Send request received, postId:', postId)
 
   if (!postId) {
     return NextResponse.json({ error: 'postId er påkrevd' }, { status: 400 })
   }
 
-  // Fetch post from Sanity
-  const post = await sanityClient.fetch<SanityPost | null>(postByIdQuery, { id: postId })
+  // Fetch post from Sanity (use write client for fresh, non-CDN data)
+  const post = await sanityWriteClient.fetch<SanityPost | null>(postByIdQuery, { id: postId })
 
   if (!post) {
     return NextResponse.json({ error: 'Innlegg ikke funnet' }, { status: 404 })
@@ -46,7 +48,8 @@ export async function POST(request: NextRequest) {
     query = query.eq('frequency', 'weekly')
   }
 
-  const { data: subscribers } = await query
+  const { data: subscribers, error: subscriberError } = await query
+  console.log('[newsletter] Found subscribers:', subscribers?.length ?? 0, 'error:', subscriberError)
 
   if (!subscribers || subscribers.length === 0) {
     return NextResponse.json({ sent: 0, failed: 0, total: 0 })
@@ -54,7 +57,23 @@ export async function POST(request: NextRequest) {
 
   // Get HTML content — either directly from htmlContent or convert from portable text
   const isHtmlMode = post.contentMode === 'html' && post.htmlContent
-  const contentHtml = isHtmlMode ? post.htmlContent! : portableTextToHtml(post.content)
+  let contentHtml: string
+  if (isHtmlMode) {
+    const raw = post.htmlContent!
+    // Compile MJML to HTML if content is MJML format
+    if (post.contentFormat === 'mjml' || raw.trim().startsWith('<mjml>') || raw.trim().startsWith('<mjml ')) {
+      console.log('[newsletter] Compiling MJML to HTML...')
+      const mjmlResult = mjml2html(raw)
+      if (mjmlResult.errors?.length) {
+        console.warn('[newsletter] MJML warnings:', mjmlResult.errors)
+      }
+      contentHtml = mjmlResult.html
+    } else {
+      contentHtml = raw
+    }
+  } else {
+    contentHtml = portableTextToHtml(post.content)
+  }
   const publishedDate = post.publishedAt ? formatDate(post.publishedAt) : formatDate(new Date().toISOString())
 
   // Build report type label
@@ -63,6 +82,7 @@ export async function POST(request: NextRequest) {
     manedlig: 'Månedlig rapport',
     kvartal: 'Kvartalsrapport',
     arsrapport: 'Årsrapport',
+    lokalmarkedet: 'Lokalmarkedet',
   }
   const reportLabel = typeLabels[post.reportType] || ''
 
@@ -76,7 +96,7 @@ export async function POST(request: NextRequest) {
       console.log(`[newsletter] Sending to ${subscriber.email}...`)
 
       if (isHtmlMode) {
-        // For HTML content, send the raw HTML directly with footer appended
+        // For HTML content, send the raw HTML directly with footer injected
         const footer = `
           <hr style="border: none; border-top: 1px solid #E8ECEE; margin: 32px 0;" />
           <div style="text-align: center; padding: 20px 0; font-family: Arial, sans-serif;">
@@ -88,10 +108,17 @@ export async function POST(request: NextRequest) {
             </p>
           </div>
         `
+        // Insert footer before </body> if present (MJML-compiled), otherwise append
+        let emailHtml: string
+        if (contentHtml.includes('</body>')) {
+          emailHtml = contentHtml.replace('</body>', footer + '</body>')
+        } else {
+          emailHtml = contentHtml + footer
+        }
         await sendEmailHtml({
           to: subscriber.email,
           subject: `${post.title} — EIENDOM Trondheim`,
-          html: contentHtml + footer,
+          html: emailHtml,
         })
       } else {
         await sendEmail({

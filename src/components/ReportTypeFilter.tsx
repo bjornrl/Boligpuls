@@ -13,6 +13,7 @@ const filterOptions: { label: string; value: ReportType | null }[] = [
   { label: 'Månedsrapport', value: 'manedlig' },
   { label: 'Kvartalsrapport', value: 'kvartal' },
   { label: 'Årsrapport', value: 'arsrapport' },
+  { label: 'Lokalmarkedet', value: 'lokalmarkedet' },
 ]
 
 const activeColor = '#155356'

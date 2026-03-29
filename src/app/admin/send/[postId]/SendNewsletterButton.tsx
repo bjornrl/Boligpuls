@@ -15,6 +15,7 @@ export default function SendNewsletterButton({
 
   const handleSend = async () => {
     if (!confirm(`Vil du sende nyhetsbrevet til ${subscriberCount} abonnenter?`)) return
+    console.log('Sending newsletter for post:', postId)
     setSending(true)
 
     try {
@@ -25,6 +26,7 @@ export default function SendNewsletterButton({
       })
 
       const data = await res.json()
+      console.log('Newsletter send response:', res.status, data)
       if (res.ok) {
         setResult(data)
       } else {

@@ -6,6 +6,7 @@ import { postBySlugQuery } from '@/sanity/queries'
 import type { SanityPost } from '@/sanity/types'
 import { reportTypeConfig } from '@/sanity/types'
 import { formatDate } from '@/lib/utils'
+import mjml2html from 'mjml'
 import { sanitizeNewsletter } from '@/lib/sanitize'
 import ReportTypeBadge from '@/components/ReportTypeBadge'
 import Header from '@/components/Header'
@@ -29,6 +30,14 @@ export default async function PostPage({ params }: { params: { slug: string } })
   if (!post) notFound()
 
   const config = reportTypeConfig[post.reportType]
+
+  // Compile MJML to HTML if needed for display
+  let displayHtml: string | undefined
+  if (post.contentMode === 'html' && post.htmlContent) {
+    const raw = post.htmlContent
+    const isMjml = post.contentFormat === 'mjml' || raw.trim().startsWith('<mjml>') || raw.trim().startsWith('<mjml ')
+    displayHtml = isMjml ? mjml2html(raw).html : raw
+  }
 
   // Extract bydel sections from content for table of contents
   const bydelSections = (post.content || [])
@@ -112,9 +121,9 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 </div>
               )}
 
-              {post.contentMode === 'html' && post.htmlContent ? (
+              {displayHtml ? (
                 <iframe
-                  srcDoc={sanitizeNewsletter(post.htmlContent)}
+                  srcDoc={sanitizeNewsletter(displayHtml)}
                   style={{ width: '100%', minHeight: '80vh', border: 'none' }}
                   title={post.title}
                   sandbox="allow-same-origin allow-popups"
