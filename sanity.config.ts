@@ -11,7 +11,21 @@ export default defineConfig({
   dataset: 'production',
   basePath: '/studio',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    structureTool({
+      structure: (S) =>
+        S.list()
+          .title('Innhold')
+          .items([
+            S.documentTypeListItem('post').title('Rapporter'),
+            S.documentTypeListItem('localReport').title('Lokalrapporter'),
+            S.divider(),
+            S.documentTypeListItem('bydel').title('Bydeler'),
+            S.documentTypeListItem('siteSettings').title('Innstillinger'),
+          ]),
+    }),
+    visionTool(),
+  ],
 
   schema: {
     types: schemaTypes,

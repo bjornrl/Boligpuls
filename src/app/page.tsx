@@ -3,14 +3,15 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import HomeContent from '@/components/HomeContent'
 import { sanityClient } from '@/sanity/client'
-import { allPostsQuery, siteSettingsQuery } from '@/sanity/queries'
-import type { SanityPost, SiteSettings } from '@/sanity/types'
+import { allPostsQuery, allLocalReportsQuery, siteSettingsQuery } from '@/sanity/queries'
+import type { SanityPost, SanityLocalReport, SiteSettings } from '@/sanity/types'
 
 export const revalidate = 60
 
 export default async function HomePage() {
-  const [posts, settings] = await Promise.all([
+  const [posts, localReports, settings] = await Promise.all([
     sanityClient.fetch<SanityPost[]>(allPostsQuery),
+    sanityClient.fetch<SanityLocalReport[]>(allLocalReportsQuery),
     sanityClient.fetch<SiteSettings | null>(siteSettingsQuery),
   ])
 
@@ -48,17 +49,18 @@ export default async function HomePage() {
               </svg>
               <span className="text-sm">Markedsrapporter for Trondheim</span>
             </div>
-            <Link
-              href="/nyhetsbrev"
-              className="inline-block px-8 py-3 rounded-xl text-base font-medium transition-colors"
-              style={{ backgroundColor: '#D7B180', color: '#002D32' }}
-            >
-              Abonner
-            </Link>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Link href="/nyhetsbrev" className="btn-accent px-8 py-3 text-base">
+                Abonner
+              </Link>
+              <Link href="/vurdering" className="btn-outline-hero px-8 py-3 text-base">
+                Be om verdivurdering
+              </Link>
+            </div>
           </div>
         </section>
 
-        <HomeContent posts={posts || []} />
+        <HomeContent posts={posts || []} localReports={localReports || []} />
       </main>
       <Footer />
     </>

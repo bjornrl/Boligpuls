@@ -24,8 +24,8 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-medium mb-3" style={{ fontFamily: '"Basel Grotesk", system-ui, sans-serif' }}>Om oss</h4>
             <p className="text-sm" style={{ color: '#9BAFB2' }}>
-              EIENDOM Trondheim leverer nyhetsbrev om boligmarkedet
-              i Trondheims bydeler.
+              EIENDOM Trondheim leverer rapporter og analyser
+              om boligmarkedet i Trondheim.
             </p>
           </div>
         </div>

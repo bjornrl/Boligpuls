@@ -88,8 +88,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2.5 rounded-xl text-sm font-medium text-white transition-colors disabled:opacity-50"
-                style={{ backgroundColor: '#002D32' }}
+                className="btn-primary w-full py-2.5 text-sm disabled:opacity-50"
               >
                 {loading ? 'Logger inn...' : 'Logg inn'}
               </button>

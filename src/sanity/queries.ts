@@ -1,6 +1,6 @@
 import { groq } from 'next-sanity'
 
-// All published posts
+// All published posts (rapporter)
 export const allPostsQuery = groq`
   *[_type == "post" && defined(publishedAt)] | order(publishedAt desc) {
     _id,
@@ -16,8 +16,7 @@ export const allPostsQuery = groq`
     isNewsletter,
     publishedAt,
     seoTitle,
-    seoDescription,
-    "bydeler": bydeler[]->{ _id, name, "slug": slug.current, emoji, color }
+    seoDescription
   }
 `
 
@@ -37,8 +36,7 @@ export const postBySlugQuery = groq`
     isNewsletter,
     publishedAt,
     seoTitle,
-    seoDescription,
-    "bydeler": bydeler[]->{ _id, name, "slug": slug.current, emoji, color }
+    seoDescription
   }
 `
 
@@ -56,8 +54,7 @@ export const postByIdQuery = groq`
     reportType,
     reportPeriod,
     isNewsletter,
-    publishedAt,
-    "bydeler": bydeler[]->{ _id, name, "slug": slug.current, emoji, color }
+    publishedAt
   }
 `
 
@@ -82,6 +79,37 @@ export const bydelBySlugQuery = groq`
     emoji,
     color,
     description
+  }
+`
+
+// All published local reports
+export const allLocalReportsQuery = groq`
+  *[_type == "localReport" && defined(publishedAt)] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    address,
+    location,
+    excerpt,
+    searchTerms,
+    publishedAt
+  }
+`
+
+// Single local report by slug
+export const localReportBySlugQuery = groq`
+  *[_type == "localReport" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    address,
+    location,
+    excerpt,
+    contentMode,
+    htmlContent,
+    content,
+    publishedAt,
+    seo
   }
 `
 

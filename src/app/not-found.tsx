@@ -10,7 +10,7 @@ export default function NotFound() {
       <p className="mb-6" style={{ color: '#5F7A7D' }}>
         Beklager, vi kunne ikke finne siden du leter etter.
       </p>
-      <Link href="/" className="font-medium" style={{ color: '#155356' }}>
+      <Link href="/" className="link-inline">
         Tilbake til forsiden &rarr;
       </Link>
     </div>

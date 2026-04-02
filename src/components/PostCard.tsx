@@ -45,7 +45,7 @@ export default function PostCard({ post }: { post: SanityPost }) {
         </p>
         <Link
           href={`/post/${post.slug}`}
-          className="inline-block text-sm font-medium transition-colors"
+          className="link-arrow inline-block text-sm font-medium opacity-90 hover:opacity-100"
           style={{ color: config.color }}
         >
           Les mer &rarr;

@@ -89,12 +89,11 @@ export default function NewsletterForm() {
               key={f}
               type="button"
               onClick={() => setFrequency(f)}
-              className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
-              style={
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                 frequency === f
-                  ? { backgroundColor: '#002D32', color: '#FFFFFF' }
-                  : { backgroundColor: '#FFFFFF', color: '#5F7A7D', border: '1.5px solid #D4DCDE' }
-              }
+                  ? 'btn-primary px-4 py-2 text-sm'
+                  : 'border border-[#D4DCDE] bg-white text-[#5F7A7D] hover:border-[#9BAFB2] hover:bg-[#FAFAF9]'
+              }`}
             >
               {f === 'weekly' ? 'Ukentlig' : 'Månedlig'}
             </button>
@@ -110,8 +109,7 @@ export default function NewsletterForm() {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full py-3 rounded-xl text-sm font-medium text-white transition-colors disabled:opacity-50"
-        style={{ backgroundColor: '#D7B180', color: '#002D32' }}
+        className="btn-accent w-full py-3 text-sm disabled:opacity-50"
       >
         {status === 'loading' ? 'Registrerer...' : 'Abonner'}
       </button>

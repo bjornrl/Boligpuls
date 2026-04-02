@@ -133,19 +133,11 @@ export default function OmPage() {
               <p className="text-sm mb-4" style={{ color: '#5F7A7D' }}>
                 Trenger du hjelp med kjøp eller salg av bolig? Jeg hjelper deg gjerne.
               </p>
-              <div className="flex gap-3">
-                <Link
-                  href="/vurdering"
-                  className="px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
-                  style={{ backgroundColor: '#002D32', color: '#FFFFFF' }}
-                >
+              <div className="flex flex-wrap gap-3">
+                <Link href="/vurdering" className="btn-primary px-5 py-2.5 text-sm">
                   Be om verdivurdering
                 </Link>
-                <Link
-                  href="/nyhetsbrev"
-                  className="px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
-                  style={{ backgroundColor: '#DEE5E7', color: '#002D32' }}
-                >
+                <Link href="/nyhetsbrev" className="btn-secondary px-5 py-2.5 text-sm">
                   Abonner på nyhetsbrev
                 </Link>
               </div>

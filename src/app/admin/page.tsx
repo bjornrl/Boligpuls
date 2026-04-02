@@ -10,9 +10,10 @@ export const metadata = { title: 'Admin — Eiendom Trondheim' }
 export default async function AdminPage() {
   const supabase = createServerSupabaseClient()
 
-  const postCount = await sanityClient.fetch<number>(
-    groq`count(*[_type == "post" && defined(publishedAt)])`
-  )
+  const [postCount, localReportCount] = await Promise.all([
+    sanityClient.fetch<number>(groq`count(*[_type == "post" && defined(publishedAt)])`),
+    sanityClient.fetch<number>(groq`count(*[_type == "localReport" && defined(publishedAt)])`),
+  ])
 
   const [
     { count: confirmedCount },
@@ -38,6 +39,7 @@ export default async function AdminPage() {
       <StatsCards
         stats={[
           { label: 'Publiserte rapporter', value: postCount || 0, color: '#155356' },
+          { label: 'Lokalrapporter', value: localReportCount || 0, color: '#D7B180' },
           { label: 'Totalt abonnenter', value: confirmedCount || 0 },
           { label: 'Ukentlige', value: weeklyCount || 0, color: '#155356' },
           { label: 'Månedlige', value: monthlyCount || 0, color: '#D7B180' },

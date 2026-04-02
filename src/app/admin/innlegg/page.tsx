@@ -21,11 +21,7 @@ export default async function AdminInnleggPage() {
         >
           Innlegg
         </h1>
-        <Link
-          href="/studio/structure/post"
-          className="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
-          style={{ backgroundColor: '#D7B180', color: '#002D32' }}
-        >
+        <Link href="/studio/structure/post" className="btn-accent px-4 py-2 text-sm">
           Nytt innlegg i Studio
         </Link>
       </div>

@@ -29,20 +29,6 @@ export async function GET(request: NextRequest) {
     .update({ confirmed: true })
     .eq('id', subscriber.id)
 
-  // Get bydeler for welcome email
-  const { data: subscriberBydeler } = await supabase
-    .from('subscriber_bydeler')
-    .select('bydeler(name, emoji)')
-    .eq('subscriber_id', subscriber.id)
-
-  const bydeler = (subscriberBydeler || []).map((sb: unknown) => {
-    const item = sb as { bydeler: { name: string; emoji: string } | null }
-    return {
-      name: item.bydeler?.name || '',
-      emoji: item.bydeler?.emoji || '',
-    }
-  })
-
   // Send welcome email
   try {
     await sendEmail({
@@ -50,7 +36,6 @@ export async function GET(request: NextRequest) {
       subject: 'Velkommen til EIENDOM Trondheim!',
       react: WelcomeEmail({
         name: subscriber.name,
-        bydeler,
         frequency: subscriber.frequency,
       }),
     })

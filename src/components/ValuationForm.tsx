@@ -75,9 +75,9 @@ export default function ValuationForm() {
           Du hører fra meg snart!
         </p>
         <button
+          type="button"
           onClick={() => router.push('/')}
-          className="px-6 py-3 rounded-xl text-sm font-medium transition-colors"
-          style={{ backgroundColor: '#DEE5E7', color: '#002D32' }}
+          className="btn-secondary px-6 py-3 text-sm"
         >
           Tilbake til oppdateringer
         </button>
@@ -101,7 +101,9 @@ export default function ValuationForm() {
               key={type}
               type="button"
               onClick={() => setRequestType(type)}
-              className="p-4 rounded-xl text-sm font-medium transition-all text-left"
+              className={`p-4 rounded-xl text-sm font-medium transition-all duration-200 text-left ${
+                requestType !== type ? 'hover:border-[#9BAFB2] hover:bg-[#FAFAFA]' : ''
+              }`}
               style={
                 requestType === type
                   ? {
@@ -213,10 +215,7 @@ export default function ValuationForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full mt-6 py-3.5 rounded-xl text-sm font-medium transition-all text-white"
-          style={{
-            backgroundColor: isSubmitting ? '#D4DCDE' : '#002D32',
-          }}
+          className="btn-primary w-full mt-6 py-3.5 text-sm text-white disabled:bg-[#D4DCDE] disabled:text-[#5F7A7D] disabled:opacity-100 disabled:shadow-none disabled:hover:translate-y-0 disabled:hover:bg-[#D4DCDE] disabled:hover:shadow-none"
         >
           {isSubmitting ? 'Sender...' : 'Send forespørsel'}
         </button>

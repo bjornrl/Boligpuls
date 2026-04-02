@@ -9,7 +9,7 @@ export type SanityBydel = {
   description?: string
 }
 
-export type ReportType = 'ukentlig' | 'manedlig' | 'kvartal' | 'arsrapport' | 'lokalmarkedet'
+export type ReportType = 'ukentlig' | 'manedlig' | 'kvartal' | 'arsrapport'
 
 export type ContentMode = 'portable-text' | 'html'
 export type ContentFormat = 'html' | 'mjml'
@@ -30,8 +30,22 @@ export type SanityPost = {
   seoTitle?: string
   seoDescription?: string
   bydeler?: SanityBydel[]
-  // Deprecated
   bydel?: SanityBydel
+}
+
+export type SanityLocalReport = {
+  _id: string
+  title: string
+  slug: string
+  address: string
+  location?: { lat: number; lng: number }
+  excerpt?: string
+  contentMode?: ContentMode
+  htmlContent?: string
+  content?: PortableTextBlock[]
+  searchTerms?: string[]
+  publishedAt: string
+  seo?: { metaTitle?: string; metaDescription?: string }
 }
 
 export type SiteSettings = {
@@ -43,9 +57,8 @@ export type SiteSettings = {
 }
 
 export const reportTypeConfig: Record<ReportType, { label: string; emoji: string; color: string }> = {
-  ukentlig: { label: 'Ukesrapport', emoji: '📊', color: '#155356' },
-  manedlig: { label: 'Månedsrapport', emoji: '📈', color: '#155356' },
-  kvartal: { label: 'Kvartalsrapport', emoji: '📋', color: '#155356' },
-  arsrapport: { label: 'Årsrapport', emoji: '📑', color: '#155356' },
-  lokalmarkedet: { label: 'Lokalmarkedet', emoji: '🏠', color: '#155356' },
+  ukentlig: { label: 'Ukentlig', emoji: '📊', color: '#155356' },
+  manedlig: { label: 'Månedlig', emoji: '📈', color: '#D7B180' },
+  kvartal: { label: 'Kvartalsrapport', emoji: '📋', color: '#002D32' },
+  arsrapport: { label: 'Årsrapport', emoji: '📑', color: '#7B5EA7' },
 }

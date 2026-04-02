@@ -29,7 +29,6 @@ export const post = defineType({
           { title: 'Månedlig rapport', value: 'manedlig' },
           { title: 'Kvartalsrapport', value: 'kvartal' },
           { title: 'Årsrapport', value: 'arsrapport' },
-          { title: 'Lokalmarkedet', value: 'lokalmarkedet' },
         ],
       },
       validation: (rule) => rule.required().error('Velg en rapporttype'),
@@ -217,7 +216,6 @@ export const post = defineType({
         manedlig: '📈 Månedlig',
         kvartal: '📋 Kvartal',
         arsrapport: '📑 Årsrapport',
-        lokalmarkedet: '🏠 Lokalmarkedet',
       }
       return {
         title,

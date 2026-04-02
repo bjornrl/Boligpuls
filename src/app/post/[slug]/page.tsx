@@ -6,9 +6,9 @@ import { postBySlugQuery } from '@/sanity/queries'
 import type { SanityPost } from '@/sanity/types'
 import { reportTypeConfig } from '@/sanity/types'
 import { formatDate } from '@/lib/utils'
-import mjml2html from 'mjml'
-import { sanitizeNewsletter } from '@/lib/sanitize'
+import { compileMjml } from '@/lib/mjml'
 import ReportTypeBadge from '@/components/ReportTypeBadge'
+import { SanitizedNewsletterHtml } from '@/components/SanitizedNewsletterHtml'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
@@ -36,23 +36,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
   if (post.contentMode === 'html' && post.htmlContent) {
     const raw = post.htmlContent
     const isMjml = post.contentFormat === 'mjml' || raw.trim().startsWith('<mjml>') || raw.trim().startsWith('<mjml ')
-    displayHtml = isMjml ? mjml2html(raw).html : raw
+    displayHtml = isMjml ? await compileMjml(raw) : raw
   }
-
-  // Extract bydel sections from content for table of contents
-  const bydelSections = (post.content || [])
-    .filter((block) => block._type === 'bydelSection')
-    .map((block) => {
-      const section = block as unknown as {
-        bydel?: { name?: string; emoji?: string; slug?: string }
-      }
-      return {
-        name: section.bydel?.name || '',
-        emoji: section.bydel?.emoji || '',
-        slug: section.bydel?.slug || '',
-      }
-    })
-    .filter((s) => s.slug)
 
   return (
     <>
@@ -98,36 +83,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 {post.title}
               </h1>
 
-              {bydelSections.length > 0 && (
-                <div
-                  className="rounded-xl p-4 mb-8"
-                  style={{ backgroundColor: '#F8F7F5', border: '1px solid #E8ECEE' }}
-                >
-                  <p className="text-sm font-medium mb-2" style={{ color: '#002D32' }}>
-                    Hopp til bydel:
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {bydelSections.map((s) => (
-                      <a
-                        key={s.slug}
-                        href={`#${s.slug}`}
-                        className="text-xs font-medium px-3 py-1.5 rounded-lg transition-colors hover:opacity-80"
-                        style={{ backgroundColor: '#DEE5E7', color: '#155356' }}
-                      >
-                        {s.emoji} {s.name}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               {displayHtml ? (
-                <iframe
-                  srcDoc={sanitizeNewsletter(displayHtml)}
-                  style={{ width: '100%', minHeight: '80vh', border: 'none' }}
-                  title={post.title}
-                  sandbox="allow-same-origin allow-popups"
-                />
+                <SanitizedNewsletterHtml html={displayHtml} />
               ) : (
                 <div className="prose max-w-none" style={{ lineHeight: '1.85' }}>
                   <PortableText value={post.content} />

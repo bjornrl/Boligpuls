@@ -101,12 +101,11 @@ export default function SubscribeForm() {
               key={f}
               type="button"
               onClick={() => setFrequency(f)}
-              className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
-              style={
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                 frequency === f
-                  ? { backgroundColor: '#002D32', color: '#FFFFFF' }
-                  : { backgroundColor: '#FFFFFF', color: '#5F7A7D', border: '1.5px solid #D4DCDE' }
-              }
+                  ? 'btn-primary px-4 py-2 text-sm'
+                  : 'border border-[#D4DCDE] bg-white text-[#5F7A7D] hover:border-[#9BAFB2] hover:bg-[#FAFAF9]'
+              }`}
             >
               {f === 'weekly' ? 'Ukentlig' : 'Månedlig'}
             </button>
@@ -122,7 +121,9 @@ export default function SubscribeForm() {
               key={bydel.id}
               type="button"
               onClick={() => toggleBydel(bydel.id)}
-              className="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                !selectedBydeler.includes(bydel.id) ? 'hover:border-[#9BAFB2] hover:bg-[#FAFAF9]' : ''
+              }`}
               style={
                 selectedBydeler.includes(bydel.id)
                   ? { backgroundColor: bydel.color, color: '#FFFFFF', border: `2px solid ${bydel.color}` }
@@ -138,8 +139,7 @@ export default function SubscribeForm() {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
-        style={{ backgroundColor: '#D7B180', color: '#002D32' }}
+        className="btn-accent w-full py-3 text-sm disabled:opacity-50"
       >
         {status === 'loading' ? 'Registrerer...' : 'Abonner'}
       </button>

@@ -44,7 +44,7 @@ export default async function BekreftPage({
           </p>
         </>
       )}
-      <Link href="/" className="font-medium" style={{ color: '#155356' }}>
+      <Link href="/" className="link-inline">
         Tilbake til forsiden &rarr;
       </Link>
     </div>

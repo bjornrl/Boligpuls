@@ -11,11 +11,10 @@ import {
 
 interface WelcomeEmailProps {
   name: string
-  bydeler: { name: string; emoji: string }[]
   frequency: string
 }
 
-export default function WelcomeEmail({ name, bydeler, frequency }: WelcomeEmailProps) {
+export default function WelcomeEmail({ name, frequency }: WelcomeEmailProps) {
   return (
     <Html>
       <Head />
@@ -28,18 +27,11 @@ export default function WelcomeEmail({ name, bydeler, frequency }: WelcomeEmailP
           <Section style={content}>
             <Text style={heading}>Velkommen, {name}!</Text>
             <Text style={paragraph}>
-              Du er nå påmeldt nyhetsbrev for disse bydelene:
+              Du er nå påmeldt nyhetsbrev fra EIENDOM Trondheim.
             </Text>
-            <Section style={bydelList}>
-              {bydeler.map((bydel, i) => (
-                <Text key={i} style={bydelItem}>
-                  {bydel.emoji} {bydel.name}
-                </Text>
-              ))}
-            </Section>
             <Text style={paragraph}>
               Du vil motta {frequency === 'weekly' ? 'ukentlige' : 'månedlige'} oppdateringer
-              om boligmarkedet i dine valgte bydeler.
+              om boligmarkedet i Trondheim, inkludert kvartals- og årsrapporter.
             </Text>
           </Section>
           <Hr style={hr} />
@@ -100,19 +92,6 @@ const paragraph = {
   lineHeight: '1.6',
   color: '#155356',
   marginBottom: '16px',
-}
-
-const bydelList = {
-  backgroundColor: '#DEE5E7',
-  borderRadius: '10px',
-  padding: '16px 20px',
-  marginBottom: '16px',
-}
-
-const bydelItem = {
-  fontSize: '15px',
-  color: '#002D32',
-  margin: '4px 0',
 }
 
 const hr = {

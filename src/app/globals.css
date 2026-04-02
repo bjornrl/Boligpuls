@@ -64,3 +64,93 @@ h1, h2, h3, h4 {
 .prose strong { @apply font-bold; color: var(--color-primary); }
 .prose a { color: var(--color-secondary); text-decoration: underline; }
 .prose a:hover { color: var(--color-primary); }
+
+@layer components {
+  /* Felles: tydelig hover, lett løft, fokus-ring for tastatur */
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl font-medium text-white shadow-sm transition-all duration-200 ease-out;
+    background-color: var(--color-primary);
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#155356] focus-visible:ring-offset-2;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: #0f3d42;
+    box-shadow: 0 4px 14px rgba(0, 45, 50, 0.18);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+    background-color: #002229;
+    box-shadow: 0 1px 4px rgba(0, 45, 50, 0.12);
+  }
+  .btn-primary:disabled {
+    @apply cursor-not-allowed opacity-50 shadow-none translate-y-0;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center rounded-xl font-medium text-[#002D32] shadow-sm transition-all duration-200 ease-out;
+    background-color: var(--color-accent);
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a26f] focus-visible:ring-offset-2;
+  }
+  .btn-accent:hover:not(:disabled) {
+    filter: brightness(0.94);
+    box-shadow: 0 4px 14px rgba(0, 45, 50, 0.12);
+    transform: translateY(-1px);
+  }
+  .btn-accent:active:not(:disabled) {
+    transform: translateY(0);
+    filter: brightness(0.88);
+    box-shadow: 0 1px 4px rgba(0, 45, 50, 0.1);
+  }
+  .btn-accent:disabled {
+    @apply cursor-not-allowed opacity-50 shadow-none translate-y-0 brightness-100;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl font-medium text-[#002D32] transition-all duration-200 ease-out;
+    background-color: var(--color-tint-green);
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c5d0d4] focus-visible:ring-offset-2;
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background-color: #cdd8dc;
+    box-shadow: 0 3px 10px rgba(0, 45, 50, 0.08);
+    transform: translateY(-1px);
+  }
+  .btn-secondary:active:not(:disabled) {
+    transform: translateY(0);
+    background-color: #c0ccd1;
+  }
+
+  /* Forside-hero: lys outline på mørk bakgrunn */
+  .btn-outline-hero {
+    @apply inline-flex items-center justify-center rounded-xl font-medium text-white border transition-all duration-200 ease-out;
+    border-color: rgba(215, 177, 128, 0.55);
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/35 focus-visible:ring-offset-2 focus-visible:ring-offset-[#002D32];
+  }
+  .btn-outline-hero:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(215, 177, 128, 0.95);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+  }
+  .btn-outline-hero:active {
+    transform: translateY(0);
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Tekstlenker (f.eks. 404, bekreft) */
+  .link-inline {
+    @apply font-medium underline underline-offset-2 transition-colors duration-200;
+    color: var(--color-secondary);
+  }
+  .link-inline:hover {
+    color: var(--color-primary);
+  }
+
+  /* «Les mer»-lenker på kort */
+  .link-arrow {
+    @apply inline-block text-sm font-medium transition-all duration-200;
+  }
+  .link-arrow:hover {
+    @apply translate-x-0.5;
+  }
+}
