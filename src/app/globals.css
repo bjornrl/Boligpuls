@@ -154,3 +154,10 @@ h1, h2, h3, h4 {
     @apply translate-x-0.5;
   }
 }
+
+/* Nyhetsbrev/MJML innebygd i artikkel: e-postmal legger ofte stor side-padding på .body,
+   som gjør brødtekst smalere enn hero. Fjern kun horisontal padding (vertikal beholdes). */
+.newsletter-html .body {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}

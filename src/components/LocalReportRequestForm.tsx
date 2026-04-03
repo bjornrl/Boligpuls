@@ -3,11 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-type RequestType = 'verdivurdering' | 'salgstilbud'
-
-export default function ValuationForm() {
+export default function LocalReportRequestForm() {
   const router = useRouter()
-  const [requestType, setRequestType] = useState<RequestType>('verdivurdering')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
@@ -23,7 +20,7 @@ export default function ValuationForm() {
     setIsSubmitting(true)
 
     try {
-      const res = await fetch('/api/valuation-request', {
+      const res = await fetch('/api/local-report-request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -31,7 +28,6 @@ export default function ValuationForm() {
           email,
           phone: phone.trim() || undefined,
           address,
-          requestType,
           message: message || undefined,
         }),
       })
@@ -69,17 +65,17 @@ export default function ValuationForm() {
           className="text-2xl mb-2"
           style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
         >
-          Vi har mottatt henvendelsen!
+          Takk for henvendelsen!
         </h2>
         <p className="mb-6" style={{ color: '#5F7A7D' }}>
-          Du hører fra oss snart!
+          Vi lager en rapport for ditt område og tar kontakt når den er klar.
         </p>
         <button
           type="button"
-          onClick={() => router.push('/')}
+          onClick={() => router.push('/?tab=local')}
           className="btn-secondary px-6 py-3 text-sm"
         >
-          Tilbake til oppdateringer
+          Tilbake til Lokalmarkedet
         </button>
       </div>
     )
@@ -91,45 +87,6 @@ export default function ValuationForm() {
         className="rounded-2xl p-6 md:p-8"
         style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8ECEE' }}
       >
-        {/* Type selector */}
-        <div className="grid grid-cols-2 gap-3 mb-8">
-          {([
-            { type: 'verdivurdering' as RequestType, label: 'Jeg ønsker verdivurdering' },
-            { type: 'salgstilbud' as RequestType, label: 'Jeg ønsker tilbud på salg' },
-          ]).map(({ type, label }) => (
-            <button
-              key={type}
-              type="button"
-              onClick={() => setRequestType(type)}
-              className={`p-4 rounded-xl text-sm font-medium transition-all duration-200 text-left ${requestType !== type ? 'hover:border-[#9BAFB2] hover:bg-[#FAFAFA]' : ''
-                }`}
-              style={
-                requestType === type
-                  ? {
-                    backgroundColor: '#DEE5E7',
-                    border: '2px solid #002D32',
-                    color: '#002D32',
-                  }
-                  : {
-                    backgroundColor: '#FFFFFF',
-                    border: '2px solid #D4DCDE',
-                    color: '#5F7A7D',
-                  }
-              }
-            >
-              <span className="flex items-center gap-2">
-                {requestType === type && (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#002D32" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                )}
-                {label}
-              </span>
-            </button>
-          ))}
-        </div>
-
-        {/* Form fields */}
         <div className="space-y-5">
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
@@ -163,14 +120,10 @@ export default function ValuationForm() {
 
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
-              Telefon{' '}
-              {requestType === 'salgstilbud' && (
-                <span style={{ color: '#9BAFB2', fontWeight: 400 }}>(valgfri)</span>
-              )}
+              Telefon <span style={{ color: '#9BAFB2', fontWeight: 400 }}>(valgfri)</span>
             </label>
             <input
               type="tel"
-              required={requestType === 'verdivurdering'}
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors"
@@ -181,7 +134,7 @@ export default function ValuationForm() {
 
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
-              Adresse
+              Adresse eller område du ønsker rapport for
             </label>
             <input
               type="text"
@@ -190,13 +143,13 @@ export default function ValuationForm() {
               onChange={(e) => setAddress(e.target.value)}
               className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-colors"
               style={{ border: '1px solid #D4DCDE', color: '#002D32' }}
-              placeholder="Gateadresse og husnummer"
+              placeholder="F.eks. Ilavegen 21-35 eller Bakklandet"
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: '#002D32' }}>
-              Melding <span style={{ color: '#9BAFB2', fontWeight: 400 }}>(valgfri)</span>
+              Noe spesielt du lurer på? <span style={{ color: '#9BAFB2', fontWeight: 400 }}>(valgfri)</span>
             </label>
             <textarea
               value={message}
@@ -218,7 +171,8 @@ export default function ValuationForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="btn-primary w-full mt-6 py-3.5 text-sm text-white disabled:bg-[#D4DCDE] disabled:text-[#5F7A7D] disabled:opacity-100 disabled:shadow-none disabled:hover:translate-y-0 disabled:hover:bg-[#D4DCDE] disabled:hover:shadow-none"
+          className="w-full mt-6 py-3.5 text-sm text-white font-semibold rounded-xl transition-all duration-200 disabled:opacity-50"
+          style={{ backgroundColor: '#002D32' }}
         >
           {isSubmitting ? 'Sender...' : 'Send forespørsel'}
         </button>

@@ -23,11 +23,10 @@ export default function BekreftPage({
                 className="text-2xl mb-2"
                 style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}
               >
-                Abonnement bekreftet!
+                Velkommen til EIENDOM Trondheim!
               </h1>
               <p className="mb-6" style={{ color: '#5F7A7D' }}>
-                Du vil nå motta nyhetsbrev om boligmarkedet i dine valgte bydeler.
-              </p>
+                Du vil motta månedlige oppdateringer om boligmarkedet i Trondheim              </p>
             </>
           ) : (
             <>

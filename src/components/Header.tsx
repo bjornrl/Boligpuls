@@ -41,11 +41,11 @@ export default function Header() {
             className="text-sm flex items-center gap-1.5 hover:text-white transition-colors"
             style={{ color: 'rgba(255,255,255,0.6)' }}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            {/* <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" />
-            </svg>
-            Vurdering
+            </svg> */}
+            Verdivurdering
           </Link>
           <Link
             href="/om"

@@ -20,11 +20,13 @@ export default async function AdminPage() {
     { count: weeklyCount },
     { count: monthlyCount },
     { count: newRequestsCount },
+    { count: newLocalReportRequestsCount },
   ] = await Promise.all([
     supabase.from('subscribers').select('*', { count: 'exact', head: true }).eq('confirmed', true).eq('is_active', true),
     supabase.from('subscribers').select('*', { count: 'exact', head: true }).eq('confirmed', true).eq('is_active', true).eq('frequency', 'weekly'),
     supabase.from('subscribers').select('*', { count: 'exact', head: true }).eq('confirmed', true).eq('is_active', true).eq('frequency', 'monthly'),
     supabase.from('valuation_requests').select('*', { count: 'exact', head: true }).eq('status', 'ny'),
+    supabase.from('local_report_requests').select('*', { count: 'exact', head: true }).eq('status', 'ny'),
   ])
 
   return (
@@ -44,6 +46,7 @@ export default async function AdminPage() {
           { label: 'Ukentlige', value: weeklyCount || 0, color: '#155356' },
           { label: 'Månedlige', value: monthlyCount || 0, color: '#D7B180' },
           { label: 'Nye forespørsler', value: newRequestsCount || 0, color: '#B8860B' },
+          { label: 'Nye lokalrapport-forespørsler', value: newLocalReportRequestsCount || 0, color: '#B8860B' },
         ]}
       />
     </div>

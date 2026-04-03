@@ -50,13 +50,13 @@ export default function OmPage() {
 
             <div className="space-y-4" style={{ color: '#155356', lineHeight: 1.75 }}>
               <p>
-                Hei! Jeg heter Martin Brandvik, og jobber hos Nordvik Bolig i Trondheim.
+                Hei! Jeg heter Martin Brandvik og jobber hos Nordvik Bolig Trondheim.
               </p>
               <p>
-                EIENDOM Trondheim startet som jevnlige oppdateringer av boligmarkedet over epost. Jeg tenkte det var greit å dele med alle som er interesserte.
+                EIENDOM Trondheim startet som jevnlige markedsoppdateringer gjennom verdivurderinger, telefonsamtaler og e-poster. Jeg ønsket å gi folk et bedre grunnlag for å forstå hva som faktisk skjer i boligmarkedet der de bor. Etter hvert ble det naturlig å samle alt på ett sted.
               </p>
               <p>
-                Kanskje du skal selge snart og lurer på hva boligen din faktisk er verdt. Kanskje du bare syns boligmarkedet er interessant å følge med på. Uansett håper jeg dette nyhetsbrevet gjør det litt enklere for deg å være oppdatert.
+                Enten du vurderer salg, følger med på markedet eller bare er nysgjerrig på hva boligen din er verdt, håper jeg du finner noe nyttig her. Ikke nøl med å ta kontakt.
               </p>
 
             </div>

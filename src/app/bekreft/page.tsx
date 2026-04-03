@@ -31,7 +31,7 @@ export default async function BekreftPage({
             Abonnement bekreftet!
           </h1>
           <p className="mb-6" style={{ color: '#5F7A7D' }}>
-            Du vil nå motta nyhetsbrev om boligmarkedet i dine valgte bydeler.
+            Du vil motta månedlige oppdateringer om boligmarkedet i Trondheim.
           </p>
         </>
       ) : (

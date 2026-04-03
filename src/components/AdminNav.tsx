@@ -10,6 +10,7 @@ const tabs = [
   { label: 'Studio', href: '/studio' },
   { label: 'Abonnenter', href: '/admin/abonnenter' },
   { label: 'Forespørsler', href: '/admin/foresporser' },
+  { label: 'Lokalrapport-forespørsler', href: '/admin/lokalrapport-foresporser' },
 ]
 
 export default function AdminNav({ email }: { email: string }) {

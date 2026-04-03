@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -51,7 +52,7 @@ export default async function HomePage() {
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link href="/nyhetsbrev" className="btn-accent px-8 py-3 text-base">
-                Abonner
+                Les mer
               </Link>
               <Link href="/vurdering" className="btn-outline-hero px-8 py-3 text-base">
                 Be om verdivurdering
@@ -60,7 +61,9 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <HomeContent posts={posts || []} localReports={localReports || []} />
+        <Suspense>
+          <HomeContent posts={posts || []} localReports={localReports || []} />
+        </Suspense>
       </main>
       <Footer />
     </>

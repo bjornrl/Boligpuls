@@ -37,6 +37,14 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  const phoneTrimmed = typeof phone === 'string' ? phone.trim() : ''
+  if (requestType === 'verdivurdering' && !phoneTrimmed) {
+    return NextResponse.json(
+      { error: 'Telefonnummer er påkrevd ved forespørsel om verdivurdering.' },
+      { status: 400 }
+    )
+  }
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email)) {
     return NextResponse.json(
@@ -75,7 +83,7 @@ export async function POST(request: NextRequest) {
     .insert({
       name,
       email,
-      phone: phone || null,
+      phone: phoneTrimmed || null,
       address,
       bydel_id: bydelId,
       request_type: requestType,
@@ -100,7 +108,7 @@ export async function POST(request: NextRequest) {
         react: ValuationNotifyEmail({
           name,
           email,
-          phone: phone || null,
+          phone: phoneTrimmed || null,
           address,
           bydel: bydelName,
           requestType,

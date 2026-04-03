@@ -69,3 +69,14 @@ export type ValuationRequest = {
 export type ValuationRequestWithBydel = ValuationRequest & {
   bydeler: Bydel | null
 }
+
+export type LocalReportRequest = {
+  id: string
+  name: string
+  email: string
+  phone: string | null
+  address: string
+  message: string | null
+  status: 'ny' | 'kontaktet' | 'fullfort'
+  created_at: string
+}

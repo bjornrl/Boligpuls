@@ -5,45 +5,35 @@ import {
   Container,
   Section,
   Text,
-  Button,
   Hr,
   Preview,
-  Link,
 } from '@react-email/components'
 
-interface ConfirmEmailProps {
+interface LocalReportConfirmEmailProps {
   name: string
-  confirmUrl: string
+  address: string
 }
 
-export default function ConfirmEmail({ name, confirmUrl }: ConfirmEmailProps) {
+export default function LocalReportConfirmEmail({ name, address }: LocalReportConfirmEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Bekreft e-postadressen din for EIENDOM Trondheim</Preview>
+      <Preview>Vi har mottatt din forespørsel — Eiendom Trondheim</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={header}>
-            <Text style={logo}>EIENDOM Trondheim</Text>
+            <Text style={logo}>Eiendom Trondheim</Text>
           </Section>
           <Section style={content}>
-            <Text style={heading}>Hei {name}!</Text>
+            <Text style={heading}>Hei {name},</Text>
             <Text style={paragraph}>
-              Takk for at du meldte deg på EIENDOM Trondheim.
+              Takk for din forespørsel om en lokalrapport for <strong>{address}</strong>.
+              Vi lager en markedsanalyse for ditt område og tar kontakt når den er klar.
             </Text>
             <Text style={paragraph}>
-              Klikk på knappen under for å bekrefte e-postadressen din:
-            </Text>
-            <Section style={buttonContainer}>
-              <Button style={button} href={confirmUrl}>
-                Bekreft e-postadressen min
-              </Button>
-            </Section>
-            <Text style={smallText}>
-              Eller kopier denne lenken:{' '}
-              <Link href={confirmUrl} style={link}>
-                {confirmUrl}
-              </Link>
+              Med vennlig hilsen,
+              <br />
+              Eiendom Trondheim
             </Text>
           </Section>
           <Hr style={hr} />
@@ -104,34 +94,6 @@ const paragraph = {
   lineHeight: '1.6',
   color: '#155356',
   marginBottom: '16px',
-}
-
-const buttonContainer = {
-  textAlign: 'center' as const,
-  marginTop: '24px',
-  marginBottom: '24px',
-}
-
-const button = {
-  backgroundColor: '#D7B180',
-  borderRadius: '12px',
-  color: '#002D32',
-  fontSize: '16px',
-  fontWeight: '600' as const,
-  textDecoration: 'none',
-  padding: '14px 32px',
-  display: 'inline-block',
-}
-
-const smallText = {
-  fontSize: '13px',
-  color: '#5F7A7D',
-  lineHeight: '1.5',
-  wordBreak: 'break-all' as const,
-}
-
-const link = {
-  color: '#155356',
 }
 
 const hr = {

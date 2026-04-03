@@ -241,6 +241,39 @@ export interface Database {
           }
         ]
       }
+      local_report_requests: {
+        Row: {
+          id: string
+          name: string
+          email: string
+          phone: string | null
+          address: string
+          message: string | null
+          status: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          email: string
+          phone?: string | null
+          address: string
+          message?: string | null
+          status?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          email?: string
+          phone?: string | null
+          address?: string
+          message?: string | null
+          status?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

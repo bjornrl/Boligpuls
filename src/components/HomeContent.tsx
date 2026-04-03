@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import PostCard from '@/components/PostCard'
@@ -26,7 +27,14 @@ interface HomeContentProps {
 }
 
 export default function HomeContent({ posts, localReports }: HomeContentProps) {
+  const searchParams = useSearchParams()
   const [activeTab, setActiveTab] = useState<'reports' | 'local'>('reports')
+
+  useEffect(() => {
+    if (searchParams.get('tab') === 'local') {
+      setActiveTab('local')
+    }
+  }, [searchParams])
   const [selectedType, setSelectedType] = useState<ReportType | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -145,6 +153,32 @@ export default function HomeContent({ posts, localReports }: HomeContentProps) {
             reports={localReports}
             highlightedId={filteredLocal.length === 1 ? filteredLocal[0]._id : undefined}
           />
+
+          {/* Request area CTA */}
+          <div style={{
+            textAlign: 'center',
+            padding: '32px 0',
+            marginTop: 24,
+          }}>
+            <p style={{ fontSize: 15, color: '#5F7A7D', marginBottom: 16 }}>
+              Finner du ikke området ditt?
+            </p>
+            <a
+              href="/lokalrapport-foresporsel"
+              style={{
+                display: 'inline-block',
+                padding: '14px 28px',
+                borderRadius: 10,
+                background: '#002D32',
+                color: '#fff',
+                fontSize: 14,
+                fontWeight: 600,
+                textDecoration: 'none',
+              }}
+            >
+              Savner du et område? Spør oss her
+            </a>
+          </div>
         </>
       )}
     </section>
