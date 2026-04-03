@@ -155,11 +155,52 @@ h1, h2, h3, h4 {
   }
 }
 
-/* Nyhetsbrev/MJML innebygd i artikkel: e-postmal legger ofte stor side-padding på .body,
-   som gjør brødtekst smalere enn hero. Fjern kun horisontal padding (vertikal beholdes). */
-.newsletter-html .body {
+/* Uploaded HTML content: force responsive layout regardless of hardcoded widths */
+.newsletter-html-content {
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.newsletter-html-content table {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+.newsletter-html-content td,
+.newsletter-html-content th {
+  max-width: 100% !important;
+  word-break: break-word;
+}
+
+.newsletter-html-content img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.newsletter-html-content [style*="width"] {
+  max-width: 100% !important;
+}
+
+.newsletter-html-content .body {
   padding-left: 0 !important;
   padding-right: 0 !important;
+}
+
+@media (max-width: 640px) {
+  .newsletter-html-content td {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .newsletter-html-content td[style*="padding"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .newsletter-html-content h1 { font-size: 22px !important; }
+  .newsletter-html-content h2 { font-size: 18px !important; }
 }
 
 /* MapLibre popup styling */

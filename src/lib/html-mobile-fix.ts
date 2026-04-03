@@ -96,11 +96,19 @@ export function ensureMobileCompatible(html: string): string {
     )
   }
 
-  // 6. Fiks hardkodede bredder over 600px
+  // 6. Fiks hardkodede bredder over 600px (HTML-attributter)
   fixed = fixed.replace(
     /width="(\d+)"/gi,
     (match, width: string) => {
       return parseInt(width) > 600 ? 'width="100%"' : match
+    }
+  )
+
+  // 6b. Fiks hardkodede bredder i inline CSS (f.eks. width: 600px)
+  fixed = fixed.replace(
+    /width:\s*(\d+)px/gi,
+    (match, width: string) => {
+      return parseInt(width) > 600 ? 'width: 100%' : match
     }
   )
 
