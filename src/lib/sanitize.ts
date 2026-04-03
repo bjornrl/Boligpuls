@@ -3,7 +3,7 @@ import sanitizeHtml from 'sanitize-html'
 export function sanitizeNewsletter(html: string): string {
   return sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-      'img', 'style', 'div', 'span', 'table', 'tr', 'td', 'th', 'thead',
+      'img', 'div', 'span', 'table', 'tr', 'td', 'th', 'thead',
       'tbody', 'tfoot', 'caption', 'colgroup', 'col', 'h1', 'h2', 'h3',
       'h4', 'h5', 'h6', 'p', 'br', 'hr', 'a', 'strong', 'em', 'b', 'i',
       'u', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'center',
