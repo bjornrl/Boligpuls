@@ -54,9 +54,9 @@ export default async function HomePage() {
               <Link href="/nyhetsbrev" className="btn-accent px-8 py-3 text-base">
                 Les mer
               </Link>
-              <Link href="/vurdering" className="btn-outline-hero px-8 py-3 text-base">
+              {/* <Link href="/vurdering" className="btn-outline-hero px-8 py-3 text-base">
                 Be om verdivurdering
-              </Link>
+              </Link> */}
             </div>
           </div>
         </section>

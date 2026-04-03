@@ -7,6 +7,7 @@ import type { SanityPost } from '@/sanity/types'
 import { reportTypeConfig } from '@/sanity/types'
 import { formatDate } from '@/lib/utils'
 import { compileMjml } from '@/lib/mjml'
+import { ensureMobileCompatible } from '@/lib/html-mobile-fix'
 import ReportTypeBadge from '@/components/ReportTypeBadge'
 import { SanitizedNewsletterHtml } from '@/components/SanitizedNewsletterHtml'
 import Header from '@/components/Header'
@@ -36,7 +37,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
   if (post.contentMode === 'html' && post.htmlContent) {
     const raw = post.htmlContent
     const isMjml = post.contentFormat === 'mjml' || raw.trim().startsWith('<mjml>') || raw.trim().startsWith('<mjml ')
-    displayHtml = isMjml ? await compileMjml(raw) : raw
+    const compiled = isMjml ? await compileMjml(raw) : raw
+    displayHtml = ensureMobileCompatible(compiled)
   }
 
   return (

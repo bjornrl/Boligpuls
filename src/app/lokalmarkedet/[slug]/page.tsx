@@ -6,6 +6,7 @@ import { localReportBySlugQuery } from '@/sanity/queries'
 import type { SanityLocalReport } from '@/sanity/types'
 import { formatDate } from '@/lib/utils'
 import { compileMjml } from '@/lib/mjml'
+import { ensureMobileCompatible } from '@/lib/html-mobile-fix'
 import { SanitizedNewsletterHtml } from '@/components/SanitizedNewsletterHtml'
 import dynamic from 'next/dynamic'
 import Header from '@/components/Header'
@@ -46,7 +47,8 @@ export default async function LocalReportPage({ params }: { params: { slug: stri
   if (report.contentMode === 'html' && report.htmlContent) {
     const raw = report.htmlContent
     const isMjml = raw.trim().startsWith('<mjml>') || raw.trim().startsWith('<mjml ')
-    displayHtml = isMjml ? await compileMjml(raw) : raw
+    const compiled = isMjml ? await compileMjml(raw) : raw
+    displayHtml = ensureMobileCompatible(compiled)
   }
 
   return (
