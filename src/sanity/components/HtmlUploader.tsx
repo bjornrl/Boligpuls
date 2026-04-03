@@ -44,10 +44,10 @@ export function HtmlUploader({ onChange, value = '' }: HtmlUploaderProps) {
       <Flex gap={2}>
         <Card padding={3} radius={2} shadow={1} style={{ flex: 1 }}>
           <Stack space={3}>
-            <Text size={1} weight="semibold">Last opp HTML- eller MJML-fil</Text>
+            <Text size={1} weight="semibold">Last opp HTML-fil</Text>
             <input
               type="file"
-              accept=".html,.htm,.mjml"
+              accept=".html,.htm"
               onChange={handleFileUpload}
               style={{ fontSize: 14 }}
             />

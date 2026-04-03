@@ -6,7 +6,6 @@ import { postBySlugQuery } from '@/sanity/queries'
 import type { SanityPost } from '@/sanity/types'
 import { reportTypeConfig } from '@/sanity/types'
 import { formatDate } from '@/lib/utils'
-import { compileMjml } from '@/lib/mjml'
 import { ensureMobileCompatible } from '@/lib/html-mobile-fix'
 import ReportTypeBadge from '@/components/ReportTypeBadge'
 import { SanitizedNewsletterHtml } from '@/components/SanitizedNewsletterHtml'
@@ -32,24 +31,9 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
   const config = reportTypeConfig[post.reportType]
 
-  // Compile MJML to HTML if needed for display
   let displayHtml: string | undefined
   if (post.contentMode === 'html' && post.htmlContent) {
-    const raw = post.htmlContent
-    const isMjml = (post.contentFormat === 'mjml' || raw.trim().startsWith('<mjml>') || raw.trim().startsWith('<mjml '))
-      && !raw.trim().startsWith('<!DOCTYPE') && !raw.trim().startsWith('<html')
-    let compiled: string
-    if (isMjml) {
-      try {
-        compiled = await compileMjml(raw)
-      } catch {
-        console.error('[post] MJML compilation failed, falling back to raw HTML')
-        compiled = raw
-      }
-    } else {
-      compiled = raw
-    }
-    displayHtml = ensureMobileCompatible(compiled)
+    displayHtml = ensureMobileCompatible(post.htmlContent)
   }
 
   return (

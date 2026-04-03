@@ -9,7 +9,7 @@ export const allPostsQuery = groq`
     excerpt,
     content,
     contentMode,
-    contentFormat,
+
     htmlContent,
     reportType,
     reportPeriod,
@@ -29,7 +29,7 @@ export const postBySlugQuery = groq`
     excerpt,
     content,
     contentMode,
-    contentFormat,
+
     htmlContent,
     reportType,
     reportPeriod,
@@ -49,7 +49,7 @@ export const postByIdQuery = groq`
     excerpt,
     content,
     contentMode,
-    contentFormat,
+
     htmlContent,
     reportType,
     reportPeriod,

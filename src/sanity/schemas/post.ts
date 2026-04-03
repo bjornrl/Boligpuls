@@ -62,21 +62,6 @@ export const post = defineType({
       description: 'Velg om innholdet er skrevet i Studio (rik tekst) eller lastet opp som HTML.',
     }),
     defineField({
-      name: 'contentFormat',
-      title: 'HTML-format',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Ren HTML', value: 'html' },
-          { title: 'MJML (anbefalt for e-post)', value: 'mjml' },
-        ],
-        layout: 'radio',
-      },
-      initialValue: 'mjml',
-      hidden: ({ parent }) => parent?.contentMode !== 'html',
-      description: 'MJML kompileres automatisk til e-postvennlig HTML som fungerer i alle e-postklienter.',
-    }),
-    defineField({
       name: 'htmlContent',
       title: 'HTML-innhold',
       type: 'text',
