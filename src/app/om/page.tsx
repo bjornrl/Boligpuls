@@ -4,7 +4,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 export const metadata = {
-  title: 'Om meg — Eiendom Trondheim',
+  title: 'Om Eiendom Trondheim',
   description: 'Lær mer om personen bak Eiendom Trondheim og hvordan du kan ta kontakt.',
 }
 
@@ -18,7 +18,7 @@ export default function OmPage() {
             className="text-3xl mb-8"
             style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif', letterSpacing: '-0.02em' }}
           >
-            Om meg
+            Om EIENDOM Trondheim
           </h1>
 
           <div

@@ -52,7 +52,7 @@ export default function Header() {
             className="text-sm hover:text-white transition-colors"
             style={{ color: 'rgba(255,255,255,0.6)' }}
           >
-            Om oss
+            Om
           </Link>
           <Link
             href="/login"
@@ -127,7 +127,7 @@ export default function Header() {
             className="block px-3 py-3 rounded-xl text-sm transition-colors hover:bg-white/10 hover:text-white"
             style={{ color: 'rgba(255,255,255,0.7)' }}
           >
-            Om oss
+            Om
           </Link>
           <Link
             href="/login"

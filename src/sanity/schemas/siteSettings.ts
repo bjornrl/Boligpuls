@@ -22,7 +22,7 @@ export const siteSettings = defineType({
     }),
     defineField({
       name: 'aboutText',
-      title: 'Om oss-tekst',
+      title: 'Om-tekst',
       type: 'text',
       rows: 4,
       description: 'Tekst i footer om Eiendom Trondheim',
