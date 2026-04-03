@@ -28,7 +28,7 @@ export default async function BekreftPage({
         <>
           <div className="text-5xl mb-4" style={{ color: '#155356' }}>&#10003;</div>
           <h1 className="text-2xl mb-2" style={{ color: '#002D32', fontFamily: '"Basel Classic", Georgia, serif' }}>
-            Abonnement bekreftet!
+            Velkommen til EIENDOM Trondheim!
           </h1>
           <p className="mb-6" style={{ color: '#5F7A7D' }}>
             Du vil motta månedlige oppdateringer om boligmarkedet i Trondheim.

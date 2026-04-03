@@ -36,8 +36,19 @@ export default async function PostPage({ params }: { params: { slug: string } })
   let displayHtml: string | undefined
   if (post.contentMode === 'html' && post.htmlContent) {
     const raw = post.htmlContent
-    const isMjml = post.contentFormat === 'mjml' || raw.trim().startsWith('<mjml>') || raw.trim().startsWith('<mjml ')
-    const compiled = isMjml ? await compileMjml(raw) : raw
+    const isMjml = (post.contentFormat === 'mjml' || raw.trim().startsWith('<mjml>') || raw.trim().startsWith('<mjml '))
+      && !raw.trim().startsWith('<!DOCTYPE') && !raw.trim().startsWith('<html')
+    let compiled: string
+    if (isMjml) {
+      try {
+        compiled = await compileMjml(raw)
+      } catch {
+        console.error('[post] MJML compilation failed, falling back to raw HTML')
+        compiled = raw
+      }
+    } else {
+      compiled = raw
+    }
     displayHtml = ensureMobileCompatible(compiled)
   }
 
