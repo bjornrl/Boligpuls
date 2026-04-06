@@ -6,7 +6,7 @@ import { localReportBySlugQuery } from '@/sanity/queries'
 import type { SanityLocalReport } from '@/sanity/types'
 import { formatDate } from '@/lib/utils'
 import { ensureMobileCompatible } from '@/lib/html-mobile-fix'
-import { SanitizedNewsletterHtml } from '@/components/SanitizedNewsletterHtml'
+import { HtmlContentViewer } from '@/components/HtmlContentViewer'
 import dynamic from 'next/dynamic'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -107,7 +107,7 @@ export default async function LocalReportPage({ params }: { params: { slug: stri
 
               {/* Content */}
               {displayHtml ? (
-                <SanitizedNewsletterHtml html={displayHtml} />
+                <HtmlContentViewer html={displayHtml} />
               ) : report.content ? (
                 <div className="prose max-w-none" style={{ lineHeight: '1.85' }}>
                   <PortableText value={report.content} />

@@ -55,7 +55,7 @@ export const localReport = defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'HTML / MJML', value: 'html' },
+          { title: 'HTML', value: 'html' },
           { title: 'Rik tekst', value: 'portable-text' },
         ],
         layout: 'radio',

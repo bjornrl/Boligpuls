@@ -8,7 +8,7 @@ import { reportTypeConfig } from '@/sanity/types'
 import { formatDate } from '@/lib/utils'
 import { ensureMobileCompatible } from '@/lib/html-mobile-fix'
 import ReportTypeBadge from '@/components/ReportTypeBadge'
-import { SanitizedNewsletterHtml } from '@/components/SanitizedNewsletterHtml'
+import { HtmlContentViewer } from '@/components/HtmlContentViewer'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
@@ -81,7 +81,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
               </h1>
 
               {displayHtml ? (
-                <SanitizedNewsletterHtml html={displayHtml} />
+                <HtmlContentViewer html={displayHtml} />
               ) : (
                 <div className="prose max-w-none" style={{ lineHeight: '1.85' }}>
                   <PortableText value={post.content} />
