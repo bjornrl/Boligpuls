@@ -21,75 +21,111 @@ const LocalMarketMap = dynamic(() => import('@/components/LocalMarketMap'), {
   ),
 })
 
+type TabId = 'reports' | 'local' | 'articles'
+
+const tabs: { id: TabId; label: string; emoji: string }[] = [
+  { id: 'reports', label: 'Rapporter', emoji: '📊' },
+  { id: 'local', label: 'Lokalmarkedet', emoji: '📍' },
+  { id: 'articles', label: 'Øvrige artikler', emoji: '📝' },
+]
+
 interface HomeContentProps {
   posts: SanityPost[]
   localReports: SanityLocalReport[]
 }
 
+function filterBySearch<T extends Record<string, unknown>>(items: T[], query: string): T[] {
+  if (!query) return items
+  const q = query.toLowerCase()
+  return items.filter((item) =>
+    (item.title as string)?.toLowerCase().includes(q) ||
+    (item.excerpt as string)?.toLowerCase().includes(q) ||
+    (item.reportPeriod as string)?.toLowerCase().includes(q) ||
+    (item.address as string)?.toLowerCase().includes(q) ||
+    (item.searchTerms as string[])?.some((t) => t.toLowerCase().includes(q))
+  )
+}
+
 export default function HomeContent({ posts, localReports }: HomeContentProps) {
   const searchParams = useSearchParams()
-  const [activeTab, setActiveTab] = useState<'reports' | 'local'>('reports')
-
-  useEffect(() => {
-    if (searchParams.get('tab') === 'local') {
-      setActiveTab('local')
-    }
-  }, [searchParams])
+  const [activeTab, setActiveTab] = useState<TabId>('reports')
   const [selectedType, setSelectedType] = useState<ReportType | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
 
-  const filteredPosts = selectedType
-    ? posts.filter((p) => p.reportType === selectedType)
-    : posts
+  useEffect(() => {
+    const tab = searchParams.get('tab')
+    if (tab === 'local') setActiveTab('local')
+    else if (tab === 'articles') setActiveTab('articles')
+  }, [searchParams])
 
-  const filteredLocal = useMemo(() => {
-    if (!searchQuery) return localReports
-    const q = searchQuery.toLowerCase()
-    return localReports.filter(
-      (report) =>
-        report.title?.toLowerCase().includes(q) ||
-        report.address?.toLowerCase().includes(q) ||
-        report.excerpt?.toLowerCase().includes(q) ||
-        report.searchTerms?.some((t) => t.toLowerCase().includes(q))
-    )
-  }, [localReports, searchQuery])
+  // Split posts into reports vs articles
+  const reports = useMemo(() => posts.filter((p) => p.reportType !== 'artikkel'), [posts])
+  const articles = useMemo(() => posts.filter((p) => p.reportType === 'artikkel'), [posts])
+
+  // Apply search filtering
+  const filteredReports = useMemo(() => {
+    const searched = filterBySearch(reports, searchQuery)
+    return selectedType ? searched.filter((p) => p.reportType === selectedType) : searched
+  }, [reports, searchQuery, selectedType])
+
+  const filteredArticles = useMemo(() => filterBySearch(articles, searchQuery), [articles, searchQuery])
+
+  const filteredLocal = useMemo(() => filterBySearch(localReports, searchQuery), [localReports, searchQuery])
 
   return (
     <section className="max-w-[1120px] mx-auto px-4 py-12">
+      {/* Global search bar */}
+      <div style={{ marginBottom: 20 }}>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="🔍 Søk etter rapport, adresse eller tema..."
+          className="w-full transition-colors"
+          style={{
+            padding: '14px 20px',
+            fontSize: 15,
+            border: '1px solid #D4DCDE',
+            borderRadius: 10,
+            background: '#fff',
+            outline: 'none',
+            fontFamily: 'inherit',
+          }}
+          onFocus={(e) => (e.target.style.borderColor = '#D7B180')}
+          onBlur={(e) => (e.target.style.borderColor = '#D4DCDE')}
+        />
+      </div>
+
       {/* Tabs */}
       <div className="flex gap-1 mb-8">
-        <button
-          type="button"
-          onClick={() => setActiveTab('reports')}
-          className={`px-6 py-3 rounded-xl text-sm transition-all duration-200 ${
-            activeTab !== 'reports' ? 'hover:bg-[#EBE8E0] hover:text-[#57534E]' : ''
-          }`}
-          style={{
-            fontWeight: activeTab === 'reports' ? 700 : 500,
-            background: activeTab === 'reports' ? '#002D32' : '#F5F3EF',
-            color: activeTab === 'reports' ? '#fff' : '#78716C',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          Rapporter
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab('local')}
-          className={`px-6 py-3 rounded-xl text-sm transition-all duration-200 ${
-            activeTab !== 'local' ? 'hover:bg-[#EBE8E0] hover:text-[#57534E]' : ''
-          }`}
-          style={{
-            fontWeight: activeTab === 'local' ? 700 : 500,
-            background: activeTab === 'local' ? '#002D32' : '#F5F3EF',
-            color: activeTab === 'local' ? '#fff' : '#78716C',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          Lokalmarkedet
-        </button>
+        {tabs.map((tab) => {
+          const count = searchQuery
+            ? tab.id === 'reports' ? filteredReports.length
+            : tab.id === 'local' ? filteredLocal.length
+            : filteredArticles.length
+            : null
+
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-6 py-3 rounded-xl text-sm transition-all duration-200 ${
+                activeTab !== tab.id ? 'hover:bg-[#EBE8E0] hover:text-[#57534E]' : ''
+              }`}
+              style={{
+                fontWeight: activeTab === tab.id ? 700 : 500,
+                background: activeTab === tab.id ? '#002D32' : '#F5F3EF',
+                color: activeTab === tab.id ? '#fff' : '#78716C',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              {tab.emoji} {tab.label}
+              {count !== null && ` (${count})`}
+            </button>
+          )
+        })}
       </div>
 
       {/* Rapporter tab */}
@@ -99,9 +135,9 @@ export default function HomeContent({ posts, localReports }: HomeContentProps) {
             <ReportTypeFilter selected={selectedType} onChange={setSelectedType} />
           </div>
 
-          {filteredPosts.length > 0 ? (
+          {filteredReports.length > 0 ? (
             <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))' }}>
-              {filteredPosts.map((post) => (
+              {filteredReports.map((post) => (
                 <PostCard key={post._id} post={post} />
               ))}
             </div>
@@ -116,26 +152,6 @@ export default function HomeContent({ posts, localReports }: HomeContentProps) {
       {/* Lokalmarkedet tab */}
       {activeTab === 'local' && (
         <>
-          {/* Search */}
-          <div className="mb-8">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Søk etter adresse eller område..."
-              className="w-full px-5 py-3.5 rounded-xl text-sm transition-colors"
-              style={{
-                border: '1.5px solid #D4DCDE',
-                outline: 'none',
-                backgroundColor: '#FFFFFF',
-                fontSize: 15,
-              }}
-              onFocus={(e) => (e.target.style.borderColor = '#D7B180')}
-              onBlur={(e) => (e.target.style.borderColor = '#D4DCDE')}
-            />
-          </div>
-
-          {/* Local report cards */}
           {filteredLocal.length > 0 ? (
             <div className="grid gap-4 mb-8" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))' }}>
               {filteredLocal.map((report) => (
@@ -148,18 +164,12 @@ export default function HomeContent({ posts, localReports }: HomeContentProps) {
             </p>
           )}
 
-          {/* Map */}
           <LocalMarketMap
             reports={localReports}
             highlightedId={filteredLocal.length === 1 ? filteredLocal[0]._id : undefined}
           />
 
-          {/* Request area CTA */}
-          <div style={{
-            textAlign: 'center',
-            padding: '32px 0',
-            marginTop: 24,
-          }}>
+          <div style={{ textAlign: 'center', padding: '32px 0', marginTop: 24 }}>
             <p style={{ fontSize: 15, color: '#5F7A7D', marginBottom: 16 }}>
               Finner du ikke området ditt?
             </p>
@@ -179,6 +189,23 @@ export default function HomeContent({ posts, localReports }: HomeContentProps) {
               Savner du et område? Spør oss her
             </a>
           </div>
+        </>
+      )}
+
+      {/* Øvrige artikler tab */}
+      {activeTab === 'articles' && (
+        <>
+          {filteredArticles.length > 0 ? (
+            <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))' }}>
+              {filteredArticles.map((post) => (
+                <PostCard key={post._id} post={post} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center py-12" style={{ color: '#9BAFB2' }}>
+              {searchQuery ? 'Ingen artikler matcher søket.' : 'Ingen artikler publisert ennå.'}
+            </p>
+          )}
         </>
       )}
     </section>

@@ -9,7 +9,7 @@ export type SanityBydel = {
   description?: string
 }
 
-export type ReportType = 'ukentlig' | 'manedlig' | 'kvartal' | 'arsrapport'
+export type ReportType = 'ukentlig' | 'manedlig' | 'kvartal' | 'arsrapport' | 'artikkel'
 
 export type ContentMode = 'portable-text' | 'html'
 export type SanityPost = {
@@ -58,4 +58,5 @@ export const reportTypeConfig: Record<ReportType, { label: string; emoji: string
   manedlig: { label: 'Månedlig', emoji: '📈', color: '#D7B180' },
   kvartal: { label: 'Kvartalsrapport', emoji: '📋', color: '#002D32' },
   arsrapport: { label: 'Årsrapport', emoji: '📑', color: '#7B5EA7' },
+  artikkel: { label: 'Artikkel', emoji: '📝', color: '#155356' },
 }

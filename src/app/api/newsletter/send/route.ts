@@ -12,6 +12,7 @@ const badgeConfig: Record<string, { color: string; emoji: string; text: string }
   manedlig: { color: '#D7B180', emoji: '📈', text: 'Månedlig' },
   kvartal: { color: '#002D32', emoji: '📋', text: 'Kvartalsrapport' },
   arsrapport: { color: '#7B5EA7', emoji: '📑', text: 'Årsrapport' },
+  artikkel: { color: '#155356', emoji: '📝', text: 'Artikkel' },
 }
 
 export async function POST(request: NextRequest) {
@@ -114,7 +115,7 @@ export async function POST(request: NextRequest) {
       <td style="padding: 0 32px 32px;">
         <a href="${baseUrl}/post/${post.slug}"
            style="display: inline-block; padding: 14px 32px; background-color: #D7B180; color: #002D32; text-decoration: none; border-radius: 8px; font-size: 15px; font-weight: 700;">
-          Les hele rapporten &rarr;
+          ${post.reportType === 'artikkel' ? 'Les hele artikkelen' : 'Les hele rapporten'} &rarr;
         </a>
       </td>
     </tr>
