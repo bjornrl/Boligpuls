@@ -78,20 +78,20 @@ export function ensureMobileCompatible(html: string): string {
     }
   )
 
-  // 5. Sørg for at body ikke har overflow
+  // 5. Sørg for at body ikke har horizontal overflow (but keep vertical visible)
   if (fixed.includes('<body')) {
     fixed = fixed.replace(
       /<body(\s+[^>]*?)?\s*>/gi,
       (match, attrs?: string) => {
-        if (!attrs) return '<body style="overflow-x: hidden; -webkit-text-size-adjust: 100%;">'
+        if (!attrs) return '<body style="overflow-x: hidden; overflow-y: visible; -webkit-text-size-adjust: 100%;">'
         if (attrs.includes('overflow-x')) return match
         if (attrs.includes('style="')) {
           return match.replace(
             /style="([^"]*)"/,
-            'style="$1; overflow-x: hidden; -webkit-text-size-adjust: 100%;"'
+            'style="$1; overflow-x: hidden; overflow-y: visible; -webkit-text-size-adjust: 100%;"'
           )
         }
-        return match.replace('<body', '<body style="overflow-x: hidden; -webkit-text-size-adjust: 100%;"')
+        return match.replace('<body', '<body style="overflow-x: hidden; overflow-y: visible; -webkit-text-size-adjust: 100%;"')
       }
     )
   }
