@@ -21,12 +21,6 @@ const HEIGHT_REPORTER_SCRIPT = `
   // Report on load
   reportHeight();
 
-  // Re-report after short delays for images/fonts
-  setTimeout(reportHeight, 100);
-  setTimeout(reportHeight, 500);
-  setTimeout(reportHeight, 1500);
-  setTimeout(reportHeight, 3000);
-
   // Re-report when any image finishes loading
   document.querySelectorAll('img').forEach(function(img) {
     if (!img.complete) {
@@ -41,16 +35,44 @@ const HEIGHT_REPORTER_SCRIPT = `
       .observe(document.documentElement);
   }
   if (typeof MutationObserver !== 'undefined') {
-    new MutationObserver(function() { setTimeout(reportHeight, 50); })
-      .observe(document.body, { childList: true, subtree: true, attributes: true });
+    new MutationObserver(function() { setTimeout(reportHeight, 100); })
+      .observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['style', 'class', 'open']
+      });
   }
 
-  // Re-report on toggle (details/summary) and click
-  document.addEventListener('toggle', function() { setTimeout(reportHeight, 100); }, true);
-  document.addEventListener('click', function() { setTimeout(reportHeight, 200); });
+  // Re-report on click (for "Les mer", SVG onclick, etc.)
+  document.addEventListener('click', function() {
+    setTimeout(reportHeight, 50);
+    setTimeout(reportHeight, 200);
+    setTimeout(reportHeight, 500);
+    setTimeout(reportHeight, 1000);
+  });
+
+  // Re-report on toggle (details/summary)
+  document.addEventListener('toggle', function() {
+    setTimeout(reportHeight, 50);
+    setTimeout(reportHeight, 300);
+  }, true);
+
+  // Re-report on transitionend (for max-height animations)
+  document.addEventListener('transitionend', function() {
+    setTimeout(reportHeight, 50);
+  });
+
+  // Periodic check for the first 5 seconds as fallback
+  var checks = 0;
+  var interval = setInterval(function() {
+    reportHeight();
+    checks++;
+    if (checks > 20) clearInterval(interval);
+  }, 250);
 
   // Re-report on window resize (orientation change on mobile)
-  window.addEventListener('resize', function() { setTimeout(reportHeight, 100); });
+  window.addEventListener('resize', reportHeight);
 })();
 </script>
 `;
@@ -106,7 +128,7 @@ export function HtmlContentViewer({ html }: { html: string }) {
         typeof e.data.height === 'number' &&
         e.data.height > 0
       ) {
-        setHeight((prev) => Math.max(prev, e.data.height))
+        setHeight(e.data.height + 32)
       }
     }
     window.addEventListener('message', onMessage)
@@ -122,6 +144,7 @@ export function HtmlContentViewer({ html }: { html: string }) {
         height: `${height}px`,
         border: 'none',
         borderRadius: 12,
+        transition: 'height 0.3s ease',
       }}
       scrolling="no"
       title="Rapport"
