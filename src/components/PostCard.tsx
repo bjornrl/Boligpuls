@@ -4,10 +4,9 @@ import Link from 'next/link'
 import { formatDate } from '@/lib/utils'
 import ReportTypeBadge from './ReportTypeBadge'
 import type { SanityPost } from '@/sanity/types'
-import { reportTypeConfig } from '@/sanity/types'
 
 export default function PostCard({ post }: { post: SanityPost }) {
-  const config = reportTypeConfig[post.reportType] || reportTypeConfig.ukentlig
+  const accentColor = '#155356'
 
   return (
     <article
@@ -17,10 +16,10 @@ export default function PostCard({ post }: { post: SanityPost }) {
         border: '1px solid #E8ECEE',
       }}
     >
-      <div className="h-[3px]" style={{ backgroundColor: config.color }} />
+      <div className="h-[3px]" style={{ backgroundColor: accentColor }} />
       <div className="p-6">
         <div className="flex items-center gap-2 mb-3">
-          <ReportTypeBadge type={post.reportType} />
+          <ReportTypeBadge type={post.reportType} color={accentColor} />
           {post.reportPeriod && (
             <span className="text-xs" style={{ color: '#9BAFB2' }}>
               {post.reportPeriod}
@@ -46,7 +45,7 @@ export default function PostCard({ post }: { post: SanityPost }) {
         <Link
           href={`/post/${post.slug}`}
           className="link-arrow inline-block text-sm font-medium opacity-90 hover:opacity-100"
-          style={{ color: config.color }}
+          style={{ color: accentColor }}
         >
           Les mer &rarr;
         </Link>

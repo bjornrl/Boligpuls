@@ -1,19 +1,18 @@
 'use client'
 
 import type { ReportType } from '@/sanity/types'
-import { reportTypeConfig } from '@/sanity/types'
 
 interface ReportTypeFilterProps {
   selected: ReportType | null
   onChange: (type: ReportType | null) => void
 }
 
-const filterOptions: { label: string; value: ReportType | null; color?: string }[] = [
+const filterOptions: { label: string; value: ReportType | null }[] = [
   { label: 'Alle', value: null },
-  { label: '📊 Ukentlig', value: 'ukentlig', color: reportTypeConfig.ukentlig.color },
-  { label: '📈 Månedlig', value: 'manedlig', color: reportTypeConfig.manedlig.color },
-  { label: '📋 Kvartalsrapport', value: 'kvartal', color: reportTypeConfig.kvartal.color },
-  { label: '📑 Årsrapport', value: 'arsrapport', color: reportTypeConfig.arsrapport.color },
+  { label: 'Ukentlig', value: 'ukentlig' },
+  { label: 'Månedlig', value: 'manedlig' },
+  { label: 'Kvartalsrapport', value: 'kvartal' },
+  { label: 'Årsrapport', value: 'arsrapport' },
 ]
 
 export default function ReportTypeFilter({ selected, onChange }: ReportTypeFilterProps) {
@@ -22,7 +21,7 @@ export default function ReportTypeFilter({ selected, onChange }: ReportTypeFilte
       {filterOptions.map((opt) => {
         const isActive = selected === opt.value
         const isAll = opt.value === null
-        const color = opt.color || '#002D32'
+        const color = '#155356'
         return (
           <button
             key={opt.value || 'all'}

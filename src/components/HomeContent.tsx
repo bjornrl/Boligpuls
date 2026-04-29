@@ -23,10 +23,10 @@ const LocalMarketMap = dynamic(() => import('@/components/LocalMarketMap'), {
 
 type TabId = 'reports' | 'local' | 'articles'
 
-const tabs: { id: TabId; label: string; emoji: string }[] = [
-  { id: 'reports', label: 'Rapporter', emoji: '📊' },
-  { id: 'local', label: 'Lokalmarkedet', emoji: '📍' },
-  { id: 'articles', label: 'Øvrige artikler', emoji: '📝' },
+const tabs: { id: TabId; label: string }[] = [
+  { id: 'reports', label: 'Rapporter' },
+  { id: 'local', label: 'Lokalmarkedet' },
+  { id: 'articles', label: 'Øvrige artikler' },
 ]
 
 interface HomeContentProps {
@@ -97,7 +97,7 @@ export default function HomeContent({ posts, localReports }: HomeContentProps) {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-8">
+      <div className="flex flex-wrap gap-2 mb-8">
         {tabs.map((tab) => {
           const count = searchQuery
             ? tab.id === 'reports' ? filteredReports.length
@@ -110,18 +110,17 @@ export default function HomeContent({ posts, localReports }: HomeContentProps) {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-3 rounded-xl text-sm transition-all duration-200 ${
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                 activeTab !== tab.id ? 'hover:bg-[#EBE8E0] hover:text-[#57534E]' : ''
               }`}
               style={{
-                fontWeight: activeTab === tab.id ? 700 : 500,
-                background: activeTab === tab.id ? '#002D32' : '#F5F3EF',
-                color: activeTab === tab.id ? '#fff' : '#78716C',
-                border: 'none',
+                background: activeTab === tab.id ? '#002D32' : '#FFFFFF',
+                color: activeTab === tab.id ? '#FFFFFF' : '#9BAFB2',
+                border: activeTab === tab.id ? '1px solid #002D32' : '1px solid #D4DCDE',
                 cursor: 'pointer',
               }}
             >
-              {tab.emoji} {tab.label}
+              {tab.label}
               {count !== null && ` (${count})`}
             </button>
           )

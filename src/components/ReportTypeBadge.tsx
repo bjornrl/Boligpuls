@@ -2,9 +2,18 @@
 
 import { reportTypeConfig, type ReportType } from '@/sanity/types'
 
-export default function ReportTypeBadge({ type, size = 'sm' }: { type: ReportType; size?: 'sm' | 'md' }) {
+export default function ReportTypeBadge({
+  type,
+  size = 'sm',
+  color,
+}: {
+  type: ReportType
+  size?: 'sm' | 'md'
+  color?: string
+}) {
   const config = reportTypeConfig[type]
   if (!config) return null
+  const accentColor = color || config.color
 
   const padding = size === 'md' ? 'px-3 py-1' : 'px-2 py-0.5'
   const fontSize = size === 'md' ? 'text-sm' : 'text-xs'
@@ -13,12 +22,12 @@ export default function ReportTypeBadge({ type, size = 'sm' }: { type: ReportTyp
     <span
       className={`inline-flex items-center gap-1 ${padding} ${fontSize} font-medium rounded-full`}
       style={{
-        backgroundColor: `${config.color}15`,
-        color: config.color,
-        border: `1px solid ${config.color}30`,
+        backgroundColor: `${accentColor}15`,
+        color: accentColor,
+        border: `1px solid ${accentColor}30`,
       }}
     >
-      {config.emoji} {config.label}
+      {config.label}
     </span>
   )
 }
