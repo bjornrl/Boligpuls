@@ -56,11 +56,12 @@ export const post = defineType({
         list: [
           { title: 'Rik tekst (Portable Text)', value: 'portable-text' },
           { title: 'HTML', value: 'html' },
+          { title: 'PDF (kun for artikler)', value: 'pdf' },
         ],
         layout: 'radio',
       },
       initialValue: 'html',
-      description: 'Velg om innholdet er skrevet i Studio (rik tekst) eller lastet opp som HTML.',
+      description: 'Velg om innholdet er skrevet i Studio (rik tekst), lastet opp som HTML, eller en PDF-fil. PDF anbefales kun for artikler.',
     }),
     defineField({
       name: 'htmlContent',
@@ -72,10 +73,23 @@ export const post = defineType({
       hidden: ({ parent }) => parent?.contentMode !== 'html',
     }),
     defineField({
+      name: 'pdfFile',
+      title: 'PDF-fil',
+      type: 'file',
+      options: { accept: 'application/pdf' },
+      hidden: ({ parent }) => parent?.contentMode !== 'pdf',
+      validation: (rule) =>
+        rule.custom((value, context) => {
+          const parent = context.parent as { contentMode?: string } | undefined
+          if (parent?.contentMode === 'pdf' && !value) return 'PDF-fil er påkrevd'
+          return true
+        }),
+    }),
+    defineField({
       name: 'content',
       title: 'Innhold (rik tekst)',
       type: 'array',
-      hidden: ({ parent }) => parent?.contentMode === 'html',
+      hidden: ({ parent }) => parent?.contentMode === 'html' || parent?.contentMode === 'pdf',
       of: [
         {
           type: 'block',

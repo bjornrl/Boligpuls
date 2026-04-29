@@ -35,6 +35,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
   if (post.contentMode === 'html' && post.htmlContent) {
     displayHtml = ensureMobileCompatible(post.htmlContent)
   }
+  const pdfUrl = post.contentMode === 'pdf' ? post.pdfUrl : undefined
 
   return (
     <>
@@ -82,6 +83,33 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
               {displayHtml ? (
                 <HtmlContentViewer html={displayHtml} />
+              ) : pdfUrl ? (
+                <div>
+                  <iframe
+                    src={`${pdfUrl}#view=FitH`}
+                    title={post.title}
+                    className="w-full"
+                    style={{
+                      height: '85vh',
+                      minHeight: 600,
+                      border: 'none',
+                      borderRadius: 12,
+                      backgroundColor: '#F5F3EF',
+                    }}
+                  />
+                  <p className="text-sm mt-3" style={{ color: '#5F7A7D' }}>
+                    Får du ikke vist PDF-en?{' '}
+                    <a
+                      href={pdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline"
+                      style={{ color: '#155356' }}
+                    >
+                      Åpne i ny fane
+                    </a>
+                  </p>
+                </div>
               ) : (
                 <div className="prose max-w-none" style={{ lineHeight: '1.85' }}>
                   <PortableText value={post.content} />

@@ -31,6 +31,7 @@ export const postBySlugQuery = groq`
     contentMode,
 
     htmlContent,
+    "pdfUrl": pdfFile.asset->url,
     reportType,
     reportPeriod,
     isNewsletter,
